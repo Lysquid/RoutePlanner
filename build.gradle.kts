@@ -1,5 +1,14 @@
 plugins {
-    id("java")
+    id("application")
+    id ("org.openjfx.javafxplugin") version "0.1.0"
+}
+
+application {
+    mainClass = "fr.blazanome.routeplanner.RoutePlannerApplication"
+}
+javafx {
+    version = "17.0.8"
+    modules("javafx.controls")
 }
 
 group = "fr.blazanome"
