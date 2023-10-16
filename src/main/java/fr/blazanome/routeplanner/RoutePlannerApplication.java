@@ -14,6 +14,7 @@ public class RoutePlannerApplication extends Application {
         String javafxVersion = System.getProperty("javafx.version");
         Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
         Scene scene = new Scene(new StackPane(l), 640, 480);
+        scene.getRoot().setStyle("-fx-base:black");
         stage.setScene(scene);
         stage.show();
     }
