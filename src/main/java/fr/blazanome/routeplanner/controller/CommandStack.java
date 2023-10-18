@@ -28,12 +28,16 @@ public class CommandStack {
     }
 
     public void undo() {
-        this.commands.get(this.currentIndex).undo();
-        this.currentIndex--;
+        if (this.currentIndex >= 0) {
+            this.commands.get(this.currentIndex).undo();
+            this.currentIndex--;
+        }
     }
 
     public void redo() {
-        this.currentIndex++;
-        this.commands.get(this.currentIndex).apply();
+        if (this.currentIndex < this.commands.size() - 1) {
+            this.currentIndex++;
+            this.commands.get(this.currentIndex).apply();
+        }
     }
 }
