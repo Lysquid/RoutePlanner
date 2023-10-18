@@ -1,26 +1,9 @@
 package fr.blazanome.routeplanner;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import fr.blazanome.routeplanner.view.Window;
 
-public class RoutePlannerApplication extends Application {
-
-    @Override
-    public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
-        scene.getRoot().setStyle("-fx-base:black");
-        stage.setScene(scene);
-        stage.show();
-        //test James (sorry)
-    }
-
+public class RoutePlannerApplication {
     public static void main(String[] args) {
-        launch();
+        Window.main(args);
     }
 }
