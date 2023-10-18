@@ -17,6 +17,7 @@ public class RoutePlannerApplication extends Application {
         scene.getRoot().setStyle("-fx-base:black");
         stage.setScene(scene);
         stage.show();
+        //test James (sorry)
     }
 
     public static void main(String[] args) {
