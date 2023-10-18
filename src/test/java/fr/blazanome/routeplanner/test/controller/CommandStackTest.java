@@ -67,4 +67,23 @@ public class CommandStackTest {
         new CommandStack().redo(); // Should not throw excpetion
     }
 
+    @Test
+    public void testAddAfterUndo() {
+        this.counter = 0;
+        var command1 = new TestCommand(1);
+        var command10 = new TestCommand(10);
+        var command100 = new TestCommand(100);
+        var stack = new CommandStack();
+
+        stack.add(command1);
+        stack.add(command10);
+        stack.undo();
+
+        stack.add(command100);
+
+        stack.redo();
+
+        assertEquals(this.counter, 101);
+    }
+
 }
