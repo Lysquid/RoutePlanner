@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+<warehouse address="0"/>
+<intersection id="0" latitude="45.74979" longitude="4.87572"/>
+<intersection id="1" latitude="45.754536" longitude="4.866525"/>
+<intersection id="2" latitude="45.751904" longitude="4.857877"/>
+<intersection id="3" latitude="45.75171" longitude="4.8718166"/>
+<segment destination="1" length="64.89446" name="Rue Claudius Penet" origin="0"/>
+<segment destination="2" length="153.72511" name="Rue Feuillat" origin="1"/>
+<segment destination="3" length="91.81539" name="Avenue Lacassagne" origin="2"/>
+</map>

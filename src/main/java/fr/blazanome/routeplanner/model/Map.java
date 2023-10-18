@@ -18,6 +18,11 @@ public class Map implements IMap {
         segments = new ArrayList<>();
     }
 
+    public Map(List<Intersection> intersections, List<Segment> segments) {
+        this.intersections = intersections;
+        this.segments = segments;
+    }
+
     public Intersection getWarehouse() {
         return this.warehouse;
     }

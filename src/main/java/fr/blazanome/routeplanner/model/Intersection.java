@@ -1,7 +1,6 @@
 package fr.blazanome.routeplanner.model;
 
 public class Intersection {
-
     private double latitude;
     private double longitude;
 
