@@ -5,8 +5,9 @@
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import fr.blazanome.routeplanner.view.Map?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="fr.blazanome.routeplanner.view.Window"
             styleClass="root">
 
@@ -14,49 +15,67 @@
         <URL value="@style.css" />
     </stylesheets>
 
+    <top>
+        <MenuBar>
+            <Menu text="Map">
+                <MenuItem text="Load"/>
+            </Menu>
+            <Menu text="Tour">
+                <MenuItem text="Save"/>
+                <MenuItem text="Load"/>
+            </Menu>
+        </MenuBar>
+    </top>
+
 
     <left>
 
-        <VBox spacing="10" styleClass="left-pane">
+        <VBox styleClass="left">
+
+            <!-- Load Map -->
+            <ToolBar styleClass="group,spacing">
+                <Button text="Load a map" onAction="#handleLoadMap"/>
+                <Button text="Hard coded map" onAction="#handleLoadMapHardCoded"/>
+            </ToolBar>
+
             <!-- Controls Box -->
-            <HBox spacing="10">
-                <Button text="Undo"/>
-                <Button text="Redo"/>
+            <ToolBar styleClass="group,spacing">
+                <Button text="Undo" onAction="#handleUndo"/>
+                <Button text="Redo" onAction="#handleRedo"/>
+                <Separator/>
                 <Button text="Load"/>
                 <Button text="Save"/>
-            </HBox>
+            </ToolBar>
 
             <!-- Courier Box -->
-            <VBox spacing="10" styleClass="courier-box">
+            <VBox styleClass="group,spacing">
                 <TextFlow>
-                    <Text text="Number of courier : "/>
+                    <Text text="Number of couriers : "/>
                     <Text text="0" fx:id="countCourier"/>
                 </TextFlow>
-                <HBox spacing="10">
+                <HBox styleClass="spacing">
                     <Button text="Add"/>
                     <Button text="Remove"/>
                 </HBox>
             </VBox>
 
             <!-- Deliveries Box -->
-            <VBox spacing="10" styleClass="deliveries-box">
+            <VBox styleClass="group,spacing">
                 <Text text="Add a delivery"/>
                 <GridPane hgap="10" vgap="10">
-                        <Text text="By" GridPane.rowIndex="0"/>
-                        <ComboBox fx:id="deliveryCourier" GridPane.columnIndex="1">
-                        </ComboBox>
-                        <Text text="At" GridPane.rowIndex="1"/>
-                        <Text text="To" GridPane.rowIndex="2"/>
+                    <Text text="By" GridPane.rowIndex="0"/>
+                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="deliveryCourier" />
+                    <Text text="At" GridPane.rowIndex="1"/>
+                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="deliveryTime" />
+                    <Text text="To" GridPane.rowIndex="2"/>
+                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="deliveryIntersection" />
                 </GridPane>
             </VBox>
         </VBox>
     </left>
 
     <center>
-        <StackPane styleClass="map-pane">
-            <Label text="Map"/>
-        </StackPane>
+        <Map fx:id="map"/>
     </center>
-
 
 </BorderPane>

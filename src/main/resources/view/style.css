@@ -1,20 +1,26 @@
-root {
+.root {
+
 }
 
-.left-pane {
-    -fx-padding: 20 10 20 10;
+.left {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-background-color: #e5e5e5;
 }
 
-.courier-box {
+.group {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+}
+
+VBox {
     -fx-spacing: 10;
 }
 
-.deliveries-box {
-    -fx-spacing: 10;
+Map {
+    -fx-background-color: #6be256;
+    -fx-min-width: 500;
+    -fx-min-height: 500;
 }
 
-.map-pane {
-    -fx-background-color: green;
-    -fx-min-width: 700;
-    -fx-min-height: 700;
-}
