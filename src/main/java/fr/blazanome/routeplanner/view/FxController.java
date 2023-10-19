@@ -22,7 +22,7 @@ public class FxController {
     public Label deliveryIntersection;
 
     public FxController() {
-        this.controller = new Controller();
+        controller = new Controller();
     }
 
     public void loadMap(ActionEvent actionEvent) {
@@ -31,18 +31,18 @@ public class FxController {
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
         Button button = (Button) actionEvent.getSource();
         File file = fileChooser.showOpenDialog(button.getScene().getWindow());
-        this.controller.loadMap(file);
+        controller.loadMap(file);
     }
 
-    public void loadHardCodedMap() {
-        this.map.draw();
+    public void loadHardCodedMap(ActionEvent actionEvent) {
+        this.map.draw(this.controller);
     }
 
-    public void undo() {
+    public void undo(ActionEvent actionEvent) {
         this.controller.undo();
     }
 
-    public void redo() {
+    public void redo(ActionEvent actionEvent) {
         this.controller.redo();
     }
 

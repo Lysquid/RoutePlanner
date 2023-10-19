@@ -13,4 +13,9 @@ public class NoMapState implements State {
     public void loadMap(Controller controller, File file) {
         // TODO: loadMap
     }
+
+    @Override
+    public String toString() {
+        return "NoMapState{}";
+    }
 }

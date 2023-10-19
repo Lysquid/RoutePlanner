@@ -4,15 +4,20 @@ import java.io.File;
 
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
+import fr.blazanome.routeplanner.model.Intersection;
 
 public class Controller {
     
-    private State currentState;
+    public State currentState;
     private CommandStack commandStack;
 
     public Controller() {
         this.currentState = new NoMapState();
         this.commandStack = new CommandStack();
+    }
+
+    public void setCurrentState(State newState) {
+        this.currentState = newState;
     }
 
     public void loadMap(File file) {
@@ -25,6 +30,10 @@ public class Controller {
 
     public void redo() {
         this.currentState.redo(this);
+    }
+
+    public void selectIntersection(Intersection intersection) {
+        currentState.selectIntersection(this, intersection);
     }
 
     public CommandStack getCommandStack() {

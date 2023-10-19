@@ -1,5 +1,7 @@
 package fr.blazanome.routeplanner.model;
 
+import java.util.Objects;
+
 public class Intersection {
     private double latitude;
     private double longitude;
@@ -30,5 +32,13 @@ public class Intersection {
     @Override
     public int hashCode() {
         return Double.hashCode(this.latitude) ^ Double.hashCode(this.longitude);
+    }
+
+    @Override
+    public String toString() {
+        return "Intersection{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
