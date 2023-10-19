@@ -4,7 +4,7 @@ plugins {
 }
 
 application {
-    mainClass.set("fr.blazanome.routeplanner.RoutePlannerApplication")
+    mainClass.set("fr.blazanome.routeplanner.view.RoutePlannerApplication")
 }
 javafx {
     version = "17.0.8"

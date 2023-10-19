@@ -8,15 +8,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Window extends Application {
+public class RoutePlannerApplication extends Application {
 
 
     @Override
     public void start(Stage stage) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/window.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(loader.load());
 
         stage.setTitle("Route Planner");
         stage.setScene(scene);
