@@ -48,22 +48,20 @@ public class CommandStackTest {
         var command10 = new TestCommand(10);
         var stack = new CommandStack();
         stack.add(command1);
+        assertEquals(counter, 1);
         stack.add(command10);
-
         assertEquals(this.counter, 11);
     }
 
     @Test
     public void testUndoNothing() {
         this.counter = 0;
-
         new CommandStack().undo(); // Should not throw expection
     }
 
     @Test
     public void testNothingToRedo() {
         this.counter = 0;
-
         new CommandStack().redo(); // Should not throw excpetion
     }
 
@@ -76,13 +74,14 @@ public class CommandStackTest {
         var stack = new CommandStack();
 
         stack.add(command1);
+        assertEquals(counter, 1);
         stack.add(command10);
+        assertEquals(counter, 11);
         stack.undo();
-
+        assertEquals(counter, 1);
         stack.add(command100);
-
+        assertEquals(counter, 101);
         stack.redo();
-
         assertEquals(this.counter, 101);
     }
 
