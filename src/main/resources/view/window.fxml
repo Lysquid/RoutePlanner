@@ -8,8 +8,7 @@
 <?import fr.blazanome.routeplanner.view.Map?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.blazanome.routeplanner.view.FxController"
-            styleClass="root">
+            fx:controller="fr.blazanome.routeplanner.view.FxController">
 
     <stylesheets>
         <URL value="@style.css" />
@@ -21,12 +20,12 @@
         <VBox styleClass="left">
 
             <!-- Load Map -->
-            <ToolBar styleClass="group">
+            <HBox styleClass="group">
                 <Button text="Load a map" onAction="#loadMap"/>
                 <Button text="Hard coded map" onAction="#loadHardCodedMap"/>
-            </ToolBar>
+            </HBox>
 
-            <!-- Controls Box -->
+            <!-- Controls -->
             <HBox styleClass="group">
                 <Button text="Undo" onAction="#undo"/>
                 <Button text="Redo" onAction="#redo"/>
@@ -34,7 +33,7 @@
                 <Button text="Save"/>
             </HBox>
 
-            <!-- Courier Box -->
+            <!-- Couriers -->
             <VBox styleClass="group">
                 <TextFlow>
                     <Text text="Number of couriers : "/>
@@ -46,18 +45,20 @@
                 </HBox>
             </VBox>
 
-            <!-- Deliveries Box -->
+            <!-- Deliveries -->
             <VBox styleClass="group">
                 <Text text="Add a delivery"/>
                 <GridPane hgap="10" vgap="10">
                     <Text text="By" GridPane.rowIndex="0"/>
-                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="deliveryCourier" />
+                    <ComboBox fx:id="deliveryCourier" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <Text text="At" GridPane.rowIndex="1"/>
-                    <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="deliveryTime" />
+                    <ComboBox fx:id="deliveryTime" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Text text="To" GridPane.rowIndex="2"/>
-                    <Label GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="deliveryIntersection" />
+                    <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 </GridPane>
+                <Button text="Add delivery"/>
             </VBox>
+
         </VBox>
     </left>
 

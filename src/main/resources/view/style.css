@@ -1,5 +1,9 @@
-.root {
+VBox {
+    -fx-spacing: 10;
+}
 
+HBox {
+    -fx-spacing: 10;
 }
 
 .left {
@@ -12,14 +16,6 @@
     -fx-background-color: white;
     -fx-background-radius: 5;
     -fx-padding: 10;
-}
-
-VBox {
-    -fx-spacing: 10;
-}
-
-HBox {
-    -fx-spacing: 10;
 }
 
 Map {
