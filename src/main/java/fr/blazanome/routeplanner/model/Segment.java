@@ -1,5 +1,7 @@
 package fr.blazanome.routeplanner.model;
 
+import java.util.Objects;
+
 public class Segment {
     private Intersection destination;
     private double length;
@@ -28,5 +30,13 @@ public class Segment {
 
     public Intersection getOrigin() {
         return origin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Segment segment = (Segment) o;
+        return Double.compare(length, segment.length) == 0 && Objects.equals(destination, segment.destination) && Objects.equals(name, segment.name) && Objects.equals(origin, segment.origin);
     }
 }
