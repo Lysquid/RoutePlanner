@@ -18,6 +18,10 @@ VBox {
     -fx-spacing: 10;
 }
 
+HBox {
+    -fx-spacing: 10;
+}
+
 Map {
     -fx-background-color: #6be256;
     -fx-min-width: 500;

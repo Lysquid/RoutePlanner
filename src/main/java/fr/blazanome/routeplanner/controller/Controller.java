@@ -19,11 +19,11 @@ public class Controller {
         this.currentState.loadMap(this, file);
     }
 
-    public void undo(Controller controller) {
+    public void undo() {
         this.currentState.undo(this);
     }
 
-    public void redo(Controller controller) {
+    public void redo() {
         this.currentState.redo(this);
     }
 

@@ -5,7 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Circle;
 public class Map extends Pane{
-    void drawMap(){
+    void draw(){
 
         Group root = new Group();
         for (int i=0;i<40;i++) {
