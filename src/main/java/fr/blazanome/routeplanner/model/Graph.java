@@ -1,7 +1,5 @@
 package fr.blazanome.routeplanner.model;
 
-import java.util.Iterator;
-
 /**
  * Graph
  */
@@ -16,7 +14,7 @@ public interface Graph {
      * @param vertex 
      * @return an iterator of all neighbor of <code>vertex</code>
      */
-    public Iterator<Integer> getNeighbors(int vertex);
+    public Iterable<Integer> getNeighbors(int vertex);
 
     /**
      * @param start Start vertex

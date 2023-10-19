@@ -47,7 +47,7 @@ public class Map implements IMap {
     }
 
     @Override
-    public Iterator<Integer> getNeighbors(int vertex) {
+    public Iterable<Integer> getNeighbors(int vertex) {
         // TODO Auto-generated method stub
         return null;
     }
