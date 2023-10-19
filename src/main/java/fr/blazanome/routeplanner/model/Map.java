@@ -1,9 +1,11 @@
 package fr.blazanome.routeplanner.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Map {
+
+public class Map implements IMap {
 
     private Intersection warehouse;
     private List<Intersection> intersections;
@@ -18,11 +20,48 @@ public class Map {
         return warehouse;
     }
 
-    public List<Intersection> getIntersections() {
-        return intersections;
+    public Iterator<Intersection> getIntersections() {
+        return intersections.iterator();
     }
 
-    public List<Segment> getSegments() {
-        return segments;
+    public Iterator<Segment> getSegments() {
+        return segments.iterator();
     }
+
+    @Override
+    public Intersection getIntersection(int vertexId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getIntersectionCount() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getCost(int start, int end) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public Iterator<Integer> getNeighbors(int vertex) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Segment getSegment(int start, int end) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getVerticesCount() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }
