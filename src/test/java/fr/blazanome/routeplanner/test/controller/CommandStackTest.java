@@ -37,7 +37,7 @@ public class CommandStackTest {
 
         stack.add(command);
 
-        assertEquals(this.counter, 1);
+        assertEquals(1, this.counter);
     }
 
 
@@ -48,9 +48,9 @@ public class CommandStackTest {
         var command10 = new TestCommand(10);
         var stack = new CommandStack();
         stack.add(command1);
-        assertEquals(counter, 1);
+        assertEquals(1, this.counter);
         stack.add(command10);
-        assertEquals(this.counter, 11);
+        assertEquals(11, this.counter);
     }
 
     @Test
@@ -74,15 +74,15 @@ public class CommandStackTest {
         var stack = new CommandStack();
 
         stack.add(command1);
-        assertEquals(counter, 1);
+        assertEquals(1, this.counter);
         stack.add(command10);
-        assertEquals(counter, 11);
+        assertEquals(11, this.counter);
         stack.undo();
-        assertEquals(counter, 1);
+        assertEquals(1, this.counter);
         stack.add(command100);
-        assertEquals(counter, 101);
+        assertEquals(101, this.counter);
         stack.redo();
-        assertEquals(this.counter, 101);
+        assertEquals(101, this.counter);
     }
 
 }
