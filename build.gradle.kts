@@ -1,6 +1,7 @@
 plugins {
     id("application")
-    id ("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    id("jacoco")
 }
 
 application {
@@ -30,3 +31,11 @@ tasks.test {
     }
     useJUnitPlatform()
 }
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        html.required = true
+    }
+}
+
