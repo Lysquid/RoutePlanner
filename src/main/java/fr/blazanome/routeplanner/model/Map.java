@@ -17,15 +17,15 @@ public class Map implements IMap {
     }
 
     public Intersection getWarehouse() {
-        return warehouse;
+        return this.warehouse;
     }
 
-    public Iterator<Intersection> getIntersections() {
-        return intersections.iterator();
+    public Iterable<Intersection> getIntersections() {
+        return this.intersections;
     }
 
-    public Iterator<Segment> getSegments() {
-        return segments.iterator();
+    public Iterable<Segment> getSegments() {
+        return this.segments;
     }
 
     @Override

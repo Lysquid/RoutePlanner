@@ -1,7 +1,5 @@
 package fr.blazanome.routeplanner.model;
 
-import java.util.Iterator;
-
 /**
  * Map
  */
@@ -10,7 +8,7 @@ public interface IMap extends Graph {
     /**
      * @return an iterator over all segment of the map
      */
-    public Iterator<Segment> getSegments();
+    public Iterable<Segment> getSegments();
 
     /**
      * @param start Start vertex number
@@ -31,7 +29,7 @@ public interface IMap extends Graph {
     /**
      * @return an iterator over all intersections of the map
      */
-    public Iterator<Intersection> getIntersections();
+    public Iterable<Intersection> getIntersections();
 
     /**
      * @return the total number of intersections
