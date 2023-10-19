@@ -2,16 +2,17 @@ package fr.blazanome.routeplanner.graph;
 
 /**
  * Graph
+ * Represents a simple graph composed of edges, vertices and a cost function
  */
 public interface Graph {
 
-    /** 
+    /**
      * @return The number of vertices in the graph
      */
     public int getVerticesCount();
 
-    /** 
-     * @param vertex 
+    /**
+     * @param vertex
      * @return an iterator of all neighbor of <code>vertex</code>
      */
     public Iterable<Neighbor> getNeighbors(int vertex);

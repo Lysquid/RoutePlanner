@@ -46,6 +46,8 @@ public class AdjacencyListPathGraph implements PathGraph {
 
     @Override
     public Iterable<Neighbor> getNeighbors(int vertex) {
+        assert vertex < this.adjacencyLists.size();
+
         return () -> new NeighborIterator(this.adjacencyLists.get(vertex).iterator());
     }
 
