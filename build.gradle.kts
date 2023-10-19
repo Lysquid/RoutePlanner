@@ -8,7 +8,7 @@ application {
 }
 javafx {
     version = "17.0.8"
-    modules("javafx.controls")
+    modules("javafx.controls", "javafx.fxml")
 }
 
 group = "fr.blazanome"
@@ -21,6 +21,7 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.openjfx:javafx-fxml:17")
 }
 
 tasks.test {

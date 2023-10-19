@@ -1,0 +1,20 @@
+root {
+}
+
+.left-pane {
+    -fx-padding: 20 10 20 10;
+}
+
+.courier-box {
+    -fx-spacing: 10;
+}
+
+.deliveries-box {
+    -fx-spacing: 10;
+}
+
+.map-pane {
+    -fx-background-color: green;
+    -fx-min-width: 700;
+    -fx-min-height: 700;
+}

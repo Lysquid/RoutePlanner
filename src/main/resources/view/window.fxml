@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fr.blazanome.routeplanner.view.Window"
+            styleClass="root">
+
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+
+
+    <left>
+
+        <VBox spacing="10" styleClass="left-pane">
+            <!-- Controls Box -->
+            <HBox spacing="10">
+                <Button text="Undo"/>
+                <Button text="Redo"/>
+                <Button text="Load"/>
+                <Button text="Save"/>
+            </HBox>
+
+            <!-- Courier Box -->
+            <VBox spacing="10" styleClass="courier-box">
+                <TextFlow>
+                    <Text text="Number of courier : "/>
+                    <Text text="0" fx:id="countCourier"/>
+                </TextFlow>
+                <HBox spacing="10">
+                    <Button text="Add"/>
+                    <Button text="Remove"/>
+                </HBox>
+            </VBox>
+
+            <!-- Deliveries Box -->
+            <VBox spacing="10" styleClass="deliveries-box">
+                <Text text="Add a delivery"/>
+                <GridPane hgap="10" vgap="10">
+                        <Text text="By" GridPane.rowIndex="0"/>
+                        <ComboBox fx:id="deliveryCourier" GridPane.columnIndex="1">
+                        </ComboBox>
+                        <Text text="At" GridPane.rowIndex="1"/>
+                        <Text text="To" GridPane.rowIndex="2"/>
+                </GridPane>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane styleClass="map-pane">
+            <Label text="Map"/>
+        </StackPane>
+    </center>
+
+
+</BorderPane>
