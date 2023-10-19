@@ -1,12 +1,13 @@
 package fr.blazanome.routeplanner.model;
 
 public class Segment {
-    private long destination;
+    private Intersection destination;
     private double length;
     private String name;
-    private long origin;
 
-    public Segment(long destination, double length, String name, long origin) {
+    private Intersection origin;
+
+    public Segment(Intersection destination, double length, String name, Intersection origin) {
         this.destination = destination;
         this.length = length;
         this.name = name;
@@ -15,5 +16,17 @@ public class Segment {
 
     public String getName() {
         return name;
+    }
+
+    public Intersection getDestination() {
+        return destination;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public Intersection getOrigin() {
+        return origin;
     }
 }

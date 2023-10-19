@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
-    private Warehouse warehouse;
+
+    private Intersection warehouse;
     private List<Intersection> intersections;
     private List<Segment> segments;
 
@@ -13,8 +14,8 @@ public class Map {
         segments = new ArrayList<>();
     }
 
-    public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
+    public Intersection getWarehouse() {
+        return warehouse;
     }
 
     public List<Intersection> getIntersections() {
