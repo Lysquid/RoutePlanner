@@ -1,4 +1,4 @@
-package fr.blazanome.routeplanner.model;
+package fr.blazanome.routeplanner.graph;
 
 /**
  * Graph
@@ -14,7 +14,7 @@ public interface Graph {
      * @param vertex 
      * @return an iterator of all neighbor of <code>vertex</code>
      */
-    public Iterable<Integer> getNeighbors(int vertex);
+    public Iterable<Neighbor> getNeighbors(int vertex);
 
     /**
      * @param start Start vertex

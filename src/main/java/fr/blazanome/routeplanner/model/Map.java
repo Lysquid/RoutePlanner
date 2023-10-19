@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import fr.blazanome.routeplanner.graph.Neighbor;
+
 
 public class Map implements IMap {
 
@@ -47,7 +49,7 @@ public class Map implements IMap {
     }
 
     @Override
-    public Iterable<Integer> getNeighbors(int vertex) {
+    public Iterable<Neighbor> getNeighbors(int vertex) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -1,5 +1,7 @@
 package fr.blazanome.routeplanner.model;
 
+import fr.blazanome.routeplanner.graph.Graph;
+
 /**
  * Map
  */
