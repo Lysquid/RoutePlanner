@@ -84,13 +84,18 @@ public class MapHandler extends AbstractMapHandler {
 
     @Override
     public IMap getMap() {
-        java.util.List<Intersection> intersections = new ArrayList<Intersection>(this.intersections.values());
-        java.util.List<Segment> segments = this.segments.stream().map(parser_segment -> new Segment(
-                this.intersections.get(parser_segment.destination),
-                parser_segment.length,
-                parser_segment.name,
-                this.intersections.get(parser_segment.origin)
-        )).toList();
+        java.util.List<Intersection> intersections = new ArrayList<>(this.intersections.values());
+        java.util.List<Segment> segments = this.segments.stream().map(parser_segment -> {
+            if (!this.intersections.containsKey(parser_segment.destination) || !this.intersections.containsKey(parser_segment.origin)) {
+                throw new RuntimeException("Invalid map");
+            }
+            return new Segment(
+                    this.intersections.get(parser_segment.destination),
+                    parser_segment.length,
+                    parser_segment.name,
+                    this.intersections.get(parser_segment.origin)
+            );
+        }).toList();
         return new Map(intersections, segments);
     }
 }

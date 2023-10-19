@@ -23,6 +23,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.openjfx:javafx-fxml:17")
+    testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
 tasks.test {

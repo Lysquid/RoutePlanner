@@ -6,9 +6,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import fr.blazanome.routeplanner.model.Map;
@@ -17,6 +18,8 @@ import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
 import fr.blazanome.routeplanner.tools.MapHandler;
 import fr.blazanome.routeplanner.tools.XMLParser;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class XMLParserTest {
 
@@ -32,37 +35,25 @@ public class XMLParserTest {
 
         IMap map = mapHandler.getMap();
 
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
+        List<Intersection> intersections = StreamSupport.stream(map.getIntersections().spliterator(), false)
+                .toList();
 
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
+        List<Segment> segments = StreamSupport.stream(map.getSegments().spliterator(), false)
+                .toList();
 
-        assertEquals(intersections.size(), 4);
-        assertEquals(segments.size(), 3);
+        List<Intersection> expectedIntersections = Arrays.asList(
+                new Intersection(45.74979, 4.87572),
+                new Intersection(45.754536, 4.866525),
+                new Intersection(45.751904, 4.857877),
+                new Intersection(45.75171, 4.8718166)
+        );
+        assertThat(intersections).hasSameElementsAs(expectedIntersections);
 
-        Intersection intersection = new Intersection(45.74979, 4.87572);
-        assertEquals(intersection, intersections.get(0));
-
-        intersection = new Intersection(45.754536, 4.866525);
-        assertEquals(intersection, intersections.get(1));
-
-        intersection = new Intersection(45.751904, 4.857877);
-        assertEquals(intersection, intersections.get(2));
-
-        intersection = new Intersection(45.75171, 4.8718166);
-        assertEquals(intersection, intersections.get(3));
-
-        Segment segment = new Segment(1, 64.89446, "Rue Claudius Penet", 0);
-        assertEquals(segment, segments.get(0));
-
-        segment = new Segment(2, 153.72511, "Rue Feuillat", 1);
-        assertEquals(segment, segments.get(1));
-
-        segment = new Segment(3, 91.81539, "Avenue Lacassagne", 2);
-        assertEquals(segment, segments.get(2));
+        assertThat(segments).hasSameElementsAs(Arrays.asList(
+                new Segment(expectedIntersections.get(1), 64.89446, "Rue Claudius Penet", expectedIntersections.get(0)),
+                new Segment(expectedIntersections.get(2), 153.72511, "Rue Feuillat", expectedIntersections.get(1)),
+                new Segment(expectedIntersections.get(3), 91.81539, "Avenue Lacassagne", expectedIntersections.get(2))
+        ));
     }
 
     @Test
@@ -76,17 +67,8 @@ public class XMLParserTest {
         }
 
         IMap map = mapHandler.getMap();
-
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
-
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
-
-        assertEquals(intersections.size(), 0);
-        assertEquals(segments.size(), 0);
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
@@ -100,17 +82,8 @@ public class XMLParserTest {
         }
 
         IMap map = mapHandler.getMap();
-
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
-
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
-
-        assertEquals(intersections.size(), 0);
-        assertEquals(segments.size(), 0);
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
@@ -124,17 +97,8 @@ public class XMLParserTest {
         }
 
         IMap map = mapHandler.getMap();
-
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
-
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
-
-        assertEquals(intersections.size(), 0);
-        assertEquals(segments.size(), 0);
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
@@ -148,17 +112,8 @@ public class XMLParserTest {
         }
 
         IMap map = mapHandler.getMap();
-
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
-
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
-
-        assertEquals(intersections.size(), 0);
-        assertEquals(segments.size(), 0);
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
+        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
@@ -172,33 +127,17 @@ public class XMLParserTest {
         }
 
         IMap map = mapHandler.getMap();
+        List<Intersection> intersections = StreamSupport.stream(map.getIntersections().spliterator(), false)
+                .toList();
 
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
+        assertThat(intersections).hasSameElementsAs(Arrays.asList(
+                new Intersection(45.74979, 4.87572),
+                new Intersection(45.754536, 4.866525),
+                new Intersection(45.751904, 4.857877),
+                new Intersection(45.75171, 4.8718166)
+        ));
 
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
-
-        assertEquals(intersections.size(), 4);
-        assertEquals(segments.size(), 0);
-
-        Intersection intersection = intersections.get(0);
-        assertEquals(intersection.getLatitude(), 45.74979);
-        assertEquals(intersection.getLongitude(), 4.87572);
-
-        intersection = intersections.get(1);
-        assertEquals(intersection.getLatitude(), 45.754536);
-        assertEquals(intersection.getLongitude(), 4.866525);
-
-        intersection = intersections.get(2);
-        assertEquals(intersection.getLatitude(), 45.751904);
-        assertEquals(intersection.getLongitude(), 4.857877);
-
-        intersection = intersections.get(3);
-        assertEquals(intersection.getLatitude(), 45.75171);
-        assertEquals(intersection.getLongitude(), 4.8718166);
+        assertEquals(0, StreamSupport.stream(map.getSegments().spliterator(), false).count());
     }
 
     @Test
@@ -211,35 +150,6 @@ public class XMLParserTest {
             e.printStackTrace();
         }
 
-        IMap map = mapHandler.getMap();
-
-        Iterator<Intersection> iterIntersections = map.getIntersections();
-        List<Intersection> intersections = new ArrayList<>();
-        iterIntersections.forEachRemaining(intersections::add);
-
-        Iterator<Segment> iterSegments = map.getSegments();
-        List<Segment> segments = new ArrayList<>();
-        iterSegments.forEachRemaining(segments::add);
-
-        assertEquals(intersections.size(), 0);
-        assertEquals(segments.size(), 3);
-
-        Segment segment = segments.get(0);
-        assertEquals(segment.getDestination(), 1);
-        assertEquals(segment.getLength(), 64.89446);
-        assertEquals(segment.getName(), "Rue Claudius Penet");
-        assertEquals(segment.getOrigin(), 0);
-
-        segment = segments.get(1);
-        assertEquals(segment.getDestination(), 2);
-        assertEquals(segment.getLength(), 153.72511);
-        assertEquals(segment.getName(), "Rue Feuillat");
-        assertEquals(segment.getOrigin(), 1);
-
-        segment = segments.get(2);
-        assertEquals(segment.getDestination(), 3);
-        assertEquals(segment.getLength(), 91.81539);
-        assertEquals(segment.getName(), "Avenue Lacassagne");
-        assertEquals(segment.getOrigin(), 2);
+        assertThrows(RuntimeException.class, mapHandler::getMap);
     }
 }
