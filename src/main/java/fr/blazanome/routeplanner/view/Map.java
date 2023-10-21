@@ -1,32 +1,49 @@
 package fr.blazanome.routeplanner.view;
-
 import fr.blazanome.routeplanner.model.IHMTestMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.scene.paint.Color;
 
 
 public class Map extends Pane{
-    private Group root;
+    private Group root= new Group();
     private Button active=null;
     double minX=Double.MAX_VALUE;
     double minY=Double.MAX_VALUE;
     double maxY=0;
     double maxX=0;
 
+    GraphicsContext gc;
+    Canvas canvas;
+    IHMTestMap data=new IHMTestMap();
+
+    ArrayList<Button> buttonIntersectionList=new ArrayList<>();
+
+
     HashMap<Button,Intersection> buttonIntersection= new HashMap<>();
+    public Map() {
+        canvas = new Canvas();
+        gc = canvas.getGraphicsContext2D();
+        this.getChildren().add(canvas);
+        widthProperty().addListener((observable, oldValue, newValue) -> redraw());
+        heightProperty().addListener((observable, oldValue, newValue) -> redraw());
+
+    }
     void draw(){
-        IHMTestMap data=new IHMTestMap();
-        root = new Group();
+        canvas.setWidth(getWidth());
+        canvas.setHeight(getHeight());
         Iterable<Intersection> iterableIntersection=data.getIntersections();
         for (Intersection intersection : iterableIntersection) {
             minX=Math.min(minX,ConvertToX(intersection.getLatitude(),intersection.getLongitude()));
@@ -44,25 +61,24 @@ public class Map extends Pane{
         this.getChildren().add(root);
 
     }
+    void redraw(){
+        canvas.setWidth(getWidth());
+        canvas.setHeight(getHeight());
+        // Re-draw everything on the canvas
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        this.drawPlainSegments(data.getSegments());
+        this.updateIntersections();
+
+    }
     void drawPlainSegments(Iterable<Segment> iterableSegment){
-        //GraphicsContext gc = canvas.getGraphicsContext2D();
         for (Segment segment : iterableSegment) {
-            //We will need to add
-            Line line = new Line();
-
-
-            //The use of lines is temporary
+            gc.setStroke(Color.BLUE);
             Intersection start=segment.getOrigin();
-            line.startXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(start.getLatitude(),start.getLongitude())-minX)/(maxX-minX))));
-            line.startYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(start.getLatitude(),start.getLongitude())-minY)/(maxY-minY))));
             Intersection end=segment.getDestination();
-            line.endXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(end.getLatitude(),end.getLongitude())-minX)/(maxX-minX))));
-            line.endYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(end.getLatitude(),end.getLongitude())-minY)/(maxY-minY))));
-            //gc.strokeLine(canvas.getHeight()*(0.05+0.90*(segment.getOrigin().getLatitude()-minLat)/(maxLat-minLat)), canvas.getHeight()*(0.05+0.90*(segment.getOrigin().getLongitude()-minLong)/(maxLong-minLong)),canvas.getHeight()*(0.05+0.90*(segment.getDestination().getLatitude()-minLat)/(maxLat-minLat)), canvas.getHeight()*(0.05+0.90*(segment.getDestination().getLongitude()-minLong)/(maxLong-minLong)));
-            root.getChildren().add(line);
+
+            gc.strokeLine(positionX(start), positionY(start), positionX(end), positionY(end));
         }
 
-        //root.getChildren().add(gc.getCanvas());
     }
     void drawPlainIntersections(Iterable<Intersection> iterableIntersection){
         EventHandler<ActionEvent> event = e -> {
@@ -83,12 +99,21 @@ public class Map extends Pane{
             bt.setShape(c);
             bt.setMaxSize(2*radius,2*radius);
             bt.setMinSize(2*radius,2*radius);
-            bt.layoutXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(intersection.getLatitude(),intersection.getLongitude())-minX)/(maxX-minX))).subtract(radius));
-            bt.layoutYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(intersection.getLatitude(),intersection.getLongitude())-minY)/(maxY-minY))).subtract(radius));
+            bt.setLayoutX(positionX(intersection)-radius);
+            bt.setLayoutY(positionY(intersection)-radius);
             bt.setOnAction(event);
             root.getChildren().add(bt);
             buttonIntersection.put(bt,intersection);
+            buttonIntersectionList.add(bt);
+        }
 
+    }
+    void updateIntersections(){
+        int radius=5;
+        for (Button bt : buttonIntersectionList) {
+            Intersection intersection =buttonIntersection.get(bt);
+            bt.setLayoutX(positionX(intersection)-radius);
+            bt.setLayoutY(positionY(intersection)-radius);
         }
 
     }
@@ -97,6 +122,13 @@ public class Map extends Pane{
     }
     double ConvertToY(double lat, double lon){
         return 111.0*lat;
+    }
+    double positionX(Intersection intersection){
+        return this.getWidth()*(0.05+0.90*((ConvertToX(intersection.getLatitude(),intersection.getLongitude())-minX)/(maxX-minX)));
+    }
+    double positionY(Intersection intersection){
+        return this.getHeight()*(0.05+0.90*((ConvertToY(intersection.getLatitude(),intersection.getLongitude())-minY)/(maxY-minY)));
+
     }
 }
 
