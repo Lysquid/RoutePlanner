@@ -2,17 +2,14 @@ package fr.blazanome.routeplanner.test.algorithm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import fr.blazanome.routeplanner.algorithm.CompleteGraphAlgoritm;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
-import fr.blazanome.routeplanner.graph.Graph;
-import fr.blazanome.routeplanner.graph.Neighbor;
 import fr.blazanome.routeplanner.graph.PathGraph;
+import fr.blazanome.routeplanner.graph.SimpleAdjacencyListsGraph;
 
 /**
  * DjikstraCompleteGraphAlgorithmTest
@@ -21,7 +18,7 @@ public class DjikstraCompleteGraphAlgorithmTest {
 
     @Test
     public void testCompute() {
-        var parentGraph = new SimpleGraph(6);
+        var parentGraph = new SimpleAdjacencyListsGraph(6);
 
         parentGraph.addEdge(0, 1, 5);
 
@@ -70,42 +67,5 @@ public class DjikstraCompleteGraphAlgorithmTest {
 
         assertEquals(Arrays.asList(5, 2, 0), pathGraph.getPath(2, 0));
         assertEquals(13, pathGraph.getCost(2, 0));
-    }
-
-    private class SimpleGraph implements Graph {
-        private List<List<Neighbor>> adjacencyList;
-
-        public SimpleGraph(int vertexCount) {
-            this.adjacencyList = new ArrayList<>(vertexCount);
-            for (int i = 0; i < vertexCount; i++) {
-                this.adjacencyList.add(new ArrayList<>());
-            }
-        }
-
-        public void addEdge(int start, int end, double cost) {
-            assert start < this.adjacencyList.size();
-            assert end < this.adjacencyList.size();
-
-            this.adjacencyList.get(start).add(new Neighbor(end, cost));
-        }
-
-        @Override
-        public int getVerticesCount() {
-            return this.adjacencyList.size();
-        }
-
-        @Override
-        public Iterable<Neighbor> getNeighbors(int vertex) {
-            assert vertex < this.adjacencyList.size();
-
-            return this.adjacencyList.get(vertex);
-        }
-
-        @Override
-        public double getCost(int start, int end) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'getCost'");
-        }
-
     }
 }
