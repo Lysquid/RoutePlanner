@@ -12,30 +12,34 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.util.HashMap;
+
 
 public class Map extends Pane{
     private Group root;
     private Button active=null;
-    double minLat=Double.MAX_VALUE;
-    double minLong=Double.MAX_VALUE;
-    double maxLat=0;
-    double maxLong=0;
+    double minX=Double.MAX_VALUE;
+    double minY=Double.MAX_VALUE;
+    double maxY=0;
+    double maxX=0;
+
+    HashMap<Button,Intersection> buttonIntersection= new HashMap<>();
     void draw(){
         IHMTestMap data=new IHMTestMap();
         root = new Group();
         Iterable<Intersection> iterableIntersection=data.getIntersections();
         for (Intersection intersection : iterableIntersection) {
-            minLat=Math.min(minLat,intersection.getLatitude());
-            minLong=Math.min(minLong,intersection.getLongitude());
-            maxLat=Math.max(maxLat,intersection.getLatitude());
-            maxLong=Math.max(maxLong,intersection.getLongitude());
+            minX=Math.min(minX,ConvertToX(intersection.getLatitude(),intersection.getLongitude()));
+            minY=Math.min(minY,ConvertToY(intersection.getLatitude(),intersection.getLongitude()));
+            maxX=Math.max(maxX,ConvertToX(intersection.getLatitude(),intersection.getLongitude()));
+            maxY=Math.max(maxY,ConvertToY(intersection.getLatitude(),intersection.getLongitude()));
         }
         this.drawPlainSegments(data.getSegments());
         this.drawPlainIntersections(iterableIntersection);
         Intersection warehouseLocation=data.getWarehouse();
         Rectangle warehouseItem= new Rectangle(8,8);
-        warehouseItem.layoutXProperty().bind(widthProperty().multiply(0.05+0.90*(warehouseLocation.getLatitude()-minLat)/(maxLat-minLat)));
-        warehouseItem.layoutYProperty().bind(heightProperty().multiply(0.05+0.90*(warehouseLocation.getLongitude()-minLong)/(maxLong-minLong)));
+        warehouseItem.layoutXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(warehouseLocation.getLatitude(),warehouseLocation.getLongitude())-minX)/(maxX-minX))));
+        warehouseItem.layoutYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(warehouseLocation.getLatitude(),warehouseLocation.getLongitude())-minY)/(maxY-minY))));
         root.getChildren().add(warehouseItem);
         this.getChildren().add(root);
 
@@ -48,13 +52,16 @@ public class Map extends Pane{
 
 
             //The use of lines is temporary
-            line.startXProperty().bind(widthProperty().multiply(0.05+0.90*(segment.getOrigin().getLatitude()-minLat)/(maxLat-minLat)));
-            line.startYProperty().bind(heightProperty().multiply(0.05+0.90*(segment.getOrigin().getLongitude()-minLong)/(maxLong-minLong)));
-            line.endXProperty().bind(widthProperty().multiply(0.05+0.90*(segment.getDestination().getLatitude()-minLat)/(maxLat-minLat)));
-            line.endYProperty().bind(heightProperty().multiply(0.05+0.90*(segment.getDestination().getLongitude()-minLong)/(maxLong-minLong)));
+            Intersection start=segment.getOrigin();
+            line.startXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(start.getLatitude(),start.getLongitude())-minX)/(maxX-minX))));
+            line.startYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(start.getLatitude(),start.getLongitude())-minY)/(maxY-minY))));
+            Intersection end=segment.getDestination();
+            line.endXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(end.getLatitude(),end.getLongitude())-minX)/(maxX-minX))));
+            line.endYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(end.getLatitude(),end.getLongitude())-minY)/(maxY-minY))));
             //gc.strokeLine(canvas.getHeight()*(0.05+0.90*(segment.getOrigin().getLatitude()-minLat)/(maxLat-minLat)), canvas.getHeight()*(0.05+0.90*(segment.getOrigin().getLongitude()-minLong)/(maxLong-minLong)),canvas.getHeight()*(0.05+0.90*(segment.getDestination().getLatitude()-minLat)/(maxLat-minLat)), canvas.getHeight()*(0.05+0.90*(segment.getDestination().getLongitude()-minLong)/(maxLong-minLong)));
             root.getChildren().add(line);
         }
+
         //root.getChildren().add(gc.getCanvas());
     }
     void drawPlainIntersections(Iterable<Intersection> iterableIntersection){
@@ -65,6 +72,9 @@ public class Map extends Pane{
                 active.setStyle("-fx-background-color: #ffffff; ");
             }
             active=clicked;
+            Intersection selectedintersection =buttonIntersection.get(clicked);
+            System.out.println(selectedintersection.getLatitude()+" ; "+selectedintersection.getLongitude());
+
         };
         int radius=5;
         Circle c= new Circle(radius);
@@ -73,11 +83,20 @@ public class Map extends Pane{
             bt.setShape(c);
             bt.setMaxSize(2*radius,2*radius);
             bt.setMinSize(2*radius,2*radius);
-            bt.layoutXProperty().bind(widthProperty().multiply(0.05+0.90*((intersection.getLatitude()-minLat)/(maxLat-minLat))).subtract(radius));
-            bt.layoutYProperty().bind(heightProperty().multiply(0.05+0.90*((intersection.getLongitude()-minLong)/(maxLong-minLong))).subtract(radius));
+            bt.layoutXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(intersection.getLatitude(),intersection.getLongitude())-minX)/(maxX-minX))).subtract(radius));
+            bt.layoutYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(intersection.getLatitude(),intersection.getLongitude())-minY)/(maxY-minY))).subtract(radius));
             bt.setOnAction(event);
             root.getChildren().add(bt);
+            buttonIntersection.put(bt,intersection);
+
         }
 
     }
+    double ConvertToX(double lat, double lon){
+        return Math.cos((Math.PI/180.0)*lat)*111.0*lon;
+    }
+    double ConvertToY(double lat, double lon){
+        return 111.0*lat;
+    }
 }
+
