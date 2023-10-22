@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,16 +17,23 @@ import javafx.scene.transform.Scale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.scene.input.MouseEvent;
 
 
 public class Map extends Pane{
+    boolean drawn=false;
     private Group root = new Group();
+    Rectangle warehouseItem;
     private Button active = null;
     double minX = Double.MAX_VALUE;
     double minY = Double.MAX_VALUE;
     double maxY = 0;
     double maxX = 0;
-
+    private double initialX;
+    private double initialY;
+    private boolean isDragging = false;
+    private double offsetX=0.0;
+    private double offsetY=0.0;
     GraphicsContext gc;
     Canvas canvas;
     IHMTestMap data = new IHMTestMap();
@@ -46,33 +52,56 @@ public class Map extends Pane{
 
         // Add scale transformation to the root
         root.getTransforms().add(zoomTransform);
-
+        setOnMousePressed(this::handleMousePressed);
+        setOnMouseDragged(this::handleMouseDragged);
+        setOnMouseReleased(this::handleMouseReleased);
         // Handle mouse scroll events for zooming
-        setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
-                double scaleFactor = 1.05; // Adjust the zoom factor as needed
+        setOnScroll(event -> {
+            double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
+            double scaleFactor = 1.05; // Adjust the zoom factor as needed
 
-                if (delta > 0) {
-                    // Zoom in
-                    zoomTransform.setX(zoomTransform.getX() * scaleFactor);
-                    zoomTransform.setY(zoomTransform.getY() * scaleFactor);
-                } else {
-                    // Zoom out
-                    zoomTransform.setX(zoomTransform.getX() / scaleFactor);
-                    zoomTransform.setY(zoomTransform.getY() / scaleFactor);
-                }
-
-                // Redraw the map
-                redraw();
+            if (delta > 0) {
+                // Zoom in
+                zoomTransform.setX(zoomTransform.getX() * scaleFactor);
+                zoomTransform.setY(zoomTransform.getY() * scaleFactor);
+            } else {
+                // Zoom out
+                zoomTransform.setX(zoomTransform.getX() / scaleFactor);
+                zoomTransform.setY(zoomTransform.getY() / scaleFactor);
             }
+
+            // Redraw the map
+            redraw();
         });
 
         widthProperty().addListener((observable, oldValue, newValue) -> redraw());
         heightProperty().addListener((observable, oldValue, newValue) -> redraw());
     }
+    private void handleMousePressed(MouseEvent event) {
+        initialX = event.getSceneX();
+        initialY = event.getSceneY();
+        isDragging = true;
+    }   private void handleMouseDragged(MouseEvent event) {
+        if (isDragging) {
+            double deltaX = event.getSceneX() - initialX;
+            double deltaY = event.getSceneY() - initialY;
+            offsetX=offsetX+deltaX;
+            offsetY=offsetY+deltaY;
+            // Iterate through child nodes and adjust their positions
+            redraw();
+
+            initialX = event.getSceneX();
+            initialY = event.getSceneY();
+        }
+    }
+
+
+    private void handleMouseReleased(MouseEvent event) {
+        isDragging = false;
+    }
     void draw(){
+        drawn=true;
+        System.out.println("draw");
         canvas.setWidth(getWidth());
         canvas.setHeight(getHeight());
         Iterable<Intersection> iterableIntersection=data.getIntersections();
@@ -84,26 +113,54 @@ public class Map extends Pane{
         }
         this.drawPlainSegments(data.getSegments());
         this.drawPlainIntersections(iterableIntersection);
+        this.drawRoute(data.getExampleRoute());
+
         Intersection warehouseLocation=data.getWarehouse();
-        Rectangle warehouseItem= new Rectangle(8,8);
-        warehouseItem.layoutXProperty().bind(widthProperty().multiply(0.05+0.90*((ConvertToX(warehouseLocation.getLatitude(),warehouseLocation.getLongitude())-minX)/(maxX-minX))));
-        warehouseItem.layoutYProperty().bind(heightProperty().multiply(0.05+0.90*((ConvertToY(warehouseLocation.getLatitude(),warehouseLocation.getLongitude())-minY)/(maxY-minY))));
+        warehouseItem= new Rectangle(8,8);
+        warehouseItem.setLayoutX(positionX(warehouseLocation));
+        warehouseItem.setLayoutY(positionY(warehouseLocation));
         root.getChildren().add(warehouseItem);
         this.getChildren().add(root);
 
     }
     void redraw(){
-        canvas.setWidth(getWidth());
-        canvas.setHeight(getHeight());
-        // Re-draw everything on the canvas
-        gc.clearRect(0, 0, getWidth(), getHeight());
-        this.drawPlainSegments(data.getSegments());
-        this.updateIntersections();
+        if(drawn) {
+            canvas.setWidth(getWidth());
+            canvas.setHeight(getHeight());
+            // Re-draw everything on the canvas
+            gc.clearRect(0, 0, getWidth(), getHeight());
+            this.drawPlainSegments(data.getSegments());
+            this.updateIntersections();
+            this.drawRoute(data.getExampleRoute());
+            this.updateWarehouse();
+        }
 
     }
     void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
-            gc.setStroke(Color.BLUE);
+            gc.setStroke(Color.BLACK);
+            Intersection start = segment.getOrigin();
+            Intersection end = segment.getDestination();
+
+            // Calculate scaled positions for the segments
+            double scaledX1 = positionX(start) * zoomTransform.getX();
+            double scaledY1 = positionY(start) * zoomTransform.getY();
+            double scaledX2 = positionX(end) * zoomTransform.getX();
+            double scaledY2 = positionY(end) * zoomTransform.getY();
+
+            // Draw the scaled segment
+            gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
+        }
+
+    }
+    void drawRoute(Iterable<Segment> iterableSegment) {
+        double i=0.0;
+        double personeCount=1.0;
+        for (Segment segment : iterableSegment) {
+            //i=i+1.0/personeCount;
+            //Normally the changing of the Colour would happen for every route, here I did it on every step of the route to demonstrate how it works
+            Color c= new Color(1-i,i,i,1.0);
+            gc.setStroke(c);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
 
@@ -117,7 +174,6 @@ public class Map extends Pane{
             gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
         }
     }
-
 
     void drawPlainIntersections(Iterable<Intersection> iterableIntersection){
         EventHandler<ActionEvent> event = e -> {
@@ -151,10 +207,27 @@ public class Map extends Pane{
         int radius=5;
         for (Button bt : buttonIntersectionList) {
             Intersection intersection =buttonIntersection.get(bt);
-            bt.setLayoutX(positionX(intersection)-radius);
-            bt.setLayoutY(positionY(intersection)-radius);
+            double x=positionX(intersection)-radius;
+            double y=positionY(intersection)-radius;
+            bt.setLayoutX(x);
+            bt.setLayoutY(y);
+            if(x<-radius || y<-radius){
+                bt.setVisible(false);
+                bt.setDisable(true);
+            }
+            else{
+                bt.setVisible(true);
+                bt.setDisable(false);
+            }
         }
 
+    }
+    void updateWarehouse(){
+        double x=positionX(data.getWarehouse());
+        double y=positionY(data.getWarehouse());
+        warehouseItem.setLayoutX(x);
+        warehouseItem.setLayoutY(y);
+        warehouseItem.setVisible(!(x < -0) && !(y < -0));
     }
     double ConvertToX(double lat, double lon){
         return Math.cos((Math.PI/180.0)*lat)*111.0*lon;
@@ -163,10 +236,10 @@ public class Map extends Pane{
         return 111.0*lat;
     }
     double positionX(Intersection intersection){
-        return this.getWidth()*(0.05+0.90*((ConvertToX(intersection.getLatitude(),intersection.getLongitude())-minX)/(maxX-minX)));
+        return this.getWidth()*(0.05+0.90*((ConvertToX(intersection.getLatitude(),intersection.getLongitude())-minX)/(maxX-minX)))+offsetX;
     }
     double positionY(Intersection intersection){
-        return this.getHeight()*(0.05+0.90*((ConvertToY(intersection.getLatitude(),intersection.getLongitude())-minY)/(maxY-minY)));
+        return this.getHeight()*(0.05+0.90*((ConvertToY(intersection.getLatitude(),intersection.getLongitude())-minY)/(maxY-minY)))+offsetY;
 
     }
 }

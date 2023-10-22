@@ -7,8 +7,9 @@ import java.util.List;
 public class IHMTestMap implements IMap {
 
     private Intersection warehouse;
-    private List<Intersection> intersections;
-    private List<Segment> segments;
+    private List<Intersection> intersections= new ArrayList<>();
+    private List<Segment> segments= new ArrayList<>();
+    private List<Segment> exampleRoute= new ArrayList<>();
 
     public IHMTestMap() {
         Intersection intersection1=new Intersection(45.75406,4.857418);
@@ -16,14 +17,12 @@ public class IHMTestMap implements IMap {
         Intersection intersection3=new Intersection(45.754982,4.865772);
         Intersection intersection4=new Intersection(45.759834,4.867973);
         Intersection intersection5=new Intersection(45.749996,4.858258);
-        intersections = new ArrayList<>();
         intersections.add(intersection1);
         intersections.add(intersection2);
         intersections.add(intersection3);
         intersections.add(intersection4);
         intersections.add(intersection5);
         warehouse=new Intersection(45.752,4.86);
-        segments = new ArrayList<>();
         Segment segment1 = new Segment(intersection1,2.0,"a",intersection3);
         Segment segment2 = new Segment(intersection1,4.0,"a",intersection4);
         Segment segment3 = new Segment(intersection2,6.0,"a",intersection5);
@@ -40,6 +39,11 @@ public class IHMTestMap implements IMap {
         segments.add(segment6);
         segments.add(segment7);
         segments.add(segment8);
+        exampleRoute.add(segment8);
+        exampleRoute.add(segment3);
+        exampleRoute.add(segment4);
+        exampleRoute.add(segment5);
+
 
     }
 
@@ -53,6 +57,9 @@ public class IHMTestMap implements IMap {
 
     public Iterable<Segment> getSegments() {
         return this.segments;
+    }
+    public Iterable<Segment> getExampleRoute() {
+        return this.exampleRoute;
     }
 
     @Override
