@@ -2,6 +2,7 @@ package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -21,8 +22,11 @@ public class FxController {
     public ComboBox<String> deliveryTime;
     public Label deliveryIntersection;
 
+    public RequestsContainer requestsContainer;
+
     public FxController() {
         controller = new Controller();
+        controller.addObserver(this.requestsContainer);
     }
 
     public void loadMap(ActionEvent actionEvent) {

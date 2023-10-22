@@ -5,8 +5,9 @@ import java.io.File;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.Intersection;
+import fr.blazanome.routeplanner.observer.Observable;
 
-public class Controller {
+public class Controller extends Observable {
     
     public State currentState;
     private CommandStack commandStack;
@@ -18,6 +19,7 @@ public class Controller {
 
     public void setCurrentState(State newState) {
         this.currentState = newState;
+        this.notifyObservers(this.currentState);
     }
 
     public void loadMap(File file) {
