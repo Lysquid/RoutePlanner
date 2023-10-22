@@ -1,4 +1,5 @@
 package fr.blazanome.routeplanner.view;
+
 import fr.blazanome.routeplanner.model.IHMTestMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
@@ -8,38 +9,68 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import javafx.scene.paint.Color;
 
 
 public class Map extends Pane{
-    private Group root= new Group();
-    private Button active=null;
-    double minX=Double.MAX_VALUE;
-    double minY=Double.MAX_VALUE;
-    double maxY=0;
-    double maxX=0;
+    private Group root = new Group();
+    private Button active = null;
+    double minX = Double.MAX_VALUE;
+    double minY = Double.MAX_VALUE;
+    double maxY = 0;
+    double maxX = 0;
 
     GraphicsContext gc;
     Canvas canvas;
-    IHMTestMap data=new IHMTestMap();
+    IHMTestMap data = new IHMTestMap();
 
     ArrayList<Button> buttonIntersectionList=new ArrayList<>();
 
 
     HashMap<Button,Intersection> buttonIntersection= new HashMap<>();
+
+    Scale zoomTransform = new Scale(1.0, 1.0); // Initial scale is 1.0
+
     public Map() {
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
         this.getChildren().add(canvas);
+
+        // Add scale transformation to the root
+        root.getTransforms().add(zoomTransform);
+
+        // Handle mouse scroll events for zooming
+        setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
+                double scaleFactor = 1.05; // Adjust the zoom factor as needed
+
+                if (delta > 0) {
+                    // Zoom in
+                    zoomTransform.setX(zoomTransform.getX() * scaleFactor);
+                    zoomTransform.setY(zoomTransform.getY() * scaleFactor);
+                } else {
+                    // Zoom out
+                    zoomTransform.setX(zoomTransform.getX() / scaleFactor);
+                    zoomTransform.setY(zoomTransform.getY() / scaleFactor);
+                }
+
+                // Redraw the map
+                redraw();
+            }
+        });
+
         widthProperty().addListener((observable, oldValue, newValue) -> redraw());
         heightProperty().addListener((observable, oldValue, newValue) -> redraw());
-
     }
     void draw(){
         canvas.setWidth(getWidth());
@@ -70,16 +101,24 @@ public class Map extends Pane{
         this.updateIntersections();
 
     }
-    void drawPlainSegments(Iterable<Segment> iterableSegment){
+    void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
             gc.setStroke(Color.BLUE);
-            Intersection start=segment.getOrigin();
-            Intersection end=segment.getDestination();
+            Intersection start = segment.getOrigin();
+            Intersection end = segment.getDestination();
 
-            gc.strokeLine(positionX(start), positionY(start), positionX(end), positionY(end));
+            // Calculate scaled positions for the segments
+            double scaledX1 = positionX(start) * zoomTransform.getX();
+            double scaledY1 = positionY(start) * zoomTransform.getY();
+            double scaledX2 = positionX(end) * zoomTransform.getX();
+            double scaledY2 = positionY(end) * zoomTransform.getY();
+
+            // Draw the scaled segment
+            gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
         }
-
     }
+
+
     void drawPlainIntersections(Iterable<Intersection> iterableIntersection){
         EventHandler<ActionEvent> event = e -> {
             Button clicked=(Button)e.getSource();
