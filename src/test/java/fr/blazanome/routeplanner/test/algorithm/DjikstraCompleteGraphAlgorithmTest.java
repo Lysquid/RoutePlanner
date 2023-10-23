@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-import fr.blazanome.routeplanner.algorithm.CompleteGraphAlgoritm;
+import fr.blazanome.routeplanner.algorithm.CompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.graph.PathGraph;
 import fr.blazanome.routeplanner.graph.SimpleAdjacencyListsGraph;
@@ -45,7 +45,7 @@ public class DjikstraCompleteGraphAlgorithmTest {
         parentGraph.addEdge(2, 3, 2);
         parentGraph.addEdge(3, 2, 2);
 
-        CompleteGraphAlgoritm algoritm = new DjikstraCompleteGraphAlgorithm();
+        CompleteGraphAlgorithm algoritm = new DjikstraCompleteGraphAlgorithm();
         PathGraph pathGraph = algoritm.computeCompleteGraph(parentGraph, Arrays.asList(0, 4, 5));
 
         assertEquals(3, pathGraph.getVerticesCount());

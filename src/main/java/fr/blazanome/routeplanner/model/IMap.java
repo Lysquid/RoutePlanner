@@ -10,7 +10,7 @@ public interface IMap extends Graph {
     /**
      * @return an iterator over all segment of the map
      */
-    public Iterable<Segment> getSegments();
+    Iterable<Segment> getSegments();
 
     /**
      * @param start Start vertex number
@@ -19,34 +19,34 @@ public interface IMap extends Graph {
      *         neighbors and null
      *         otherwise
      */
-    public Segment getSegment(int start, int end);
+    Segment getSegment(int start, int end);
 
     /**
      * @return the total number of segments
      */
-    public default int getSegmentCount() {
+    default int getSegmentCount() {
         return this.getVerticesCount();
     }
 
     /**
      * @return an iterator over all intersections of the map
      */
-    public Iterable<Intersection> getIntersections();
+    Iterable<Intersection> getIntersections();
 
     /**
      * @return the total number of intersections
      */
-    public int getIntersectionCount();
+    int getIntersectionCount();
 
     /**
      * @param vertexId Vertex number
      * @return the intersection with <code>vertexId</code> or null if it does not
      *         exist
      */
-    public Intersection getIntersection(int vertexId);
+    Intersection getIntersection(int vertexId);
 
     /**
      * @return The intersection corresponding to the warehouse
      */
-    public Intersection getWarehouse();
+    Intersection getWarehouse();
 }

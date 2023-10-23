@@ -32,10 +32,10 @@ public class AdjacencyListPathGraph extends AdjacencyLists<AdjacencyListPathGrap
     }
 
     public void addEdge(int start, int end, double cost, List<Integer> path) {
-        this.addEdge(start, new AdjacencyListPathGraph.NeighborWithPath(end, cost, path));
+        this.addEdge(start, new NeighborWithPath(end, cost, path));
     }
 
-    public class NeighborWithPath extends Neighbor {
+    protected static class NeighborWithPath extends Neighbor {
         private List<Integer> path;
 
         public NeighborWithPath(int destination, double cost, List<Integer> path) {

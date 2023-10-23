@@ -9,13 +9,13 @@ public interface Graph {
     /**
      * @return The number of vertices in the graph
      */
-    public int getVerticesCount();
+    int getVerticesCount();
 
     /**
      * @param vertex
      * @return an iterator of all neighbor of <code>vertex</code>
      */
-    public Iterable<Neighbor> getNeighbors(int vertex);
+    Iterable<Neighbor> getNeighbors(int vertex);
 
     /**
      * @param start Start vertex
@@ -24,14 +24,14 @@ public interface Graph {
      *         <code>start</code> and <code>end</code>
      *         are not neighbor
      */
-    public double getCost(int start, int end);
+    double getCost(int start, int end);
 
     /**
      * @param start Start vertex
      * @param end   End vertex
-     * @return wether <code>start</code> and <code>end</code> are neighbor
+     * @return whether <code>start</code> and <code>end</code> are neighbor
      */
-    public default boolean isArc(int start, int end) {
+    default boolean isArc(int start, int end) {
         return getCost(start, end) >= 0;
     }
 

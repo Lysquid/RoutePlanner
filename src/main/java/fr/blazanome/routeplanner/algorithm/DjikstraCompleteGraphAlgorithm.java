@@ -19,7 +19,7 @@ import fr.blazanome.routeplanner.graph.PathGraph;
 /**
  * DjikstraCompleteGraphAlgorithm
  */
-public class DjikstraCompleteGraphAlgorithm implements CompleteGraphAlgoritm {
+public class DjikstraCompleteGraphAlgorithm implements CompleteGraphAlgorithm {
 
     @Override
     public PathGraph computeCompleteGraph(Graph parentGraph, Iterable<Integer> finalVertices) {

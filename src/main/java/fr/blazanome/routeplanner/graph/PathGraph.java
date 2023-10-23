@@ -9,11 +9,11 @@ public interface PathGraph extends Graph {
     /**
      * @return the parent graph from which the path are from
      */
-    public Graph getParentGraph();
+    Graph getParentGraph();
 
     /**
      * @return the list of vertices in the parent graph representing the path
      *         between start and end
      */
-    public Iterable<Integer> getPath(int start, int end);
+    Iterable<Integer> getPath(int start, int end);
 }
