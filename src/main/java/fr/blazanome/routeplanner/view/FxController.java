@@ -1,18 +1,22 @@
 package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
+import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
+import fr.blazanome.routeplanner.observer.Observable;
+import fr.blazanome.routeplanner.observer.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
 
-public class FxController {
+public class FxController implements Observer {
 
     protected final Controller controller;
 
@@ -22,11 +26,11 @@ public class FxController {
     public ComboBox<String> deliveryTime;
     public Label deliveryIntersection;
 
-    public RequestsContainer requestsContainer;
+    public Button addDelivery;
 
     public FxController() {
-        controller = new Controller();
-        controller.addObserver(this.requestsContainer);
+        this.controller = new Controller();
+        this.controller.addObserver(this);
     }
 
     public void loadMap(ActionEvent actionEvent) {
@@ -39,7 +43,7 @@ public class FxController {
     }
 
     public void loadHardCodedMap(ActionEvent actionEvent) {
-        this.map.draw(this.controller);
+        this.map.draw();
     }
 
     public void undo(ActionEvent actionEvent) {
@@ -51,4 +55,8 @@ public class FxController {
     }
 
 
+    @Override
+    public void update(Observable observable, Object message) {
+        this.addDelivery.setDisable(!(message instanceof IntersectionSelectedState));
+    }
 }
