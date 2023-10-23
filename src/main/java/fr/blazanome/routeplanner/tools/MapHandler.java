@@ -3,9 +3,6 @@ package fr.blazanome.routeplanner.tools;
 import fr.blazanome.routeplanner.model.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import java.util.ArrayList;
 
 public class MapHandler extends AbstractMapHandler {
 
@@ -23,7 +20,7 @@ public class MapHandler extends AbstractMapHandler {
         }
 
         public String getName() {
-            return name;
+            return this.name;
         }
     }
 
@@ -84,18 +81,23 @@ public class MapHandler extends AbstractMapHandler {
 
     @Override
     public IMap getMap() {
-        java.util.List<Intersection> intersections = new ArrayList<>(this.intersections.values());
-        java.util.List<Segment> segments = this.segments.stream().map(parser_segment -> {
-            if (!this.intersections.containsKey(parser_segment.destination) || !this.intersections.containsKey(parser_segment.origin)) {
+        AdjacencyListMap map = new AdjacencyListMap();
+        this.intersections.values().forEach(map::addIntersection);
+
+        this.segments.stream().map(parser_segment -> {
+            if (!this.intersections.containsKey(parser_segment.destination)
+                    || !this.intersections.containsKey(parser_segment.origin)) {
                 throw new RuntimeException("Invalid map");
             }
             return new Segment(
                     this.intersections.get(parser_segment.destination),
                     parser_segment.length,
                     parser_segment.name,
-                    this.intersections.get(parser_segment.origin)
-            );
-        }).toList();
-        return new Map(intersections, segments);
+                    this.intersections.get(parser_segment.origin));
+        })
+                .forEach(map::addSegment);
+
+        map.setWarehouse(this.intersections.get(this.warehouse));
+        return map;
     }
 }

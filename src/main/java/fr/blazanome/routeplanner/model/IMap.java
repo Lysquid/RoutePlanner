@@ -22,21 +22,9 @@ public interface IMap extends Graph {
     Segment getSegment(int start, int end);
 
     /**
-     * @return the total number of segments
-     */
-    default int getSegmentCount() {
-        return this.getVerticesCount();
-    }
-
-    /**
      * @return an iterator over all intersections of the map
      */
     Iterable<Intersection> getIntersections();
-
-    /**
-     * @return the total number of intersections
-     */
-    int getIntersectionCount();
 
     /**
      * @param vertexId Vertex number
@@ -44,6 +32,12 @@ public interface IMap extends Graph {
      *         exist
      */
     Intersection getIntersection(int vertexId);
+
+    /**
+     * @param intersection a valid intersection in this map
+     * @return the vertexId associeted with this intersection
+     */
+    int getVertexId(Intersection intersection);
 
     /**
      * @return The intersection corresponding to the warehouse

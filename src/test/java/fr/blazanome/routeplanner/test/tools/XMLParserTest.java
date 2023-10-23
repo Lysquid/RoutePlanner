@@ -12,7 +12,6 @@ import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import fr.blazanome.routeplanner.model.Map;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;

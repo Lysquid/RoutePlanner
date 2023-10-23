@@ -71,12 +71,6 @@ public class IHMTestMap implements IMap {
     }
 
     @Override
-    public int getIntersectionCount() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public double getCost(int start, int end) {
         // TODO Auto-generated method stub
         return 0;
@@ -99,6 +93,12 @@ public class IHMTestMap implements IMap {
     public int getVerticesCount() {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public int getVertexId(Intersection intersection) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVertexId'");
     }
 
 }

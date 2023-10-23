@@ -1,7 +1,5 @@
 package fr.blazanome.routeplanner.model;
 
-import java.util.Objects;
-
 public class Intersection {
     private double latitude;
     private double longitude;
@@ -21,9 +19,16 @@ public class Intersection {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Intersection that = (Intersection) o;
         return Double.compare(latitude, that.latitude) == 0 && Double.compare(longitude, that.longitude) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(this.latitude) ^ Double.hashCode(this.longitude);
     }
 }

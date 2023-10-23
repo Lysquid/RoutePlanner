@@ -3,6 +3,7 @@ package fr.blazanome.routeplanner.graph;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 /**
  * AdjacencyList
@@ -51,6 +52,12 @@ public class AdjacencyLists<EdgeType extends Neighbor> implements Graph {
     public double getCost(int start, int end) {
         EdgeType customNeighbor = this.getCustomNeighbor(start, end);
         return customNeighbor != null ? customNeighbor.getCost() : -1.0; 
+    }
+
+    public Iterable<EdgeType> getEdges() {
+        return () -> this.adjacencyLists.stream()
+            .flatMap(l -> l.stream())
+            .iterator();
     }
 
     public EdgeType getCustomNeighbor(int start, int end) {
