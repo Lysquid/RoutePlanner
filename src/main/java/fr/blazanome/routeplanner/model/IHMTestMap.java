@@ -3,6 +3,8 @@ package fr.blazanome.routeplanner.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.blazanome.routeplanner.graph.Neighbor;
+
 public class IHMTestMap implements IMap {
 
     private Intersection warehouse;
@@ -88,7 +90,7 @@ public class IHMTestMap implements IMap {
     }
 
     @Override
-    public Iterable<Integer> getNeighbors(int vertex) {
+    public Iterable<Neighbor> getNeighbors(int vertex) {
         // TODO Auto-generated method stub
         return null;
     }
