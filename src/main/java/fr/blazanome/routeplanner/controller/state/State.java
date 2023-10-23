@@ -2,6 +2,7 @@ package fr.blazanome.routeplanner.controller.state;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
@@ -18,7 +19,7 @@ import javafx.scene.control.Button;
  */
 public interface State {
 
-    public default void loadMap(Controller controller, String file) {
+    public default void loadMap(Controller controller, File file) {
     }
 
     public default void undo(Controller controller) {

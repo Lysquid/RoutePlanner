@@ -36,7 +36,7 @@ public class Controller extends Observable {
     }
 
     public void loadMap(File file) {
-        this.currentState.loadMap(this, file.getPath());
+        this.currentState.loadMap(this, file);
     }
 
     public void undo() {

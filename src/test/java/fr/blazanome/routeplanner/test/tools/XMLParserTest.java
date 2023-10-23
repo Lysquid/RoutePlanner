@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.test.tools;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,7 +28,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTest.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTest.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +60,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyMap.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyMap.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -74,7 +75,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyXML.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyXML.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
         }
 
@@ -88,7 +89,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement1.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement1.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +104,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement2.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement2.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -118,7 +119,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestIntersectionsOnly.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestIntersectionsOnly.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -141,7 +142,7 @@ public class XMLParserTest {
         MapHandler mapHandler = new MapHandler();
         XMLParser xmlParser = new XMLParser(mapHandler);
         try {
-            xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestSegmentsOnly.xml");
+            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestSegmentsOnly.xml"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

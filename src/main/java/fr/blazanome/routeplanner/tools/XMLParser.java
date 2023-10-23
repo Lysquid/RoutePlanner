@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.tools;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,8 +20,8 @@ public class XMLParser {
         this.handler = handler;
     }
 
-    public void parse(String filename) throws ParserConfigurationException, SAXException, IOException {
+    public void parse(File file) throws ParserConfigurationException, SAXException, IOException {
         this.saxParser = this.factory.newSAXParser();
-        this.saxParser.parse(filename, this.handler);
+        this.saxParser.parse(file, this.handler);
     }
 }
