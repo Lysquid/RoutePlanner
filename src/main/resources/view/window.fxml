@@ -63,7 +63,7 @@
                     <Text text="To" GridPane.rowIndex="2"/>
                     <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 </GridPane>
-                <Button text="Add delivery" fx:id="addDelivery" disable="true"/>
+                <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
 
             </VBox>
 

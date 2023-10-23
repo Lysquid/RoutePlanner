@@ -30,6 +30,12 @@ public class IntersectionSelectedState implements State {
             controller.setCurrentState(new IntersectionSelectedState(intersection, clicked));
         }
     }
+
+    @Override
+    public void addDelivery(Controller controller) {
+        controller.addDelivery(this.selectedIntersection);
+    }
+
     @Override
     public String toString() {
         return "IntersectionSelectedState{" +

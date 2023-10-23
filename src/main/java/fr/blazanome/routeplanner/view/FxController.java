@@ -52,6 +52,10 @@ public class FxController implements Observer {
         this.controller.redo();
     }
 
+    public void addDelivery(ActionEvent actionEvent) {
+        this.controller.addDeliveryAction();
+    }
+
 
     @Override
     public void update(Observable observable, Object message) {

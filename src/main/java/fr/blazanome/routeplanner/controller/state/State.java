@@ -1,7 +1,5 @@
 package fr.blazanome.routeplanner.controller.state;
 
-import java.io.File;
-
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Intersection;
 import javafx.scene.control.Button;
@@ -11,7 +9,7 @@ import javafx.scene.control.Button;
  */
 public interface State {
 
-    public default void loadMap(Controller controller, File file) {}
+    public default void loadMap(Controller controller, String file) {}
 
     public default void undo(Controller controller) {
         controller.getCommandStack().undo();
@@ -25,6 +23,8 @@ public interface State {
         System.out.println(intersection.getLatitude() + " ; " + intersection.getLongitude());
         controller.setCurrentState(new IntersectionSelectedState(intersection, clicked));
     }
+
+    public default void addDelivery(Controller controller) {};
 
     public String toString();
 }
