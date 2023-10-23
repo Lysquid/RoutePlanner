@@ -7,10 +7,8 @@ import fr.blazanome.routeplanner.model.Intersection;
 public class IntersectionSelectedState implements State {
     private final Intersection selectedIntersection;
 
-    private final Button previousButton;
-    public IntersectionSelectedState(Intersection selectedIntersection, Button previousButton) {
+    public IntersectionSelectedState(Intersection selectedIntersection) {
         this.selectedIntersection = selectedIntersection;
-        this.previousButton=previousButton;
     }
 
     public Intersection getSelectedIntersection() {
@@ -18,16 +16,13 @@ public class IntersectionSelectedState implements State {
     }
 
     @Override
-    public void selectIntersection(Controller controller, Intersection intersection, Button clicked) {
-        if (previousButton != null) {
-            previousButton.setStyle("-fx-background-color: #ffffff; ");
-        }
+    public void selectIntersection(Controller controller, Intersection intersection) {
+
         if(this.selectedIntersection.equals(intersection)) {
             controller.setCurrentState(new NoMapState()); // TODO : set to state with no intersection selected
         } else {
-            clicked.setStyle("-fx-background-color: #ff0000; ");
             System.out.println(intersection.getLatitude() + " ; " + intersection.getLongitude());
-            controller.setCurrentState(new IntersectionSelectedState(intersection, clicked));
+            controller.setCurrentState(new IntersectionSelectedState(intersection));
         }
     }
 

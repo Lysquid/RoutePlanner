@@ -51,8 +51,8 @@ public class Controller extends Observable {
         this.currentState.compute(this);
     }
 
-    public void selectIntersection(Intersection intersection, Button clicked) {
-        this.currentState.selectIntersection(this, intersection, clicked);
+    public void selectIntersection(Intersection intersection) {
+        this.currentState.selectIntersection(this, intersection);
     }
 
     public void addDeliveryAction() {

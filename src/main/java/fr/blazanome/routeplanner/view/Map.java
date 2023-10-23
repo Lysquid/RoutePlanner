@@ -13,16 +13,14 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import javafx.scene.input.MouseEvent;
+import java.util.List;
 
 
 public class Map extends Pane implements Observer {
@@ -43,8 +41,7 @@ public class Map extends Pane implements Observer {
     private double offsetY = 0.0;
     GraphicsContext gc;
     Canvas canvas;
-    ArrayList<Button> buttonIntersectionList = new ArrayList<>();
-    HashMap<Button, Intersection> buttonIntersection = new HashMap<>();
+    List<ButtonIntersection> buttonIntersectionList;
     Scale zoomTransform = new Scale(1.0, 1.0); // Initial scale is 1.0
 
     //sets up listeners and the canvas
@@ -74,6 +71,7 @@ public class Map extends Pane implements Observer {
             }
             redraw();
         });
+        buttonIntersectionList = new ArrayList<>();
     }
 
     //General drawing section
@@ -165,32 +163,21 @@ public class Map extends Pane implements Observer {
     }
 
     void drawIntersections(Iterable<Intersection> iterableIntersection) {
-        EventHandler<ActionEvent> event = e -> {
-            Button clicked = (Button) e.getSource();
-            Intersection selectedintersection = buttonIntersection.get(clicked);
-            this.controller.selectIntersection(selectedintersection,clicked);
-        };
+
         int radius = 5;
-        Circle c = new Circle(radius);
         for (Intersection intersection : iterableIntersection) {
-            Button bt = new Button();
-            bt.setShape(c);
-            bt.setMaxSize(2 * radius, 2 * radius);
-            bt.setMinSize(2 * radius, 2 * radius);
+            ButtonIntersection bt = new ButtonIntersection(this.controller, intersection);
             bt.setLayoutX(positionX(intersection) - radius);
             bt.setLayoutY(positionY(intersection) - radius);
-            bt.setOnAction(event);
             root.getChildren().add(bt);
-            buttonIntersection.put(bt, intersection);
-            buttonIntersectionList.add(bt);
         }
 
     }
 
     void updateIntersections() {
         int radius = 5;
-        for (Button bt : buttonIntersectionList) {
-            Intersection intersection = buttonIntersection.get(bt);
+        for (ButtonIntersection bt : buttonIntersectionList) {
+            Intersection intersection = bt.getIntersection();
             double x = positionX(intersection) - radius;
             double y = positionY(intersection) - radius;
             bt.setLayoutX(x);

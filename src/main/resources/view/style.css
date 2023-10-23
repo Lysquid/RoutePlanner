@@ -20,7 +20,15 @@ HBox {
 
 Map {
     -fx-background-color: #6be256;
-    -fx-min-width: 500;
+    -fx-min-width: 800;
     -fx-min-height: 500;
 }
 
+ButtonIntersection {
+    -fx-background-color: white;
+    -fx-border-style: none;
+}
+
+ButtonIntersection:pressed {
+    -fx-background-color: red;
+}
