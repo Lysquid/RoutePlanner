@@ -174,6 +174,7 @@ public class Map extends Pane implements Observer {
             bt.setLayoutX(positionX(intersection) - radius);
             bt.setLayoutY(positionY(intersection) - radius);
             root.getChildren().add(bt);
+            this.buttonIntersectionList.add(bt);
         }
 
     }
@@ -182,8 +183,8 @@ public class Map extends Pane implements Observer {
         int radius = 5;
         for (ButtonIntersection bt : buttonIntersectionList) {
             Intersection intersection = bt.getIntersection();
-            double x = positionX(intersection) - radius;
-            double y = positionY(intersection) - radius;
+            double x = this.positionX(intersection) - radius;
+            double y = this.positionY(intersection) - radius;
             bt.setLayoutX(x);
             bt.setLayoutY(y);
             // if a button comme out of the image it becomes invisible and can't be interacted with
