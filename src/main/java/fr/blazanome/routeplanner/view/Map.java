@@ -14,13 +14,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javafx.scene.input.MouseEvent;
 
 
-public class Map extends Pane{
-    boolean drawn=false;
+public class Map extends Pane {
+    boolean drawn = false;
     private Group root = new Group();
     Rectangle warehouseItem;
     private Button active = null;
@@ -31,13 +33,13 @@ public class Map extends Pane{
     private double initialX;
     private double initialY;
     private boolean isDragging = false;
-    private double offsetX=0.0;
-    private double offsetY=0.0;
+    private double offsetX = 0.0;
+    private double offsetY = 0.0;
     GraphicsContext gc;
     Canvas canvas;
     IHMTestMap data = new IHMTestMap();
-    ArrayList<Button> buttonIntersectionList=new ArrayList<>();
-    HashMap<Button,Intersection> buttonIntersection= new HashMap<>();
+    ArrayList<Button> buttonIntersectionList = new ArrayList<>();
+    HashMap<Button, Intersection> buttonIntersection = new HashMap<>();
     Scale zoomTransform = new Scale(1.0, 1.0); // Initial scale is 1.0
 
     //sets up listeners and the canvas
@@ -71,18 +73,18 @@ public class Map extends Pane{
 
     //General drawing section
 
-    void draw(){
+    void draw() {
         //so that redraws don't happens before a first drawing is done
-        drawn=true;
+        drawn = true;
         //sets up the canvas and finds the edges of the wanted map
         canvas.setWidth(getWidth());
         canvas.setHeight(getHeight());
-        Iterable<Intersection> iterableIntersection=data.getIntersections();
+        Iterable<Intersection> iterableIntersection = data.getIntersections();
         for (Intersection intersection : iterableIntersection) {
-            minX=Math.min(minX,ConvertToX(intersection.getLatitude(),intersection.getLongitude()));
-            minY=Math.min(minY,ConvertToY(intersection.getLatitude(),intersection.getLongitude()));
-            maxX=Math.max(maxX,ConvertToX(intersection.getLatitude(),intersection.getLongitude()));
-            maxY=Math.max(maxY,ConvertToY(intersection.getLatitude(),intersection.getLongitude()));
+            minX = Math.min(minX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
+            minY = Math.min(minY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
+            maxX = Math.max(maxX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
+            maxY = Math.max(maxY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
         }
         //calls the drawing functions
         this.drawPlainSegments(data.getSegments());
@@ -92,9 +94,10 @@ public class Map extends Pane{
 
         this.getChildren().add(root);
     }
-    void redraw(){
+
+    void redraw() {
         //Checks that draw has been called then clears the canvas and redraws all the relevant points
-        if(drawn) {
+        if (drawn) {
             canvas.setWidth(getWidth());
             canvas.setHeight(getHeight());
             // Re-draw everything on the canvas
@@ -126,14 +129,15 @@ public class Map extends Pane{
         }
 
     }
+
     void drawRoute(Iterable<Segment> iterableSegment) {
         //the code should be very different from the other function once it's actually implemented.
-        double i=0.0;
+        double i = 0.0;
         //double personeCount=1.0;
         for (Segment segment : iterableSegment) {
             //i=i+1.0/personeCount;
             //Normally the changing of the Colour would happen for every route, here I did it on every step of the route to demonstrate how it works
-            Color c= new Color(1-i,i,i,1.0);
+            Color c = new Color(1 - i, i, i, 1.0);
             gc.setStroke(c);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
@@ -147,57 +151,60 @@ public class Map extends Pane{
         }
     }
 
-    void drawIntersections(Iterable<Intersection> iterableIntersection){
+    void drawIntersections(Iterable<Intersection> iterableIntersection) {
         EventHandler<ActionEvent> event = e -> {
-            Button clicked=(Button)e.getSource();
-            if(active!=null){
+            Button clicked = (Button) e.getSource();
+            if (active != null) {
                 active.setStyle("-fx-background-color: #ffffff; ");
             }
             clicked.setStyle("-fx-background-color: #ff0000; ");
-            active=clicked;
-            Intersection selectedintersection =buttonIntersection.get(clicked);
-            System.out.println(selectedintersection.getLatitude()+" ; "+selectedintersection.getLongitude());
+            active = clicked;
+            Intersection selectedintersection = buttonIntersection.get(clicked);
+            System.out.println(selectedintersection.getLatitude() + " ; " + selectedintersection.getLongitude());
 
         };
-        int radius=5;
-        Circle c= new Circle(radius);
+        int radius = 5;
+        Circle c = new Circle(radius);
         for (Intersection intersection : iterableIntersection) {
             Button bt = new Button();
             bt.setShape(c);
-            bt.setMaxSize(2*radius,2*radius);
-            bt.setMinSize(2*radius,2*radius);
-            bt.setLayoutX(positionX(intersection)-radius);
-            bt.setLayoutY(positionY(intersection)-radius);
+            bt.setMaxSize(2 * radius, 2 * radius);
+            bt.setMinSize(2 * radius, 2 * radius);
+            bt.setLayoutX(positionX(intersection) - radius);
+            bt.setLayoutY(positionY(intersection) - radius);
             bt.setOnAction(event);
             root.getChildren().add(bt);
-            buttonIntersection.put(bt,intersection);
+            buttonIntersection.put(bt, intersection);
             buttonIntersectionList.add(bt);
         }
 
     }
-    void updateIntersections(){
-        int radius=5;
+
+    void updateIntersections() {
+        int radius = 5;
         for (Button bt : buttonIntersectionList) {
-            Intersection intersection =buttonIntersection.get(bt);
-            double x=positionX(intersection)-radius;
-            double y=positionY(intersection)-radius;
+            Intersection intersection = buttonIntersection.get(bt);
+            double x = positionX(intersection) - radius;
+            double y = positionY(intersection) - radius;
             bt.setLayoutX(x);
             bt.setLayoutY(y);
             // if a button comme out of the image it becomes invisible and can't be interacted with
-            bt.setVisible(!(x < -0) && !(y < -0));
-            bt.setDisable((x < -0) || (y < -0));
+            bt.setVisible(!(x < -radius) && !(y < -radius));
+            bt.setDisable((x < -radius) || (y < -radius));
         }
 
     }
-    void drawWarehouse(Intersection warehouseLocation){
-        warehouseItem= new Rectangle(8,8);
+
+    void drawWarehouse(Intersection warehouseLocation) {
+        warehouseItem = new Rectangle(8, 8);
         warehouseItem.setLayoutX(positionX(warehouseLocation));
         warehouseItem.setLayoutY(positionY(warehouseLocation));
         root.getChildren().add(warehouseItem);
     }
-    void updateWarehouse(){
-        double x=positionX(data.getWarehouse());
-        double y=positionY(data.getWarehouse());
+
+    void updateWarehouse() {
+        double x = positionX(data.getWarehouse());
+        double y = positionY(data.getWarehouse());
         warehouseItem.setLayoutX(x);
         warehouseItem.setLayoutY(y);
         warehouseItem.setVisible(!(x < -0) && !(y < -0));
@@ -205,31 +212,37 @@ public class Map extends Pane{
 
     //turns latitude and longitude into x and y coordinates
 
-    double ConvertToX(double lat, double lon){
-        return Math.cos((Math.PI/180.0)*lat)*111.0*lon;
+    double ConvertToX(double lat, double lon) {
+        return Math.cos((Math.PI / 180.0) * lat) * 111.0 * lon;
     }
-    double ConvertToY(double lat, double lon){
-        return 111.0*lat;
+
+    double ConvertToY(double lat, double lon) {
+        return 111.0 * lat;
     }
+
     //Calculate from all the x and y coordinates where to place the item on the screen. Doesn't take into account zooming
-    double positionX(Intersection intersection){
-        return this.getWidth()*(0.05+0.90*((ConvertToX(intersection.getLatitude(),intersection.getLongitude())-minX)/(maxX-minX)))+offsetX;
+    double positionX(Intersection intersection) {
+        return this.getWidth() * (0.05 + 0.90 * ((ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - minX) / (maxX - minX))) + offsetX;
     }
-    double positionY(Intersection intersection){
-        return this.getHeight()*(0.05+0.90*((ConvertToY(intersection.getLatitude(),intersection.getLongitude())-minY)/(maxY-minY)))+offsetY;
+
+    double positionY(Intersection intersection) {
+        return this.getHeight() * (0.05 + 0.90 * ((ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - minY) / (maxY - minY))) + offsetY;
 
     }
+
     //Action to make the dragging possible
     private void handleMousePressed(MouseEvent event) {
         initialX = event.getSceneX();
         initialY = event.getSceneY();
         isDragging = true;
-    }   private void handleMouseDragged(MouseEvent event) {
+    }
+
+    private void handleMouseDragged(MouseEvent event) {
         if (isDragging) {
             double deltaX = event.getSceneX() - initialX;
             double deltaY = event.getSceneY() - initialY;
-            offsetX=offsetX+deltaX;
-            offsetY=offsetY+deltaY;
+            offsetX = offsetX + deltaX;
+            offsetY = offsetY + deltaY;
             // Iterate through child nodes and adjust their positions
             redraw();
 
@@ -237,6 +250,7 @@ public class Map extends Pane{
             initialY = event.getSceneY();
         }
     }
+
     private void handleMouseReleased(MouseEvent event) {
         isDragging = false;
     }
