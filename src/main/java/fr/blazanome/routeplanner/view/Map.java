@@ -1,9 +1,12 @@
 package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.model.IHMTestMap;
+import fr.blazanome.routeplanner.controller.state.MapLoadedState;
+import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
+import fr.blazanome.routeplanner.observer.Observable;
+import fr.blazanome.routeplanner.observer.Observer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -22,7 +25,7 @@ import java.util.HashMap;
 import javafx.scene.input.MouseEvent;
 
 
-public class Map extends Pane {
+public class Map extends Pane implements Observer {
     boolean drawn = false;
 
     Controller controller;
@@ -40,7 +43,6 @@ public class Map extends Pane {
     private double offsetY = 0.0;
     GraphicsContext gc;
     Canvas canvas;
-    IHMTestMap data = new IHMTestMap();
     ArrayList<Button> buttonIntersectionList = new ArrayList<>();
     HashMap<Button, Intersection> buttonIntersection = new HashMap<>();
     Scale zoomTransform = new Scale(1.0, 1.0); // Initial scale is 1.0
@@ -76,14 +78,18 @@ public class Map extends Pane {
 
     //General drawing section
 
-    void draw(Controller controllerIn) {
-        controller=controllerIn;
+    public void setController(Controller controller) {
+        this.controller = controller;
+        this.controller.addObserver(this);
+    }
+    void draw() {
         //so that redraws don't happens before a first drawing is done
         drawn = true;
         //sets up the canvas and finds the edges of the wanted map
         canvas.setWidth(getWidth());
         canvas.setHeight(getHeight());
-        Iterable<Intersection> iterableIntersection = data.getIntersections();
+        IMap map = controller.getMap();
+        Iterable<Intersection> iterableIntersection = map.getIntersections();
         for (Intersection intersection : iterableIntersection) {
             minX = Math.min(minX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
             minY = Math.min(minY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
@@ -91,10 +97,10 @@ public class Map extends Pane {
             maxY = Math.max(maxY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
         }
         //calls the drawing functions
-        this.drawPlainSegments(data.getSegments());
+        this.drawPlainSegments(map.getSegments());
         this.drawIntersections(iterableIntersection);
-        this.drawRoute(data.getExampleRoute());
-        this.drawWarehouse(data.getWarehouse());
+        this.drawRoute(this.controller.getCurrentPath());
+        this.drawWarehouse(map.getWarehouse());
 
         this.getChildren().add(root);
     }
@@ -105,10 +111,11 @@ public class Map extends Pane {
             canvas.setWidth(getWidth());
             canvas.setHeight(getHeight());
             // Re-draw everything on the canvas
+            IMap map = this.controller.getMap();
             gc.clearRect(0, 0, getWidth(), getHeight());
-            this.drawPlainSegments(data.getSegments());
+            this.drawPlainSegments(map.getSegments());
             this.updateIntersections();
-            this.drawRoute(data.getExampleRoute());
+            this.drawRoute(this.controller.getCurrentPath());
             this.updateWarehouse();
         }
 
@@ -119,6 +126,7 @@ public class Map extends Pane {
     void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
             gc.setStroke(Color.BLACK);
+            gc.setLineWidth(2);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
 
@@ -143,6 +151,7 @@ public class Map extends Pane {
             //Normally the changing of the Colour would happen for every route, here I did it on every step of the route to demonstrate how it works
             Color c = new Color(1 - i, i, i, 1.0);
             gc.setStroke(c);
+            gc.setLineWidth(5);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
             // Calculate scaled positions for the segments
@@ -201,8 +210,9 @@ public class Map extends Pane {
     }
 
     void updateWarehouse() {
-        double x = positionX(data.getWarehouse());
-        double y = positionY(data.getWarehouse());
+        IMap map = this.controller.getMap();
+        double x = positionX(map.getWarehouse());
+        double y = positionY(map.getWarehouse());
         warehouseItem.setLayoutX(x);
         warehouseItem.setLayoutY(y);
         warehouseItem.setVisible(!(x < -0) && !(y < -0));
@@ -252,5 +262,18 @@ public class Map extends Pane {
     private void handleMouseReleased(MouseEvent event) {
         isDragging = false;
     }
+
+    @Override
+    public void update(Observable observable, Object message) {
+        if (message instanceof MapLoadedState) {
+            this.draw();
+        }
+
+        if (message == null) {
+            this.redraw();
+        }
+    }
+
+     
 }
 

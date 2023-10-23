@@ -64,6 +64,7 @@
                     <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 </GridPane>
                 <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
+                <Button text="Compute" fx:id="compute" disable="false" onAction="#compute"/>
 
             </VBox>
 

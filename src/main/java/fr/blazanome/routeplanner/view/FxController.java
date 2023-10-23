@@ -5,6 +5,7 @@ import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
 import fr.blazanome.routeplanner.observer.Observable;
 import fr.blazanome.routeplanner.observer.Observer;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -31,6 +32,10 @@ public class FxController implements Observer {
         this.controller.addObserver(this);
     }
 
+    @FXML
+    public void initialize() {
+        this.map.setController(this.controller);
+    }
     public void loadMap(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -41,7 +46,7 @@ public class FxController implements Observer {
     }
 
     public void loadHardCodedMap(ActionEvent actionEvent) {
-        this.map.draw(controller);
+        this.map.draw();
     }
 
     public void undo(ActionEvent actionEvent) {
@@ -54,6 +59,10 @@ public class FxController implements Observer {
 
     public void addDelivery(ActionEvent actionEvent) {
         this.controller.addDeliveryAction();
+    }
+
+    public void compute(ActionEvent actionEvent) {
+        this.controller.compute();
     }
 
 
