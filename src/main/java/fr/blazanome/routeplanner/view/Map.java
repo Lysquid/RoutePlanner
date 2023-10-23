@@ -230,12 +230,18 @@ public class Map extends Pane implements Observer {
 
     //Calculate from all the x and y coordinates where to place the item on the screen. Doesn't take into account zooming
     double positionX(Intersection intersection) {
-        return this.getWidth() * (0.05 + 0.90 * ((ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - minX) / (maxX - minX))) + offsetX;
+        return ratioWidth() * (0.05 + 0.90 * ((ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - minX) / (maxX - minX))) + offsetX/zoomTransform.getX();
     }
 
     double positionY(Intersection intersection) {
-        return this.getHeight() * (0.05 + 0.90 * ((ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - minY) / (maxY - minY))) + offsetY;
+        return ratioHeight()* (0.05 + 0.90 * ((ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - minY) / (maxY - minY))) + offsetY/zoomTransform.getY();
 
+    }
+    double ratioHeight(){
+        return Math.min(this.getHeight(),this.getWidth()*(maxY-minY)/(maxX-minX));
+    }
+    double ratioWidth(){
+        return Math.min(this.getWidth(),this.getHeight()*(maxX-minX)/(maxY-minY));
     }
 
     //Action to make the dragging possible
