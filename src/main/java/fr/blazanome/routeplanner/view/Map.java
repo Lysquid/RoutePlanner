@@ -67,7 +67,7 @@ public class Map extends Pane implements Observer {
                 // Zoom in
                 zoomTransform.setX(zoomTransform.getX() * scaleFactor);
                 zoomTransform.setY(zoomTransform.getY() * scaleFactor);
-            } else {
+            } else if (delta < 0) {
                 // Zoom out
                 zoomTransform.setX(zoomTransform.getX() / scaleFactor);
                 zoomTransform.setY(zoomTransform.getY() / scaleFactor);
