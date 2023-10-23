@@ -13,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -43,6 +44,7 @@ public class Map extends Pane implements Observer {
     Canvas canvas;
     List<ButtonIntersection> buttonIntersectionList;
     Scale zoomTransform = new Scale(1.0, 1.0); // Initial scale is 1.0
+    private ToggleGroup toggleGroup;
 
     //sets up listeners and the canvas
     public Map() {
@@ -71,7 +73,8 @@ public class Map extends Pane implements Observer {
             }
             redraw();
         });
-        buttonIntersectionList = new ArrayList<>();
+        this.buttonIntersectionList = new ArrayList<>();
+        this.toggleGroup = new ToggleGroup();
     }
 
     //General drawing section
@@ -167,6 +170,7 @@ public class Map extends Pane implements Observer {
         int radius = 5;
         for (Intersection intersection : iterableIntersection) {
             ButtonIntersection bt = new ButtonIntersection(this.controller, intersection);
+            this.toggleGroup.getToggles().add(bt);
             bt.setLayoutX(positionX(intersection) - radius);
             bt.setLayoutY(positionY(intersection) - radius);
             root.getChildren().add(bt);

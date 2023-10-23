@@ -4,11 +4,11 @@ import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Intersection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-public class ButtonIntersection extends Button {
+public class ButtonIntersection extends ToggleButton {
 
     private static final int RADIUS = 5;
     private static final Shape circle = new Circle(RADIUS);

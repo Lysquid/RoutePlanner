@@ -29,6 +29,6 @@ ButtonIntersection {
     -fx-border-style: none;
 }
 
-ButtonIntersection:pressed {
+ButtonIntersection:selected {
     -fx-background-color: red;
 }
