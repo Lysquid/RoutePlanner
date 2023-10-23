@@ -45,15 +45,14 @@ public class XMLParserTest {
                 new Intersection(45.74979, 4.87572),
                 new Intersection(45.754536, 4.866525),
                 new Intersection(45.751904, 4.857877),
-                new Intersection(45.75171, 4.8718166)
-        );
+                new Intersection(45.75171, 4.8718166));
         assertThat(intersections).hasSameElementsAs(expectedIntersections);
 
         assertThat(segments).hasSameElementsAs(Arrays.asList(
                 new Segment(expectedIntersections.get(1), 64.89446, "Rue Claudius Penet", expectedIntersections.get(0)),
                 new Segment(expectedIntersections.get(2), 153.72511, "Rue Feuillat", expectedIntersections.get(1)),
-                new Segment(expectedIntersections.get(3), 91.81539, "Avenue Lacassagne", expectedIntersections.get(2))
-        ));
+                new Segment(expectedIntersections.get(3), 91.81539, "Avenue Lacassagne",
+                        expectedIntersections.get(2))));
     }
 
     @Test
@@ -78,7 +77,6 @@ public class XMLParserTest {
         try {
             xmlParser.parse("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyXML.xml");
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
         }
 
         IMap map = mapHandler.getMap();
@@ -134,8 +132,7 @@ public class XMLParserTest {
                 new Intersection(45.74979, 4.87572),
                 new Intersection(45.754536, 4.866525),
                 new Intersection(45.751904, 4.857877),
-                new Intersection(45.75171, 4.8718166)
-        ));
+                new Intersection(45.75171, 4.8718166)));
 
         assertEquals(0, StreamSupport.stream(map.getSegments().spliterator(), false).count());
     }
