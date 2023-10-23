@@ -4,6 +4,7 @@ import java.io.File;
 
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Intersection;
+import javafx.scene.control.Button;
 
 /**
  * State
@@ -19,8 +20,10 @@ public interface State {
         controller.getCommandStack().redo();
     }
 
-    public default void selectIntersection(Controller controller, Intersection intersection) {
-        controller.setCurrentState(new IntersectionSelectedState(intersection));
+    public default void selectIntersection(Controller controller, Intersection intersection, Button clicked) {
+        clicked.setStyle("-fx-background-color: #ff0000; ");
+        System.out.println(intersection.getLatitude() + " ; " + intersection.getLongitude());
+        controller.setCurrentState(new IntersectionSelectedState(intersection, clicked));
     }
 
     public String toString();

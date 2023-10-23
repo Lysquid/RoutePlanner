@@ -5,11 +5,9 @@ import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
 import fr.blazanome.routeplanner.observer.Observable;
 import fr.blazanome.routeplanner.observer.Observer;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -43,7 +41,7 @@ public class FxController implements Observer {
     }
 
     public void loadHardCodedMap(ActionEvent actionEvent) {
-        this.map.draw();
+        this.map.draw(controller);
     }
 
     public void undo(ActionEvent actionEvent) {

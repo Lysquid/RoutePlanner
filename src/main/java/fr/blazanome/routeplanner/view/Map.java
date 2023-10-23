@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.view;
 
+import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.IHMTestMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
@@ -23,6 +24,8 @@ import javafx.scene.input.MouseEvent;
 
 public class Map extends Pane {
     boolean drawn = false;
+
+    Controller controller;
     private Group root = new Group();
     Rectangle warehouseItem;
     private Button active = null;
@@ -73,7 +76,8 @@ public class Map extends Pane {
 
     //General drawing section
 
-    void draw() {
+    void draw(Controller controllerIn) {
+        controller=controllerIn;
         //so that redraws don't happens before a first drawing is done
         drawn = true;
         //sets up the canvas and finds the edges of the wanted map
@@ -154,14 +158,8 @@ public class Map extends Pane {
     void drawIntersections(Iterable<Intersection> iterableIntersection) {
         EventHandler<ActionEvent> event = e -> {
             Button clicked = (Button) e.getSource();
-            if (active != null) {
-                active.setStyle("-fx-background-color: #ffffff; ");
-            }
-            clicked.setStyle("-fx-background-color: #ff0000; ");
-            active = clicked;
             Intersection selectedintersection = buttonIntersection.get(clicked);
-            System.out.println(selectedintersection.getLatitude() + " ; " + selectedintersection.getLongitude());
-
+            this.controller.selectIntersection(selectedintersection,clicked);
         };
         int radius = 5;
         Circle c = new Circle(radius);

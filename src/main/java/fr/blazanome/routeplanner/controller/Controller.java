@@ -6,6 +6,7 @@ import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.observer.Observable;
+import javafx.scene.control.Button;
 
 public class Controller extends Observable {
     
@@ -34,8 +35,8 @@ public class Controller extends Observable {
         this.currentState.redo(this);
     }
 
-    public void selectIntersection(Intersection intersection) {
-        currentState.selectIntersection(this, intersection);
+    public void selectIntersection(Intersection intersection, Button clicked) {
+        currentState.selectIntersection(this, intersection, clicked);
     }
 
     public CommandStack getCommandStack() {
