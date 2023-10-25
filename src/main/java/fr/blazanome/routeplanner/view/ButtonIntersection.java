@@ -23,11 +23,10 @@ public class ButtonIntersection extends ToggleButton {
         this.setMaxSize(2 * ButtonIntersection.RADIUS, 2 * ButtonIntersection.RADIUS);
         this.setMinSize(2 * ButtonIntersection.RADIUS, 2 * ButtonIntersection.RADIUS);
 
-        EventHandler<ActionEvent> eventHandler = event -> {
+        this.setOnAction(event -> {
             ButtonIntersection button = (ButtonIntersection) event.getSource();
             this.controller.selectIntersection(button.getIntersection());
-        };
-        this.setOnAction(eventHandler);
+        });
     }
 
     public Intersection getIntersection() {
