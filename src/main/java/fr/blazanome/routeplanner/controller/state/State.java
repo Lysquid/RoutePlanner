@@ -1,9 +1,5 @@
 package fr.blazanome.routeplanner.controller.state;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.io.File;
-
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
@@ -11,6 +7,10 @@ import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.view.View;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * State

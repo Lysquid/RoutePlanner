@@ -1,12 +1,11 @@
 package fr.blazanome.routeplanner.algorithm.tsp;
 
+import fr.blazanome.routeplanner.graph.Graph;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-
-import fr.blazanome.routeplanner.graph.Graph;
 
 public abstract class TemplateTSP implements TSP {
     private List<Integer> bestSol;

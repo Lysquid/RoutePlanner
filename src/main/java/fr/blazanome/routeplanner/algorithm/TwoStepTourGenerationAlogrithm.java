@@ -1,11 +1,11 @@
 package fr.blazanome.routeplanner.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.blazanome.routeplanner.algorithm.tsp.TSP;
 import fr.blazanome.routeplanner.graph.Graph;
 import fr.blazanome.routeplanner.graph.PathGraph;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TwoStepComputeTourAlogrithm

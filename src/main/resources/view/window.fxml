@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.blazanome.routeplanner.view.MapView?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
-
-<?import fr.blazanome.routeplanner.view.MapView?>
-
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="fr.blazanome.routeplanner.view.GraphicalView">
 

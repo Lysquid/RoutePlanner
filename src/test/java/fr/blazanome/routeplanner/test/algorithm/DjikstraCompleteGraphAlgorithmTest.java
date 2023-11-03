@@ -1,15 +1,14 @@
 package fr.blazanome.routeplanner.test.algorithm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Arrays;
-
-import org.junit.jupiter.api.Test;
-
 import fr.blazanome.routeplanner.algorithm.CompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.graph.Graph;
 import fr.blazanome.routeplanner.graph.PathGraph;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * DjikstraCompleteGraphAlgorithmTest

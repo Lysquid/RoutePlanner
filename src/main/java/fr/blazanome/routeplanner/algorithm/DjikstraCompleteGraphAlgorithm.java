@@ -1,20 +1,11 @@
 package fr.blazanome.routeplanner.algorithm;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
-
 import fr.blazanome.routeplanner.graph.AdjacencyListPathGraph;
 import fr.blazanome.routeplanner.graph.Graph;
 import fr.blazanome.routeplanner.graph.Neighbor;
 import fr.blazanome.routeplanner.graph.PathGraph;
+
+import java.util.*;
 
 /**
  * DjikstraCompleteGraphAlgorithm

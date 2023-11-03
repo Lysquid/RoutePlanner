@@ -4,7 +4,7 @@ import fr.blazanome.routeplanner.controller.Command;
 import fr.blazanome.routeplanner.controller.CommandStack;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class CommandStackTest {

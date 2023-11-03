@@ -1,11 +1,10 @@
 package fr.blazanome.routeplanner.controller.state;
-import fr.blazanome.routeplanner.model.Courier;
-import fr.blazanome.routeplanner.model.Session;
-import fr.blazanome.routeplanner.view.View;
-import javafx.scene.control.Button;
 
 import fr.blazanome.routeplanner.controller.Controller;
+import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Intersection;
+import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.view.View;
 
 public class IntersectionSelectedState implements State {
     private final Intersection selectedIntersection;

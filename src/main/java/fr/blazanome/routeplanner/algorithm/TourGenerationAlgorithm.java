@@ -1,8 +1,8 @@
 package fr.blazanome.routeplanner.algorithm;
 
-import java.util.List;
-
 import fr.blazanome.routeplanner.graph.Graph;
+
+import java.util.List;
 
 /**
  * TourGenerationAlgorithm

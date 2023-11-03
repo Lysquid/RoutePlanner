@@ -1,11 +1,11 @@
 package fr.blazanome.routeplanner.model;
 
+import fr.blazanome.routeplanner.graph.AdjacencyLists;
+import fr.blazanome.routeplanner.graph.Neighbor;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.StreamSupport;
-
-import fr.blazanome.routeplanner.graph.AdjacencyLists;
-import fr.blazanome.routeplanner.graph.Neighbor;
 
 /**
  * AdjacencyListMap

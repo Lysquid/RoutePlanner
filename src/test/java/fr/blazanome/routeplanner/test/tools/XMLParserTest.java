@@ -1,25 +1,22 @@
 package fr.blazanome.routeplanner.test.tools;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import java.util.*;
-import java.util.stream.StreamSupport;
-
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
 import fr.blazanome.routeplanner.tools.MapHandler;
 import fr.blazanome.routeplanner.tools.XMLParser;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.fail;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.StreamSupport;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class XMLParserTest {
 

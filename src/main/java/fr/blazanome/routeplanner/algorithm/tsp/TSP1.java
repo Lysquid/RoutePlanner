@@ -1,11 +1,11 @@
 package fr.blazanome.routeplanner.algorithm.tsp;
 
+import fr.blazanome.routeplanner.graph.Graph;
+import fr.blazanome.routeplanner.graph.Neighbor;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.StreamSupport;
-
-import fr.blazanome.routeplanner.graph.Graph;
-import fr.blazanome.routeplanner.graph.Neighbor;
 
 public class TSP1 extends TemplateTSP {
 	@Override

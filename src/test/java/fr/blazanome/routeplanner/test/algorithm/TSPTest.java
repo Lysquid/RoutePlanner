@@ -1,14 +1,13 @@
 package fr.blazanome.routeplanner.test.algorithm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Arrays;
-
-import org.junit.jupiter.api.Test;
-
 import fr.blazanome.routeplanner.algorithm.tsp.TSP;
 import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.graph.Graph;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * TPSTest

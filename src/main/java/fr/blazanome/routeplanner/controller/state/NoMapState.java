@@ -1,17 +1,15 @@
 package fr.blazanome.routeplanner.controller.state;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
+import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.tools.MapHandler;
+import fr.blazanome.routeplanner.tools.XMLParser;
 import fr.blazanome.routeplanner.view.View;
 import org.xml.sax.SAXException;
 
-import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.tools.MapHandler;
-import fr.blazanome.routeplanner.tools.XMLParser;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 
 /**
