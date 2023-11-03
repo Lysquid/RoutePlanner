@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.view.View;
 import org.xml.sax.SAXException;
 
 import fr.blazanome.routeplanner.controller.Controller;
@@ -18,7 +20,7 @@ import fr.blazanome.routeplanner.tools.XMLParser;
 public class NoMapState implements State {
 
     @Override
-    public void loadMap(Controller controller, File file) {
+    public void loadMap(Controller controller, View view, File file) {
         MapHandler handler = new MapHandler();
         XMLParser parser = new XMLParser(handler);
         try {
@@ -26,8 +28,10 @@ public class NoMapState implements State {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-
-        controller.getSession().setMap(handler.getMap());
+        Session session = new Session();
+        session.addObserver(view);
+        session.setMap(handler.getMap());
+        controller.setSession(session);
         controller.setCurrentState(new MapLoadedState());
     }
 

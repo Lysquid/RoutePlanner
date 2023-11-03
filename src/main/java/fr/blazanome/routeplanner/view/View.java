@@ -1,6 +1,8 @@
 package fr.blazanome.routeplanner.view;
 
-public interface View {
+import fr.blazanome.routeplanner.observer.Observer;
+
+public interface View extends Observer {
 
     public void setDisableAddDelivery(boolean bool);
 

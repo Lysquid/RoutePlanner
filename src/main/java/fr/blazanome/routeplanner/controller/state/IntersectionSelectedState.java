@@ -1,4 +1,6 @@
 package fr.blazanome.routeplanner.controller.state;
+import fr.blazanome.routeplanner.model.Courier;
+import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.view.View;
 import javafx.scene.control.Button;
 
@@ -29,8 +31,9 @@ public class IntersectionSelectedState implements State {
     }
 
     @Override
-    public void addDelivery(Controller controller, View view) {
-        controller.addDelivery(this.selectedIntersection);
+    public void addDelivery(Controller controller, View view, Session session) {
+        Courier selectedCourier = session.getCouriers().get(0); // hard coded first courier
+        selectedCourier.addDelivery(session.getMap().getVertexId(this.selectedIntersection));
         view.setDisableAddDelivery(true);
     }
 

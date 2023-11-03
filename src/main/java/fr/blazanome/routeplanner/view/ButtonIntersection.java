@@ -1,9 +1,6 @@
 package fr.blazanome.routeplanner.view;
 
-import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Intersection;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;

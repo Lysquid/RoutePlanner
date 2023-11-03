@@ -1,24 +1,20 @@
 package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
 import fr.blazanome.routeplanner.model.IMap;
+import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.observer.Observable;
-import fr.blazanome.routeplanner.observer.Observer;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
 
-public class GraphicalView implements Observer, View {
+public class GraphicalView implements View {
 
     protected final Controller controller;
 
@@ -32,14 +28,8 @@ public class GraphicalView implements Observer, View {
 
     public GraphicalView() {
         this.controller = new Controller(this);
-        this.controller.getSession().addObserver(this); // observe the session
-
     }
 
-    @FXML
-    public void initialize() {
-        this.mapView.setController(this.controller);
-    }
     public void loadMap(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -58,7 +48,7 @@ public class GraphicalView implements Observer, View {
     }
 
     public void addDelivery(ActionEvent actionEvent) {
-        this.controller.addDeliveryAction();
+        this.controller.addDelivery();
     }
 
     public void compute(ActionEvent actionEvent) {
@@ -76,8 +66,11 @@ public class GraphicalView implements Observer, View {
 
     @Override
     public void update(Observable observable, Object message) {
-        if (message instanceof IMap map) {
-            this.mapView.draw(map);
+        if (message instanceof IMap) {
+            this.mapView.setUp((Session) observable);
+            this.mapView.draw((Session) observable);
+        } else if (message instanceof Session) {
+            this.mapView.draw((Session) observable);
         }
     }
 }

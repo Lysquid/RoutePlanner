@@ -8,10 +8,11 @@ import java.util.List;
 public class Session extends Observable {
 
     transient private IMap map;
-    private List<Courier> couriers;
+    private final List<Courier> couriers;
 
     public Session() {
         this.couriers = new ArrayList<>();
+        this.couriers.add(new Courier());
     }
 
     public IMap getMap() {
@@ -21,5 +22,17 @@ public class Session extends Observable {
     public void setMap(IMap map) {
         this.map = map;
         this.notifyObservers(map);
+    }
+
+    public List<Courier> getCouriers() {
+        return couriers;
+    }
+
+    public void addCourier(Courier courier) {
+        this.couriers.add(courier);
+    }
+
+    public void updatedPaths() {
+        this.notifyObservers(this);
     }
 }

@@ -1,12 +1,9 @@
 package fr.blazanome.routeplanner.view;
 
-import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.controller.state.MapLoadedState;
-import fr.blazanome.routeplanner.model.IMap;
+import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
-import fr.blazanome.routeplanner.observer.Observable;
-import fr.blazanome.routeplanner.observer.Observer;
+import fr.blazanome.routeplanner.model.Session;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -14,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -27,41 +23,45 @@ import java.util.List;
 
 
 public class MapView extends Pane {
-    boolean drawn = false;
 
-    Controller controller;
-    IMap map;
-    private Group root = new Group();
-    Rectangle warehouseItem;
-    private Button active = null;
+    private Session session;  // reference kept to redraw on cursor drag, zoom, etc (no event from controller)
+    private final Group root;
     double minX = Double.MAX_VALUE;
     double minY = Double.MAX_VALUE;
     double maxY = 0;
     double maxX = 0;
     private double initialX;
     private double initialY;
-    private boolean isDragging = false;
     private double offsetX = 0.0;
     private double offsetY = 0.0;
-    GraphicsContext gc;
-    Canvas canvas;
-    List<ButtonIntersection> buttonIntersectionList;
-    Scale zoomTransform = new Scale(1.0, 1.0); // Initial scale is 1.0
-    private ToggleGroup toggleGroup;
+    private final GraphicsContext gc;
+    private final Canvas canvas;
+    private List<ButtonIntersection> buttonIntersectionList;
+    private final Scale zoomTransform;
 
     //sets up listeners and the canvas
     public MapView() {
         //sets up the canvas and updates for wdith
-        canvas = new Canvas();
-        gc = canvas.getGraphicsContext2D();
+        this.canvas = new Canvas();
+        this.gc = canvas.getGraphicsContext2D();
+        this.root = new Group();
         this.getChildren().add(canvas);
-        widthProperty().addListener((observable, oldValue, newValue) -> redraw());
-        heightProperty().addListener((observable, oldValue, newValue) -> redraw());       // Handle mouse scroll events for zooming
+        this.getChildren().add(root);
+
+        Rectangle clippingRect = new Rectangle();
+        clippingRect.heightProperty().bind(this.heightProperty());
+        clippingRect.widthProperty().bind(this.widthProperty());
+        this.setClip(clippingRect);
+
+        widthProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
+        heightProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
+
+        // Handle mouse scroll events for zooming
         // Adds listener for zooming and dragging
+        this.zoomTransform = new Scale(1.0, 1.0);  // Initial scale is 1.0
         root.getTransforms().add(zoomTransform);
         setOnMousePressed(this::handleMousePressed);
         setOnMouseDragged(this::handleMouseDragged);
-        setOnMouseReleased(this::handleMouseReleased);
         setOnScroll(event -> {
             double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
             double scaleFactor = 1.05; // Adjust the zoom factor as needed
@@ -74,53 +74,51 @@ public class MapView extends Pane {
                 zoomTransform.setX(zoomTransform.getX() / scaleFactor);
                 zoomTransform.setY(zoomTransform.getY() / scaleFactor);
             }
-            redraw();
+            draw(this.session);
         });
-        this.buttonIntersectionList = new ArrayList<>();
-        this.toggleGroup = new ToggleGroup();
     }
 
     //General drawing section
+    public void setUp(Session session) {
 
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-    void draw(IMap map) {
-        //so that redraws don't happens before a first drawing is done
-        drawn = true;
-        this.map = map;
-        //sets up the canvas and finds the edges of the wanted map
-        canvas.setWidth(getWidth());
-        canvas.setHeight(getHeight());
-        Iterable<Intersection> iterableIntersection = map.getIntersections();
-        for (Intersection intersection : iterableIntersection) {
+        this.session = session;
+
+        this.buttonIntersectionList = new ArrayList<>();
+        ToggleGroup toggleGroup = new ToggleGroup();
+
+        for (Intersection intersection : session.getMap().getIntersections()) {
+            // compute the bounds of the map to display all intersection
             minX = Math.min(minX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
             minY = Math.min(minY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
             maxX = Math.max(maxX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
             maxY = Math.max(maxY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
-        }
-        //calls the drawing functions
-        this.drawPlainSegments(map.getSegments());
-        this.drawIntersections(iterableIntersection);
-        this.drawRoute(this.controller.getCurrentPath());
-        this.drawWarehouse(map.getWarehouse());
 
-        this.getChildren().add(root);
+            // create the buttons representing the intersections
+            ButtonIntersection button = new ButtonIntersection(this, intersection);
+            if (intersection == session.getMap().getWarehouse()) {
+                button.setId("warehouse");
+            }
+            toggleGroup.getToggles().add(button);
+            root.getChildren().add(button);
+            this.buttonIntersectionList.add(button);
+        }
     }
 
-    void redraw() {
-        //Checks that draw has been called then clears the canvas and redraws all the relevant points
-        if (drawn) {
-            canvas.setWidth(getWidth());
-            canvas.setHeight(getHeight());
-            // Re-draw everything on the canvas
-            gc.clearRect(0, 0, getWidth(), getHeight());
-            this.drawPlainSegments(this.map.getSegments());
-            this.updateIntersections();
-            this.drawRoute(this.controller.getCurrentPath());
-            this.updateWarehouse();
-        }
+    void draw(Session session) {
 
+        this.canvas.setWidth(getWidth());
+        this.canvas.setHeight(getHeight());
+
+        // Re-draw everything on the canvas
+        if (session != null) {
+            //Checks that draw has been called then clears the canvas and redraws all the relevant points
+            gc.clearRect(0, 0, getWidth(), getHeight());
+            this.drawPlainSegments(session.getMap().getSegments());
+            this.drawIntersections();
+            for (Courier courier : session.getCouriers()) {
+                this.drawRoute(courier.getCurrentPath());
+            }
+        }
     }
 
     //Specific kinds of drawing
@@ -166,21 +164,7 @@ public class MapView extends Pane {
         }
     }
 
-    void drawIntersections(Iterable<Intersection> iterableIntersection) {
-
-        int radius = 5;
-        for (Intersection intersection : iterableIntersection) {
-            ButtonIntersection bt = new ButtonIntersection(this, intersection);
-            this.toggleGroup.getToggles().add(bt);
-            bt.setLayoutX(positionX(intersection) - radius);
-            bt.setLayoutY(positionY(intersection) - radius);
-            root.getChildren().add(bt);
-            this.buttonIntersectionList.add(bt);
-        }
-
-    }
-
-    void updateIntersections() {
+    void drawIntersections() {
         int radius = 5;
         for (ButtonIntersection bt : buttonIntersectionList) {
             Intersection intersection = bt.getIntersection();
@@ -188,26 +172,8 @@ public class MapView extends Pane {
             double y = this.positionY(intersection) - radius;
             bt.setLayoutX(x);
             bt.setLayoutY(y);
-            // if a button comme out of the image it becomes invisible and can't be interacted with
-            bt.setVisible(!(x < -radius) && !(y < -radius));
-            bt.setDisable((x < -radius) || (y < -radius));
+            bt.setVisible(true);
         }
-
-    }
-
-    void drawWarehouse(Intersection warehouseLocation) {
-        warehouseItem = new Rectangle(8, 8);
-        warehouseItem.setLayoutX(positionX(warehouseLocation));
-        warehouseItem.setLayoutY(positionY(warehouseLocation));
-        root.getChildren().add(warehouseItem);
-    }
-
-    void updateWarehouse() {
-        double x = positionX(map.getWarehouse());
-        double y = positionY(map.getWarehouse());
-        warehouseItem.setLayoutX(x);
-        warehouseItem.setLayoutY(y);
-        warehouseItem.setVisible(!(x < -0) && !(y < -0));
     }
 
     //turns latitude and longitude into x and y coordinates
@@ -240,30 +206,24 @@ public class MapView extends Pane {
     private void handleMousePressed(MouseEvent event) {
         initialX = event.getSceneX();
         initialY = event.getSceneY();
-        isDragging = true;
     }
 
     private void handleMouseDragged(MouseEvent event) {
-        if (isDragging) {
+        if (event.isSecondaryButtonDown()) {
             double deltaX = event.getSceneX() - initialX;
             double deltaY = event.getSceneY() - initialY;
             offsetX = offsetX + deltaX;
             offsetY = offsetY + deltaY;
             // Iterate through child nodes and adjust their positions
-            redraw();
+            this.draw(this.session);
 
             initialX = event.getSceneX();
             initialY = event.getSceneY();
         }
     }
 
-    private void handleMouseReleased(MouseEvent event) {
-        isDragging = false;
-    }
-
-
     // boilerplate stuff to be able to fire a custom onAction
-    private ObjectProperty<EventHandler<ActionEvent>> propertyOnAction = new SimpleObjectProperty<EventHandler<ActionEvent>>();
+    private final ObjectProperty<EventHandler<ActionEvent>> propertyOnAction = new SimpleObjectProperty<>();
 
     public final ObjectProperty<EventHandler<ActionEvent>> onActionProperty() {
         return propertyOnAction;
@@ -277,19 +237,6 @@ public class MapView extends Pane {
         return propertyOnAction.get();
 
     }
-
-
-//    @Override
-//    public void update(Observable observable, Object message) {
-//        if (message instanceof MapLoadedState) {
-//            this.draw();
-//        }
-//
-//        if (message == null) {
-//            this.redraw();
-//        }
-//    }
-
      
 }
 
