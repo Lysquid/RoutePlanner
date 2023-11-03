@@ -18,7 +18,7 @@ HBox {
     -fx-padding: 10;
 }
 
-Map {
+MapView {
     -fx-background-color: #6be256;
     -fx-min-width: 800;
     -fx-min-height: 500;

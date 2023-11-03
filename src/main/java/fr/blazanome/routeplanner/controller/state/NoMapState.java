@@ -27,7 +27,7 @@ public class NoMapState implements State {
             e.printStackTrace();
         }
 
-        controller.setMap(handler.getMap());
+        controller.getSession().setMap(handler.getMap());
         controller.setCurrentState(new MapLoadedState());
     }
 

@@ -12,11 +12,9 @@ public class ButtonIntersection extends ToggleButton {
 
     private static final int RADIUS = 5;
     private static final Shape circle = new Circle(RADIUS);
-    private final Controller controller;
     private final Intersection intersection;
 
-    public ButtonIntersection(Controller controller, Intersection intersection) {
-        this.controller = controller;
+    public ButtonIntersection(MapView mapView, Intersection intersection) {
         this.intersection = intersection;
 
         this.setShape(ButtonIntersection.circle);
@@ -24,10 +22,10 @@ public class ButtonIntersection extends ToggleButton {
         this.setMinSize(2 * ButtonIntersection.RADIUS, 2 * ButtonIntersection.RADIUS);
 
         this.setOnAction(event -> {
-            ButtonIntersection button = (ButtonIntersection) event.getSource();
-            this.controller.selectIntersection(button.getIntersection());
+            mapView.onActionProperty().get().handle(event);
         });
     }
+
 
     public Intersection getIntersection() {
         return intersection;

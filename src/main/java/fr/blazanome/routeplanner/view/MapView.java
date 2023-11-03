@@ -7,6 +7,8 @@ import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
 import fr.blazanome.routeplanner.observer.Observable;
 import fr.blazanome.routeplanner.observer.Observer;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -24,10 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Map extends Pane implements Observer {
+public class MapView extends Pane {
     boolean drawn = false;
 
     Controller controller;
+    IMap map;
     private Group root = new Group();
     Rectangle warehouseItem;
     private Button active = null;
@@ -47,7 +50,7 @@ public class Map extends Pane implements Observer {
     private ToggleGroup toggleGroup;
 
     //sets up listeners and the canvas
-    public Map() {
+    public MapView() {
         //sets up the canvas and updates for wdith
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
@@ -81,15 +84,14 @@ public class Map extends Pane implements Observer {
 
     public void setController(Controller controller) {
         this.controller = controller;
-        this.controller.addObserver(this);
     }
-    void draw() {
+    void draw(IMap map) {
         //so that redraws don't happens before a first drawing is done
         drawn = true;
+        this.map = map;
         //sets up the canvas and finds the edges of the wanted map
         canvas.setWidth(getWidth());
         canvas.setHeight(getHeight());
-        IMap map = controller.getMap();
         Iterable<Intersection> iterableIntersection = map.getIntersections();
         for (Intersection intersection : iterableIntersection) {
             minX = Math.min(minX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
@@ -112,9 +114,8 @@ public class Map extends Pane implements Observer {
             canvas.setWidth(getWidth());
             canvas.setHeight(getHeight());
             // Re-draw everything on the canvas
-            IMap map = this.controller.getMap();
             gc.clearRect(0, 0, getWidth(), getHeight());
-            this.drawPlainSegments(map.getSegments());
+            this.drawPlainSegments(this.map.getSegments());
             this.updateIntersections();
             this.drawRoute(this.controller.getCurrentPath());
             this.updateWarehouse();
@@ -169,7 +170,7 @@ public class Map extends Pane implements Observer {
 
         int radius = 5;
         for (Intersection intersection : iterableIntersection) {
-            ButtonIntersection bt = new ButtonIntersection(this.controller, intersection);
+            ButtonIntersection bt = new ButtonIntersection(this, intersection);
             this.toggleGroup.getToggles().add(bt);
             bt.setLayoutX(positionX(intersection) - radius);
             bt.setLayoutY(positionY(intersection) - radius);
@@ -202,7 +203,6 @@ public class Map extends Pane implements Observer {
     }
 
     void updateWarehouse() {
-        IMap map = this.controller.getMap();
         double x = positionX(map.getWarehouse());
         double y = positionY(map.getWarehouse());
         warehouseItem.setLayoutX(x);
@@ -261,16 +261,34 @@ public class Map extends Pane implements Observer {
         isDragging = false;
     }
 
-    @Override
-    public void update(Observable observable, Object message) {
-        if (message instanceof MapLoadedState) {
-            this.draw();
-        }
 
-        if (message == null) {
-            this.redraw();
-        }
+    // boilerplate stuff to be able to fire a custom onAction
+    private ObjectProperty<EventHandler<ActionEvent>> propertyOnAction = new SimpleObjectProperty<EventHandler<ActionEvent>>();
+
+    public final ObjectProperty<EventHandler<ActionEvent>> onActionProperty() {
+        return propertyOnAction;
     }
+
+    public final void setOnAction(EventHandler<ActionEvent> handler) {
+        propertyOnAction.set(handler);
+    }
+
+    public final EventHandler<ActionEvent> getOnAction() {
+        return propertyOnAction.get();
+
+    }
+
+
+//    @Override
+//    public void update(Observable observable, Object message) {
+//        if (message instanceof MapLoadedState) {
+//            this.draw();
+//        }
+//
+//        if (message == null) {
+//            this.redraw();
+//        }
+//    }
 
      
 }

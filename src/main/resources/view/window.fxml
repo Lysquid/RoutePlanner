@@ -5,10 +5,10 @@
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
 
-<?import fr.blazanome.routeplanner.view.Map?>
+<?import fr.blazanome.routeplanner.view.MapView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.blazanome.routeplanner.view.FxController">
+            fx:controller="fr.blazanome.routeplanner.view.GraphicalView">
 
     <stylesheets>
         <URL value="@style.css" />
@@ -22,7 +22,6 @@
             <!-- Load Map -->
             <HBox styleClass="group">
                 <Button text="Load a map" onAction="#loadMap"/>
-                <Button text="Hard coded map" onAction="#loadHardCodedMap"/>
             </HBox>
 
             <!-- Controls -->
@@ -72,7 +71,7 @@
     </left>
 
     <center>
-        <Map fx:id="map"/>
+        <MapView fx:id="mapView" onAction="#selectIntersection"/>
     </center>
 
 </BorderPane>

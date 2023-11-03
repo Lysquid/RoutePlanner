@@ -1,4 +1,5 @@
 package fr.blazanome.routeplanner.controller.state;
+import fr.blazanome.routeplanner.view.View;
 import javafx.scene.control.Button;
 
 import fr.blazanome.routeplanner.controller.Controller;
@@ -16,7 +17,7 @@ public class IntersectionSelectedState implements State {
     }
 
     @Override
-    public void selectIntersection(Controller controller, Intersection intersection) {
+    public void selectIntersection(Controller controller, View view, Intersection intersection) {
 
         if(this.selectedIntersection.equals(intersection)) {
             controller.setCurrentState(new NoMapState()); // TODO : set to state with no intersection selected
@@ -24,11 +25,13 @@ public class IntersectionSelectedState implements State {
             System.out.println(intersection.getLatitude() + " ; " + intersection.getLongitude());
             controller.setCurrentState(new IntersectionSelectedState(intersection));
         }
+        view.setDisableAddDelivery(false);
     }
 
     @Override
-    public void addDelivery(Controller controller) {
+    public void addDelivery(Controller controller, View view) {
         controller.addDelivery(this.selectedIntersection);
+        view.setDisableAddDelivery(true);
     }
 
     @Override
