@@ -12,7 +12,6 @@ public class Session extends Observable {
 
     public Session() {
         this.couriers = new ArrayList<>();
-        this.couriers.add(new Courier());
     }
 
     public IMap getMap() {
@@ -30,6 +29,12 @@ public class Session extends Observable {
 
     public void addCourier(Courier courier) {
         this.couriers.add(courier);
+        this.notifyObservers(courier);
+    }
+
+    public void removeCourier(Courier courier) {
+        this.couriers.remove(courier);
+        this.notifyObservers(courier);
     }
 
     public void updatedPaths() {

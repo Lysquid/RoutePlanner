@@ -1,6 +1,7 @@
 package fr.blazanome.routeplanner.controller.state;
 
 import fr.blazanome.routeplanner.controller.Controller;
+import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.tools.MapHandler;
 import fr.blazanome.routeplanner.tools.XMLParser;
@@ -28,7 +29,13 @@ public class NoMapState implements State {
         }
         Session session = new Session();
         session.addObserver(view);
+
+        Courier courier1 = new Courier();
+        courier1.addObserver(view);
+        session.addCourier(courier1);
+
         session.setMap(handler.getMap());
+
         controller.setSession(session);
         controller.setCurrentState(new MapLoadedState());
     }

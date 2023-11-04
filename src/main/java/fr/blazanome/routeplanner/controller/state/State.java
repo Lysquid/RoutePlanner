@@ -34,18 +34,23 @@ public interface State {
         view.setDisableAddDelivery(false);
     }
 
-    default void addDelivery(Controller controller, View view, Session session) {
+    default void addDelivery(Controller controller, View view, Session session, Courier courier, Timeframe timeframe) {
     };
 
     default void compute(Session session) {
         for (Courier courier : session.getCouriers()) {
+            if (courier.getRequests().isEmpty())
+                continue;
             TourGenerationAlgorithm algorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
                     new TSP1());
 
-            List<Integer> vertices = new ArrayList<>(courier.getDeliveries());
+            List<Integer> vertices = new ArrayList<>();
             IMap map = session.getMap();
+            for (DeliveryRequest request: courier.getRequests()) {
+                vertices.add(map.getVertexId(request.getIntersection()));
+            }
             vertices.add(map.getVertexId(map.getWarehouse()));
-            List<Integer> path = algorithm.computeTour(session.getMap(), vertices);
+            List<Integer> path = algorithm.computeTour(map, vertices);
             List<Segment> segmentPath = new ArrayList<>(path.size() - 1);
             for (int i = 0; i < path.size() - 1; i++) {
                 segmentPath.add(map.getSegment(path.get(i), path.get(i + 1)));
@@ -56,5 +61,13 @@ public interface State {
         session.updatedPaths();
     }
 
-    public String toString();
+    String toString();
+
+    default void addCourier(Session session) {
+        session.addCourier(new Courier());
+    }
+
+    default void removeCourier(Session session, Courier courier) {
+        session.removeCourier(courier);
+    }
 }

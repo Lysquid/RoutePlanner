@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.URL?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="fr.blazanome.routeplanner.view.GraphicalView">
 
@@ -34,34 +35,47 @@
             <VBox styleClass="group">
                 <TextFlow>
                     <Text text="Number of couriers : "/>
-                    <Text text="0" fx:id="countCourier"/>
+                    <Text text="0" fx:id="countCouriers"/>
                 </TextFlow>
                 <HBox>
-                    <Button text="Add"/>
-                    <Button text="Remove"/>
+                    <Button text="Add" onAction="#addCourier"/>
+                    <Button text="Remove" onAction="#removeCourier"/>
                 </HBox>
             </VBox>
 
             <!-- Courier -->
             <VBox styleClass="group">
                 <Text text="Courier tour"/>
-                <ComboBox fx:id="deliveryCourier"/>
-                <TableView>
+                <ComboBox fx:id="selectedCourier" onAction="#selectCourier"/>
+                <TableView fx:id="deliveriesTable">
                     <columns>
-                        <TableColumn text="Coordinates"/>
-                        <TableColumn text="Time frame"/>
+                        <TableColumn text="Longitude">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="latitude"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Latitude">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="latitude"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Timeframe">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="timeframeLabel"/>
+                            </cellValueFactory>
+                        </TableColumn>
                     </columns>
                 </TableView>
 
                 <Text text="New delivery"/>
                 <GridPane hgap="10" vgap="10">
                     <Text text="At" GridPane.rowIndex="1"/>
-                    <ComboBox fx:id="deliveryTime" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Text text="To" GridPane.rowIndex="2"/>
                     <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 </GridPane>
                 <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
-                <Button text="Compute" fx:id="compute" disable="false" onAction="#compute"/>
+                <Button text="Compute" onAction="#compute"/>
 
             </VBox>
 

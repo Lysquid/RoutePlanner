@@ -1,33 +1,48 @@
 package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
+import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.model.Timeframe;
 import fr.blazanome.routeplanner.observer.Observable;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class GraphicalView implements View {
+public class GraphicalView implements View, Initializable {
 
     protected final Controller controller;
 
-    public Text countCourier;
+    public Text countCouriers;
     public MapView mapView;
-    public ComboBox<String> deliveryCourier;
-    public ComboBox<String> deliveryTime;
+    public ComboBox<Courier> selectedCourier;
+    public ComboBox<Timeframe> timeframe;
     public Label deliveryIntersection;
 
     public Button addDelivery;
+    public TableView deliveriesTable;
+
 
     public GraphicalView() {
         this.controller = new Controller(this);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.timeframe.setItems(FXCollections.observableArrayList(Timeframe.values()));
+        this.timeframe.setValue(Timeframe.H8);
     }
 
     public void loadMap(ActionEvent actionEvent) {
@@ -48,7 +63,7 @@ public class GraphicalView implements View {
     }
 
     public void addDelivery(ActionEvent actionEvent) {
-        this.controller.addDelivery();
+        this.controller.addDelivery(this.selectedCourier.getValue(), this.timeframe.getValue());
     }
 
     public void compute(ActionEvent actionEvent) {
@@ -67,10 +82,42 @@ public class GraphicalView implements View {
     @Override
     public void update(Observable observable, Object message) {
         if (message instanceof IMap) {
-            this.mapView.setUp((Session) observable);
-            this.mapView.draw((Session) observable);
+            Session session = (Session) observable;
+            this.mapView.setUp(session);
+            this.mapView.draw(session);
+            this.updateCouriers(session);
+            this.selectedCourier.setValue(session.getCouriers().get(0));
         } else if (message instanceof Session) {
             this.mapView.draw((Session) observable);
+        } else if (observable instanceof Courier courier) {
+            this.updateRequests();
+        } else if (observable instanceof Session session) {
+            this.updateCouriers(session);
         }
+    }
+
+    private void updateRequests() {
+        Courier courier = this.selectedCourier.getValue();
+        if (courier != null) {
+            this.deliveriesTable.setItems(FXCollections.observableArrayList(courier.getRequests()));
+        }
+    }
+
+    private void updateCouriers(Session session) {
+        this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
+        this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size()-1));
+        this.countCouriers.setText(String.valueOf(session.getCouriers().size()));
+    }
+
+    public void selectCourier(ActionEvent event) {
+        this.updateRequests();
+    }
+
+    public void addCourier(ActionEvent event) {
+        this.controller.addCourier();
+    }
+
+    public void removeCourier(ActionEvent event) {
+        this.controller.removeCourier(this.selectedCourier.getValue());
     }
 }

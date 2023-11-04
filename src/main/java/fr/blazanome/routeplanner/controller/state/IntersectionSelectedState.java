@@ -1,9 +1,7 @@
 package fr.blazanome.routeplanner.controller.state;
 
 import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.model.Courier;
-import fr.blazanome.routeplanner.model.Intersection;
-import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.view.View;
 
 public class IntersectionSelectedState implements State {
@@ -30,9 +28,8 @@ public class IntersectionSelectedState implements State {
     }
 
     @Override
-    public void addDelivery(Controller controller, View view, Session session) {
-        Courier selectedCourier = session.getCouriers().get(0); // hard coded first courier
-        selectedCourier.addDelivery(session.getMap().getVertexId(this.selectedIntersection));
+    public void addDelivery(Controller controller, View view, Session session, Courier courier, Timeframe timeframe) {
+        courier.addDelivery(new DeliveryRequest(this.selectedIntersection, timeframe));
         view.setDisableAddDelivery(true);
     }
 

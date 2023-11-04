@@ -2,9 +2,7 @@ package fr.blazanome.routeplanner.controller;
 
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
-import fr.blazanome.routeplanner.model.IMap;
-import fr.blazanome.routeplanner.model.Intersection;
-import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.view.View;
 
 import java.io.File;
@@ -47,8 +45,8 @@ public class Controller {
         this.currentState.selectIntersection(this, this.view, intersection);
     }
 
-    public void addDelivery() {
-        this.currentState.addDelivery(this, this.view, this.session);
+    public void addDelivery(Courier courier, Timeframe timeframe) {
+        this.currentState.addDelivery(this, this.view, this.session, courier, timeframe);
     }
 
     public CommandStack getCommandStack() {
@@ -63,4 +61,11 @@ public class Controller {
         this.session = session;
     }
 
+    public void addCourier() {
+        this.currentState.addCourier(this.session);
+    }
+
+    public void removeCourier(Courier courier) {
+        this.currentState.removeCourier(this.session, courier);
+    }
 }

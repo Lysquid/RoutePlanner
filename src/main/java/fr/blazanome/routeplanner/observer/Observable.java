@@ -12,7 +12,6 @@ public class Observable {
 
     public void addObserver(Observer o) {
         this.observers.add(o);
-        System.out.println(observers);
     }
 
     public void notifyObservers(Object message) {
