@@ -43,23 +43,23 @@ public class MapView extends Pane {
     public MapView() {
         //sets up the canvas and updates for wdith
         this.canvas = new Canvas();
-        this.gc = canvas.getGraphicsContext2D();
+        this.gc = this.canvas.getGraphicsContext2D();
         this.root = new Group();
-        this.getChildren().add(canvas);
-        this.getChildren().add(root);
+        this.getChildren().add(this.canvas);
+        this.getChildren().add(this.root);
 
         Rectangle clippingRect = new Rectangle();
         clippingRect.heightProperty().bind(this.heightProperty());
         clippingRect.widthProperty().bind(this.widthProperty());
         this.setClip(clippingRect);
 
-        widthProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
-        heightProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
+        this.widthProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
+        this.heightProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
 
         // Handle mouse scroll events for zooming
         // Adds listener for zooming and dragging
         this.zoomTransform = new Scale(1.0, 1.0);  // Initial scale is 1.0
-        root.getTransforms().add(zoomTransform);
+        this.root.getTransforms().add(this.zoomTransform);
         setOnMousePressed(this::handleMousePressed);
         setOnMouseDragged(this::handleMouseDragged);
         setOnScroll(event -> {
@@ -67,12 +67,12 @@ public class MapView extends Pane {
             double scaleFactor = 1.05; // Adjust the zoom factor as needed
             if (delta > 0) {
                 // Zoom in
-                zoomTransform.setX(zoomTransform.getX() * scaleFactor);
-                zoomTransform.setY(zoomTransform.getY() * scaleFactor);
+                this.zoomTransform.setX(this.zoomTransform.getX() * scaleFactor);
+                this.zoomTransform.setY(this.zoomTransform.getY() * scaleFactor);
             } else if (delta < 0) {
                 // Zoom out
-                zoomTransform.setX(zoomTransform.getX() / scaleFactor);
-                zoomTransform.setY(zoomTransform.getY() / scaleFactor);
+                this.zoomTransform.setX(this.zoomTransform.getX() / scaleFactor);
+                this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
             }
             draw(this.session);
         });
@@ -88,10 +88,10 @@ public class MapView extends Pane {
 
         for (Intersection intersection : session.getMap().getIntersections()) {
             // compute the bounds of the map to display all intersection
-            minX = Math.min(minX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
-            minY = Math.min(minY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
-            maxX = Math.max(maxX, ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
-            maxY = Math.max(maxY, ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
+            this.minX = Math.min(this.minX, this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
+            this.minY = Math.min(this.minY, this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
+            this.maxX = Math.max(this.maxX, this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()));
+            this.maxY = Math.max(this.maxY, this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()));
 
             // create the buttons representing the intersections
             ButtonIntersection button = new ButtonIntersection(this, intersection);
@@ -99,20 +99,20 @@ public class MapView extends Pane {
                 button.setId("warehouse");
             }
             toggleGroup.getToggles().add(button);
-            root.getChildren().add(button);
+            this.root.getChildren().add(button);
             this.buttonIntersectionList.add(button);
         }
     }
 
     void draw(Session session) {
 
-        this.canvas.setWidth(getWidth());
-        this.canvas.setHeight(getHeight());
+        this.canvas.setWidth(this.getWidth());
+        this.canvas.setHeight(this.getHeight());
 
         // Re-draw everything on the canvas
         if (session != null) {
             //Checks that draw has been called then clears the canvas and redraws all the relevant points
-            gc.clearRect(0, 0, getWidth(), getHeight());
+            this.gc.clearRect(0, 0, this.getWidth(), this.getHeight());
             this.drawPlainSegments(session.getMap().getSegments());
             this.drawIntersections();
             for (Courier courier : session.getCouriers()) {
@@ -125,19 +125,19 @@ public class MapView extends Pane {
 
     void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
-            gc.setStroke(Color.BLACK);
-            gc.setLineWidth(2);
+            this.gc.setStroke(Color.BLACK);
+            this.gc.setLineWidth(2);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
 
             // Calculate scaled positions for the segments
-            double scaledX1 = positionX(start) * zoomTransform.getX();
-            double scaledY1 = positionY(start) * zoomTransform.getY();
-            double scaledX2 = positionX(end) * zoomTransform.getX();
-            double scaledY2 = positionY(end) * zoomTransform.getY();
+            double scaledX1 = this.positionX(start) * this.zoomTransform.getX();
+            double scaledY1 = this.positionY(start) * this.zoomTransform.getY();
+            double scaledX2 = this.positionX(end) * this.zoomTransform.getX();
+            double scaledY2 = this.positionY(end) * this.zoomTransform.getY();
 
             // Draw the scaled segment
-            gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
+            this.gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
         }
 
     }
@@ -150,15 +150,15 @@ public class MapView extends Pane {
             //i=i+1.0/personeCount;
             //Normally the changing of the Colour would happen for every route, here I did it on every step of the route to demonstrate how it works
             Color c = new Color(1 - i, i, i, 1.0);
-            gc.setStroke(c);
-            gc.setLineWidth(5);
+            this.gc.setStroke(c);
+            this.gc.setLineWidth(5);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
             // Calculate scaled positions for the segments
-            double scaledX1 = positionX(start) * zoomTransform.getX();
-            double scaledY1 = positionY(start) * zoomTransform.getY();
-            double scaledX2 = positionX(end) * zoomTransform.getX();
-            double scaledY2 = positionY(end) * zoomTransform.getY();
+            double scaledX1 = this.positionX(start) * this.zoomTransform.getX();
+            double scaledY1 = this.positionY(start) * this.zoomTransform.getY();
+            double scaledX2 = this.positionX(end) * this.zoomTransform.getX();
+            double scaledY2 = this.positionY(end) * this.zoomTransform.getY();
             // Draw the scaled segment
             gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
         }
@@ -166,7 +166,7 @@ public class MapView extends Pane {
 
     void drawIntersections() {
         int radius = 5;
-        for (ButtonIntersection bt : buttonIntersectionList) {
+        for (ButtonIntersection bt : this.buttonIntersectionList) {
             Intersection intersection = bt.getIntersection();
             double x = this.positionX(intersection) - radius;
             double y = this.positionY(intersection) - radius;
@@ -188,37 +188,37 @@ public class MapView extends Pane {
 
     //Calculate from all the x and y coordinates where to place the item on the screen. Doesn't take into account zooming
     double positionX(Intersection intersection) {
-        return ratioWidth() * (0.05 + 0.90 * ((ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - minX) / (maxX - minX))) + offsetX/zoomTransform.getX();
+        return this.ratioWidth() * (0.05 + 0.90 * ((this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - this.minX) / (this.maxX - this.minX))) + this.offsetX/this.zoomTransform.getX();
     }
 
     double positionY(Intersection intersection) {
-        return ratioHeight()* (0.05 + 0.90 * ((ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - minY) / (maxY - minY))) + offsetY/zoomTransform.getY();
+        return this.ratioHeight()* (0.05 + 0.90 * ((this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - this.minY) / (this.maxY - this.minY))) + this.offsetY/this.zoomTransform.getY();
 
     }
     double ratioHeight(){
-        return Math.min(this.getHeight(),this.getWidth()*(maxY-minY)/(maxX-minX));
+        return Math.min(this.getHeight(),this.getWidth()*(this.maxY-this.minY)/(this.maxX-this.minX));
     }
     double ratioWidth(){
-        return Math.min(this.getWidth(),this.getHeight()*(maxX-minX)/(maxY-minY));
+        return Math.min(this.getWidth(),this.getHeight()*(this.maxX-this.minX)/(this.maxY-this.minY));
     }
 
     //Action to make the dragging possible
     private void handleMousePressed(MouseEvent event) {
-        initialX = event.getSceneX();
-        initialY = event.getSceneY();
+        this.initialX = event.getSceneX();
+        this.initialY = event.getSceneY();
     }
 
     private void handleMouseDragged(MouseEvent event) {
         if (event.isSecondaryButtonDown()) {
-            double deltaX = event.getSceneX() - initialX;
-            double deltaY = event.getSceneY() - initialY;
-            offsetX = offsetX + deltaX;
-            offsetY = offsetY + deltaY;
+            double deltaX = event.getSceneX() - this.initialX;
+            double deltaY = event.getSceneY() - this.initialY;
+            this.offsetX = this.offsetX + deltaX;
+            this.offsetY = this.offsetY + deltaY;
             // Iterate through child nodes and adjust their positions
             this.draw(this.session);
 
-            initialX = event.getSceneX();
-            initialY = event.getSceneY();
+            this.initialX = event.getSceneX();
+            this.initialY = event.getSceneY();
         }
     }
 
@@ -226,17 +226,17 @@ public class MapView extends Pane {
     private final ObjectProperty<EventHandler<ActionEvent>> propertyOnAction = new SimpleObjectProperty<>();
 
     public final ObjectProperty<EventHandler<ActionEvent>> onActionProperty() {
-        return propertyOnAction;
+        return this.propertyOnAction;
     }
-
+    //says it's unused by getting rid of it seems to cause an error
     public final void setOnAction(EventHandler<ActionEvent> handler) {
-        propertyOnAction.set(handler);
+        this.propertyOnAction.set(handler);
     }
 
     public final EventHandler<ActionEvent> getOnAction() {
-        return propertyOnAction.get();
+        return this.propertyOnAction.get();
 
     }
-     
+
 }
 
