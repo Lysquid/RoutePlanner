@@ -38,18 +38,7 @@ public interface State {
         for (Courier courier : session.getCouriers()) {
             if (courier.getRequests().isEmpty())
                 continue;
-            List<Integer> vertices = new ArrayList<>();
             IMap map = session.getMap();
-            for (DeliveryRequest request: courier.getRequests()) {
-                vertices.add(map.getVertexId(request.getIntersection()));
-            }
-            vertices.add(map.getVertexId(map.getWarehouse()));
-            // List<Integer> path = algorithm.computeTour(map, vertices);
-            // List<Segment> segmentPath = new ArrayList<>(path.size() - 1);
-            // for (int i = 0; i < path.size() - 1; i++) {
-            //     segmentPath.add(map.getSegment(path.get(i), path.get(i + 1)));
-            // }
-
             Route route = algorithm.computeTour(map, courier.getRequests());
             courier.setRoute(route);
         }
