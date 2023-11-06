@@ -4,6 +4,8 @@ import fr.blazanome.routeplanner.model.AdjacencyListMap;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
+import fr.blazanome.routeplanner.model.map.MapBuilder;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -83,9 +85,8 @@ public class MapHandler extends AbstractMapHandler {
     }
 
     @Override
-    public IMap getMap() {
-        AdjacencyListMap map = new AdjacencyListMap();
-        this.intersections.values().forEach(map::addIntersection);
+    public void buildMap(MapBuilder builder) {
+        this.intersections.values().forEach(builder::addIntersection);
 
         this.segments.stream().map(parser_segment -> {
             if (!this.intersections.containsKey(parser_segment.destination)
@@ -98,9 +99,8 @@ public class MapHandler extends AbstractMapHandler {
                     parser_segment.name,
                     this.intersections.get(parser_segment.origin));
         })
-                .forEach(map::addSegment);
+                .forEach(builder::addSegment);
 
-        map.setWarehouse(this.intersections.get(this.warehouse));
-        return map;
+        builder.setWarehouse(this.intersections.get(this.warehouse));
     }
 }

@@ -2,6 +2,8 @@ package fr.blazanome.routeplanner.model;
 
 import fr.blazanome.routeplanner.graph.AdjacencyLists;
 import fr.blazanome.routeplanner.graph.Neighbor;
+import fr.blazanome.routeplanner.model.map.MapBuilder;
+import fr.blazanome.routeplanner.model.map.MapBuilderFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,5 +88,43 @@ public class AdjacencyListMap extends AdjacencyLists<AdjacencyListMap.NeighborWi
         public Segment getSegment() {
             return segment;
         }
+    }
+
+    public static class BuilderFactory implements MapBuilderFactory {
+
+        @Override
+        public MapBuilder createBuilder() {
+            return new Builder();
+        }
+
+    }
+
+    public static class Builder implements MapBuilder {
+        private AdjacencyListMap map;
+
+        public Builder() {
+            this.map = new AdjacencyListMap();
+        }
+
+        @Override
+        public void addIntersection(Intersection intersection) {
+            this.map.addIntersection(intersection);
+        }
+
+        @Override
+        public void addSegment(Segment segment) {
+            this.map.addSegment(segment);
+        }
+
+        @Override
+        public void setWarehouse(Intersection intersection) {
+            this.map.setWarehouse(intersection);
+        }
+
+        @Override
+        public IMap build() {
+            return this.map;
+        }
+
     }
 }

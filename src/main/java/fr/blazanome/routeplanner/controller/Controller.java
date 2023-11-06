@@ -3,6 +3,7 @@ package fr.blazanome.routeplanner.controller;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.*;
+import fr.blazanome.routeplanner.tools.XMLMapParser;
 import fr.blazanome.routeplanner.view.View;
 
 import java.io.File;
@@ -15,10 +16,14 @@ public class Controller {
     private CommandStack commandStack;
     private IMap map;
 
+    private final XMLMapParser mapParser;
+
     public Controller(View view) {
         this.view = view;
         this.currentState = new NoMapState();
         this.commandStack = new CommandStack();
+
+        this.mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
     }
 
     public void setCurrentState(State newState) {
@@ -67,5 +72,9 @@ public class Controller {
 
     public void removeCourier(Courier courier) {
         this.currentState.removeCourier(this.session, courier);
+    }
+
+    public XMLMapParser getMapParser() {
+        return mapParser;
     }
 }

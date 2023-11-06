@@ -1,10 +1,11 @@
 package fr.blazanome.routeplanner.test.tools;
 
+import fr.blazanome.routeplanner.model.AdjacencyListMap;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
-import fr.blazanome.routeplanner.tools.MapHandler;
-import fr.blazanome.routeplanner.tools.XMLParser;
+import fr.blazanome.routeplanner.model.map.MapBuilderFactory;
+import fr.blazanome.routeplanner.tools.XMLMapParser;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
@@ -22,11 +23,9 @@ public class XMLParserTest {
 
     @Test
     public void testParse() throws ParserConfigurationException, IOException, SAXException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
-        xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTest.xml"));
-
-        IMap map = mapHandler.getMap();
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
+        IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTest.xml"));
 
         List<Intersection> intersections = StreamSupport.stream(map.getIntersections().spliterator(), false)
                 .toList();
@@ -50,60 +49,53 @@ public class XMLParserTest {
 
     @Test
     public void testParserEmptyMap() throws ParserConfigurationException, IOException, SAXException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
-        xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyMap.xml"));
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
+        IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyMap.xml"));
 
-        IMap map = mapHandler.getMap();
         assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
         assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
     public void testParserEmptyXML() throws ParserConfigurationException, IOException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
 
-        try {
-            xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyXML.xml"));
-            fail();
-        } catch (SAXException ignored) {
-        }
+        assertThrows(SAXException.class, () -> xmlParser
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyXML.xml")));
 
-        IMap map = mapHandler.getMap();
-        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
-        assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
     public void testParserWrongElement1() throws ParserConfigurationException, IOException, SAXException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
-        xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement1.xml"));
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
+        IMap map = xmlParser
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement1.xml"));
 
-        IMap map = mapHandler.getMap();
         assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
         assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
     public void testParserWrongElement2() throws ParserConfigurationException, IOException, SAXException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
-        xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement2.xml"));
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
+        IMap map = xmlParser
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement2.xml"));
 
-        IMap map = mapHandler.getMap();
         assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
         assertEquals(0, StreamSupport.stream(map.getIntersections().spliterator(), false).count());
     }
 
     @Test
     public void testParserIntersectionsOnly() throws ParserConfigurationException, IOException, SAXException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
-        xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestIntersectionsOnly.xml"));
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
+        IMap map = xmlParser.parse(
+                new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestIntersectionsOnly.xml"));
 
-        IMap map = mapHandler.getMap();
         List<Intersection> intersections = StreamSupport.stream(map.getIntersections().spliterator(), false)
                 .toList();
 
@@ -118,10 +110,10 @@ public class XMLParserTest {
 
     @Test
     public void testParserSegmentsOnly() throws ParserConfigurationException, IOException, SAXException {
-        MapHandler mapHandler = new MapHandler();
-        XMLParser xmlParser = new XMLParser(mapHandler);
-        xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestSegmentsOnly.xml"));
+        MapBuilderFactory mapBuilderFactory = new AdjacencyListMap.BuilderFactory();
+        XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
 
-        assertThrows(RuntimeException.class, mapHandler::getMap);
+        assertThrows(RuntimeException.class, () -> xmlParser
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestSegmentsOnly.xml")));
     }
 }
