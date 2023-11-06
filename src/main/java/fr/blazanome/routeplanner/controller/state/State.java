@@ -56,7 +56,8 @@ public interface State {
                 segmentPath.add(map.getSegment(path.get(i), path.get(i + 1)));
             }
 
-            courier.setCurrentPath(segmentPath);
+            Route route = new Route(segmentPath, new ArrayList<>());
+            courier.setRoute(route);
         }
         session.updatedPaths();
     }

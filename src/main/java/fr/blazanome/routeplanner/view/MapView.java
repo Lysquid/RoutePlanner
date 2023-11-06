@@ -116,7 +116,9 @@ public class MapView extends Pane {
             this.drawPlainSegments(session.getMap().getSegments());
             this.drawIntersections();
             for (Courier courier : session.getCouriers()) {
-                this.drawRoute(courier.getCurrentPath());
+                if (courier.getRoute() != null) {
+                    this.drawRoute(courier.getRoute().getPath());
+                }
             }
         }
     }

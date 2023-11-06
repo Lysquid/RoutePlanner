@@ -9,24 +9,17 @@ public class Courier extends Observable {
 
     static int count = 0;
 
-    private List<Segment> currentPath;
+    private Route route;
     private List<DeliveryRequest> requests;
     private final int id;
 
     public Courier() {
         this.requests = new ArrayList<>();
-        this.currentPath = new ArrayList<>();
+        this.route = null;
         Courier.count += 1;
         this.id = count;
     }
 
-    public List<Segment> getCurrentPath() {
-        return currentPath;
-    }
-
-    public void setCurrentPath(List<Segment> currentPath) {
-        this.currentPath = currentPath;
-    }
 
     public List<DeliveryRequest> getRequests() {
         return requests;
@@ -36,6 +29,19 @@ public class Courier extends Observable {
         this.requests.add(request);
         this.notifyObservers(request);
     }
+
+    /**
+     * @return the computed route for the given Courier or null if not alreay computed
+     */
+    public Route getRoute() {
+        return this.route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+        this.notifyObservers(route);
+    }
+
 
     @Override
     public String toString() {
