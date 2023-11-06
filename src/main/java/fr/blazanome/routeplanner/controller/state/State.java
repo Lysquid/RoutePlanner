@@ -1,9 +1,6 @@
 package fr.blazanome.routeplanner.controller.state;
 
-import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
-import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
-import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.view.View;
@@ -37,13 +34,10 @@ public interface State {
     default void addDelivery(Controller controller, View view, Session session, Courier courier, Timeframe timeframe) {
     };
 
-    default void compute(Session session) {
+    default void compute(TourGenerationAlgorithm algorithm, Session session) {
         for (Courier courier : session.getCouriers()) {
             if (courier.getRequests().isEmpty())
                 continue;
-            TourGenerationAlgorithm algorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
-                    new TSP1());
-
             List<Integer> vertices = new ArrayList<>();
             IMap map = session.getMap();
             for (DeliveryRequest request: courier.getRequests()) {

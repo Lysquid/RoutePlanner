@@ -1,5 +1,9 @@
 package fr.blazanome.routeplanner.controller;
 
+import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
+import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
+import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
+import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.*;
@@ -14,7 +18,8 @@ public class Controller {
     private Session session;
     public State currentState;
     private CommandStack commandStack;
-    private IMap map;
+
+    private final TourGenerationAlgorithm tourGenerationAlgorithm;
 
     private final XMLMapParser mapParser;
 
@@ -24,6 +29,8 @@ public class Controller {
         this.commandStack = new CommandStack();
 
         this.mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
+        this.tourGenerationAlgorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
+                new TSP1());
     }
 
     public void setCurrentState(State newState) {
@@ -43,7 +50,7 @@ public class Controller {
     }
 
     public void compute() {
-        this.currentState.compute(this.session);
+        this.currentState.compute(this.tourGenerationAlgorithm, this.session);
     }
 
     public void selectIntersection(Intersection intersection) {
@@ -75,6 +82,10 @@ public class Controller {
     }
 
     public XMLMapParser getMapParser() {
-        return mapParser;
+        return this.mapParser;
+    }
+
+    public TourGenerationAlgorithm getTourGenerationAlgorithm() {
+        return this.tourGenerationAlgorithm;
     }
 }
