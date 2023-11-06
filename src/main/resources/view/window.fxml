@@ -47,35 +47,64 @@
             <VBox styleClass="group">
                 <Text text="Courier tour"/>
                 <ComboBox fx:id="selectedCourier" onAction="#selectCourier"/>
-                <TableView fx:id="deliveriesTable">
-                    <columns>
-                        <TableColumn text="Longitude">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="latitude"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Latitude">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="latitude"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Timeframe">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="timeframeLabel"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                    </columns>
-                </TableView>
-
-                <Text text="New delivery"/>
-                <GridPane hgap="10" vgap="10">
-                    <Text text="At" GridPane.rowIndex="1"/>
-                    <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Text text="To" GridPane.rowIndex="2"/>
-                    <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                </GridPane>
-                <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
-                <Button text="Compute" onAction="#compute"/>
+                <TabPane>
+                    <Tab closable="false" text="Request">
+                        <VBox styleClass="group">
+                            <TableView fx:id="deliveriesTable">
+                                <columns>
+                                    <TableColumn text="Longitude">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="latitude"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Latitude">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="latitude"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Timeframe">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="timeframeLabel"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                            <Text text="New delivery"/>
+                            <GridPane hgap="10" vgap="10">
+                                <Text text="At" GridPane.rowIndex="1"/>
+                                <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Text text="To" GridPane.rowIndex="2"/>
+                                <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            </GridPane>
+                            <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
+                            <Button text="Compute" onAction="#compute"/>
+                        </VBox>
+                    </Tab>
+                    <Tab closable="false" text="Planning">
+                        
+                        <VBox styleClass="group">
+                            <TableView fx:id="planningTable">
+                                <columns>
+                                    <TableColumn text="Longitude">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="latitude"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Latitude">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="latitude"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Time">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="deliveryTime"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+                </TabPane>
 
             </VBox>
 

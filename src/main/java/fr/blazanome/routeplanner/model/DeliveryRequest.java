@@ -27,6 +27,6 @@ public class DeliveryRequest {
     }
 
     public String getTimeframeLabel() {
-        return this.timeframe.label;
+        return this.timeframe.getLabel();
     }
 }

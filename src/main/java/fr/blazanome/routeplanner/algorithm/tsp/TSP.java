@@ -15,10 +15,9 @@ public interface TSP {
 	void searchSolution(int timeLimit, Graph g);
 	
 	/**
-	 * @param i
-	 * @return the ith visited vertex in the solution computed by <code>searchSolution</code> 
-	 * (-1 if <code>searcheSolution</code> has not been called yet, or if i < 0 or i >= g.getNbSommets())
-	 */
+	 * @param
+	 * @return 
+     */
 	List<Integer> getSolution();
 	
 	/** 

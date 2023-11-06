@@ -26,7 +26,7 @@ public class AdjacencyListPathGraph extends AdjacencyLists<AdjacencyListPathGrap
     }
 
     @Override
-    public Iterable<Integer> getPath(int start, int end) {
+    public List<Integer> getPath(int start, int end) {
         NeighborWithPath neighbor = this.getCustomNeighbor(start, end);
         return neighbor != null ? neighbor.getPath() : null;
     }

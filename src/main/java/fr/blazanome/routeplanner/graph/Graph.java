@@ -1,5 +1,10 @@
 package fr.blazanome.routeplanner.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
+
 /**
  * Graph
  * Represents a simple graph composed of edges, vertices and a cost function
@@ -42,5 +47,4 @@ public interface Graph {
     default boolean isArc(int start, int end) {
         return getCost(start, end) >= 0;
     }
-
 }

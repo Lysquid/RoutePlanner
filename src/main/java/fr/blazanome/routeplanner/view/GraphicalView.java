@@ -2,6 +2,8 @@ package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Courier;
+import fr.blazanome.routeplanner.model.Delivery;
+import fr.blazanome.routeplanner.model.DeliveryRequest;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.model.Timeframe;
@@ -32,7 +34,8 @@ public class GraphicalView implements View, Initializable {
     public Label deliveryIntersection;
 
     public Button addDelivery;
-    public TableView deliveriesTable;
+    public TableView<DeliveryRequest> deliveriesTable;
+    public TableView<Delivery> planningTable;
 
 
     public GraphicalView() {
@@ -100,6 +103,11 @@ public class GraphicalView implements View, Initializable {
         Courier courier = this.selectedCourier.getValue();
         if (courier != null) {
             this.deliveriesTable.setItems(FXCollections.observableArrayList(courier.getRequests()));
+            if (courier.getRoute() != null) {
+                this.planningTable.setItems(FXCollections.observableArrayList(courier.getRoute().getPlanning()));
+            } else {
+                this.planningTable.setItems(FXCollections.emptyObservableList());
+            }
         }
     }
 

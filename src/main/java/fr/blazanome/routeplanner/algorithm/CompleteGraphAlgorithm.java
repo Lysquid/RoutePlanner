@@ -1,5 +1,7 @@
 package fr.blazanome.routeplanner.algorithm;
 
+import java.util.List;
+
 import fr.blazanome.routeplanner.graph.Graph;
 import fr.blazanome.routeplanner.graph.PathGraph;
 
@@ -18,5 +20,5 @@ public interface CompleteGraphAlgorithm {
      * @return The complete graph composed of the requested vertices and with the
      * edges being the shortest path between them
      */
-    public PathGraph computeCompleteGraph(Graph graph, Iterable<Integer> finalVertices);
+    public PathGraph computeCompleteGraph(Graph graph, List<Integer> finalVertices);
 }

@@ -44,13 +44,13 @@ public interface State {
                 vertices.add(map.getVertexId(request.getIntersection()));
             }
             vertices.add(map.getVertexId(map.getWarehouse()));
-            List<Integer> path = algorithm.computeTour(map, vertices);
-            List<Segment> segmentPath = new ArrayList<>(path.size() - 1);
-            for (int i = 0; i < path.size() - 1; i++) {
-                segmentPath.add(map.getSegment(path.get(i), path.get(i + 1)));
-            }
+            // List<Integer> path = algorithm.computeTour(map, vertices);
+            // List<Segment> segmentPath = new ArrayList<>(path.size() - 1);
+            // for (int i = 0; i < path.size() - 1; i++) {
+            //     segmentPath.add(map.getSegment(path.get(i), path.get(i + 1)));
+            // }
 
-            Route route = new Route(segmentPath, new ArrayList<>());
+            Route route = algorithm.computeTour(map, courier.getRequests());
             courier.setRoute(route);
         }
         session.updatedPaths();

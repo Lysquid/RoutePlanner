@@ -1,6 +1,8 @@
 package fr.blazanome.routeplanner.algorithm;
 
-import fr.blazanome.routeplanner.graph.Graph;
+import fr.blazanome.routeplanner.model.DeliveryRequest;
+import fr.blazanome.routeplanner.model.IMap;
+import fr.blazanome.routeplanner.model.Route;
 
 import java.util.List;
 
@@ -15,5 +17,5 @@ public interface TourGenerationAlgorithm {
      * going through each vertices. Two vertices next to each other in
      * the list are guarrented to be neighbors
      */
-    List<Integer> computeTour(Graph graph, Iterable<Integer> vertices);
+    Route computeTour(IMap map, List<DeliveryRequest> vertices);
 }

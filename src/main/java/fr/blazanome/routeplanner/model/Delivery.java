@@ -21,5 +21,18 @@ public class Delivery {
         return time;
     }
 
+    public String getDeliveryTime() {
+        int h = this.time / 60;
+        int m = this.time % 60;
+        return String.format("%02d:%02d", h, m);
+    }
+
+    public double getLongitude() {
+        return this.request.getLongitude();
+    }
+
+    public double getLatitude() {
+        return this.request.getLatitude();
+    }
 
 }

@@ -1,5 +1,7 @@
 package fr.blazanome.routeplanner.graph;
 
+import java.util.List;
+
 /**
  * PathGraph
  *
@@ -15,5 +17,5 @@ public interface PathGraph extends Graph {
      * @return the list of vertices in the parent graph representing the path
      *         between start and end
      */
-    Iterable<Integer> getPath(int start, int end);
+    List<Integer> getPath(int start, int end);
 }

@@ -13,12 +13,10 @@ import java.util.*;
 public class DjikstraCompleteGraphAlgorithm implements CompleteGraphAlgorithm {
 
     @Override
-    public PathGraph computeCompleteGraph(Graph parentGraph, Iterable<Integer> finalVertices) {
-        List<Integer> vertices = new ArrayList<>();
+    public PathGraph computeCompleteGraph(Graph parentGraph, List<Integer> vertices) {
         Map<Integer, Integer> vertexIdConversion = new HashMap<>(); // From parent graph index to new graph index
         int i = 0;
-        for (int vertex : finalVertices) {
-            vertices.add(vertex);
+        for (int vertex : vertices) {
             vertexIdConversion.put(vertex, i);
             i++;
         }
