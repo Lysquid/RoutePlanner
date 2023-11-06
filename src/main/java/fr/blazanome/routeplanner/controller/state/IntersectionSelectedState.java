@@ -1,5 +1,7 @@
 package fr.blazanome.routeplanner.controller.state;
 
+import fr.blazanome.routeplanner.controller.AddDeliveryCommand;
+import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.view.View;
@@ -28,8 +30,8 @@ public class IntersectionSelectedState implements State {
     }
 
     @Override
-    public void addDelivery(Controller controller, View view, Session session, Courier courier, Timeframe timeframe) {
-        courier.addDelivery(new DeliveryRequest(this.selectedIntersection, timeframe));
+    public void addDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
+        commandStack.add(new AddDeliveryCommand(courier, selectedIntersection, timeframe));
         view.setDisableAddDelivery(true);
     }
 

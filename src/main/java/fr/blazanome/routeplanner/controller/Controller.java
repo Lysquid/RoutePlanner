@@ -42,11 +42,11 @@ public class Controller {
     }
 
     public void undo() {
-        this.currentState.undo(this);
+        this.currentState.undo(this.commandStack);
     }
 
     public void redo() {
-        this.currentState.redo(this);
+        this.currentState.redo(this.commandStack);
     }
 
     public void compute() {
@@ -58,7 +58,11 @@ public class Controller {
     }
 
     public void addDelivery(Courier courier, Timeframe timeframe) {
-        this.currentState.addDelivery(this, this.view, this.session, courier, timeframe);
+        this.currentState.addDelivery(this.view, this.session, courier, timeframe, this.commandStack);
+    }
+
+    public void removeDelivery(Courier courier, Timeframe timeframe) {
+        this.currentState.removeDelivery(this.view, this.session, courier, timeframe, this.commandStack);
     }
 
     public CommandStack getCommandStack() {
@@ -74,11 +78,11 @@ public class Controller {
     }
 
     public void addCourier() {
-        this.currentState.addCourier(this.session);
+        this.currentState.addCourier(this.session, this.commandStack);
     }
 
     public void removeCourier(Courier courier) {
-        this.currentState.removeCourier(this.session, courier);
+        this.currentState.removeCourier(this.session, courier, this.commandStack);
     }
 
     public XMLMapParser getMapParser() {

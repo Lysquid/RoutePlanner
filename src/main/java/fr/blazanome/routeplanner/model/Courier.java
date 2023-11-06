@@ -20,7 +20,6 @@ public class Courier extends Observable {
         this.id = count;
     }
 
-
     public List<DeliveryRequest> getRequests() {
         return requests;
     }
