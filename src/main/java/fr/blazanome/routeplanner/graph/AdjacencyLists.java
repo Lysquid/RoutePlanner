@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class AdjacencyLists<EdgeType extends Neighbor> implements Graph {
     private List<List<EdgeType>> adjacencyLists;
-    
+
     public AdjacencyLists() {
         this.adjacencyLists = new ArrayList<>();
     }
@@ -21,7 +21,6 @@ public class AdjacencyLists<EdgeType extends Neighbor> implements Graph {
         }
     }
 
-    
     public int addVertex() {
         int id = this.adjacencyLists.size();
         this.adjacencyLists.add(new ArrayList<>());
@@ -50,13 +49,13 @@ public class AdjacencyLists<EdgeType extends Neighbor> implements Graph {
     @Override
     public double getCost(int start, int end) {
         EdgeType customNeighbor = this.getCustomNeighbor(start, end);
-        return customNeighbor != null ? customNeighbor.getCost() : -1.0; 
+        return customNeighbor != null ? customNeighbor.getCost() : -1.0;
     }
 
     public Iterable<EdgeType> getEdges() {
         return () -> this.adjacencyLists.stream()
-            .flatMap(l -> l.stream())
-            .iterator();
+                .flatMap(l -> l.stream())
+                .iterator();
     }
 
     public EdgeType getCustomNeighbor(int start, int end) {
@@ -90,6 +89,15 @@ public class AdjacencyLists<EdgeType extends Neighbor> implements Graph {
         public Neighbor next() {
             EdgeType edge = this.edgeIterator.next();
             return (Neighbor) edge;
+        }
+    }
+
+    @Override
+    public void filterEdges(EdgeFilter filter) {
+        for (int i = 0; i < this.getVerticesCount(); i++) {
+            final int v1 = i;
+            this.adjacencyLists.get(i)
+                    .removeIf(neighbor -> !filter.test(this, v1, neighbor.getVertex(), neighbor.getCost()));
         }
     }
 }

@@ -27,6 +27,14 @@ public interface Graph {
     double getCost(int start, int end);
 
     /**
+     * Apply the given filter and keep only the edges for which the filter
+     * returns true
+     * 
+     * @param filter
+     */
+    void filterEdges(EdgeFilter filter);
+
+    /**
      * @param start Start vertex
      * @param end   End vertex
      * @return whether <code>start</code> and <code>end</code> are neighbor
