@@ -101,6 +101,7 @@ public class MapView extends Pane {
             toggleGroup.getToggles().add(button);
             this.root.getChildren().add(button);
             this.buttonIntersectionList.add(button);
+            //test
         }
     }
 
