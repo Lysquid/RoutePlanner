@@ -12,10 +12,10 @@ public class AddCourierCommand implements Command {
     }
 
     public void apply() {
-        session.addCourier(courier);
+        this.session.addCourier(courier);
     }
 
     public void undo() {
-        session.removeCourier(courier);
+        this.session.removeCourier(courier);
     }
 }
