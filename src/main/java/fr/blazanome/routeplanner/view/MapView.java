@@ -38,7 +38,8 @@ public class MapView extends Pane {
     private final Canvas canvas;
     private List<ButtonIntersection> buttonIntersectionList;
     private final Scale zoomTransform;
-
+    double mouseX=0.0;
+    double mouseY=0.0;
     //sets up listeners and the canvas
     public MapView() {
         //sets up the canvas and updates for wdith
@@ -65,16 +66,26 @@ public class MapView extends Pane {
         setOnScroll(event -> {
             double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
             double scaleFactor = 1.05; // Adjust the zoom factor as needed
+            System.out.println("zoom  : "+this.offsetX/this.zoomTransform.getX()+";"+this.mouseX+"  "+this.offsetY/this.zoomTransform.getY()+";"+this.mouseY+"zoom "+this.zoomTransform.getX());
             if (delta > 0) {
                 // Zoom in
+                this.offsetX=this.offsetX-mouseX*(scaleFactor-1)/this.zoomTransform.getX();
+                this.offsetY=this.offsetY-mouseY*(scaleFactor-1)/this.zoomTransform.getX();
                 this.zoomTransform.setX(this.zoomTransform.getX() * scaleFactor);
                 this.zoomTransform.setY(this.zoomTransform.getY() * scaleFactor);
+
             } else if (delta < 0) {
                 // Zoom out
+                this.offsetX=this.offsetX+mouseX*((1-(1/scaleFactor)))/this.zoomTransform.getX();
+                this.offsetY=this.offsetY+mouseY*((1-(1/scaleFactor)))/this.zoomTransform.getX();
                 this.zoomTransform.setX(this.zoomTransform.getX() / scaleFactor);
                 this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
             }
             draw(this.session);
+        });
+        setOnMouseMoved(event -> {
+            this.mouseX=event.getX();
+            this.mouseY=event.getY();
         });
     }
 
@@ -101,7 +112,6 @@ public class MapView extends Pane {
             toggleGroup.getToggles().add(button);
             this.root.getChildren().add(button);
             this.buttonIntersectionList.add(button);
-            //test
         }
     }
 
@@ -191,11 +201,11 @@ public class MapView extends Pane {
 
     //Calculate from all the x and y coordinates where to place the item on the screen. Doesn't take into account zooming
     double positionX(Intersection intersection) {
-        return this.ratioWidth() * (0.05 + 0.90 * ((this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - this.minX) / (this.maxX - this.minX))) + this.offsetX/this.zoomTransform.getX();
+        return this.ratioWidth() * (0.05 + 0.90 * ((this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - this.minX) / (this.maxX - this.minX))) + this.offsetX;
     }
 
     double positionY(Intersection intersection) {
-        return this.ratioHeight()* (0.05 + 0.90 * ((this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - this.minY) / (this.maxY - this.minY))) + this.offsetY/this.zoomTransform.getY();
+        return this.ratioHeight()* (0.05 + 0.90 * ((this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - this.minY) / (this.maxY - this.minY))) + this.offsetY;
 
     }
     double ratioHeight(){
@@ -215,8 +225,8 @@ public class MapView extends Pane {
         if (event.isSecondaryButtonDown()) {
             double deltaX = event.getSceneX() - this.initialX;
             double deltaY = event.getSceneY() - this.initialY;
-            this.offsetX = this.offsetX + deltaX;
-            this.offsetY = this.offsetY + deltaY;
+            this.offsetX = this.offsetX + deltaX/this.zoomTransform.getX();
+            this.offsetY = this.offsetY + deltaY/this.zoomTransform.getY();
             // Iterate through child nodes and adjust their positions
             this.draw(this.session);
 
