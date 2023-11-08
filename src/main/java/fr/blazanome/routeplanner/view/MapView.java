@@ -66,7 +66,6 @@ public class MapView extends Pane {
         setOnScroll(event -> {
             double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
             double scaleFactor = 1.05; // Adjust the zoom factor as needed
-            System.out.println("zoom  : "+this.offsetX/this.zoomTransform.getX()+";"+this.mouseX+"  "+this.offsetY/this.zoomTransform.getY()+";"+this.mouseY+"zoom "+this.zoomTransform.getX());
             if (delta > 0) {
                 // Zoom in
                 this.offsetX=this.offsetX-mouseX*(scaleFactor-1)/this.zoomTransform.getX();
