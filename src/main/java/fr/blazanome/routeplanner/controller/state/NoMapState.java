@@ -27,7 +27,6 @@ public class NoMapState implements State {
 
             Courier courier1 = new Courier(1);
             courier1.addObserver(view);
-            Courier courier1 = new Courier();
             session.addCourier(courier1);
 
             session.setMap(map);

@@ -63,10 +63,6 @@ public class XMLSessionSerializer {
             StreamResult result = new StreamResult(new File("session.xml"));
             transformer.transform(source, result);
 
-            // Output to console for testing
-            StreamResult consoleResult = new StreamResult(System.out);
-            transformer.transform(source, consoleResult);
-
         } catch (ParserConfigurationException | TransformerException e) {
             throw new RuntimeException(e);
         }

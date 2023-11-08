@@ -12,8 +12,8 @@ public class AddDeliveryCommandTest {
 
     @Test
     public void testUndoApply(){
-        Courier courier = new Courier();
-        Intersection selectedIntersection = new Intersection(1.0,2.0);
+        Courier courier = new Courier(1);
+        Intersection selectedIntersection = new Intersection(1, 1.0,2.0);
         Timeframe timeframe = Timeframe.H8;
         AddDeliveryCommand command = new AddDeliveryCommand(courier, new DeliveryRequest(selectedIntersection,timeframe));
 
@@ -31,8 +31,8 @@ public class AddDeliveryCommandTest {
 
     @Test
     public void testReversedCommand(){
-        Courier courier = new Courier();
-        Intersection selectedIntersection = new Intersection(1.0,2.0);
+        Courier courier = new Courier(1);
+        Intersection selectedIntersection = new Intersection(1,1.0,2.0);
         Timeframe timeframe = Timeframe.H8;
         DeliveryRequest deliveryRequest = new DeliveryRequest(selectedIntersection, timeframe);
         courier.addDelivery(deliveryRequest);

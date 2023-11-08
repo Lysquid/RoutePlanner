@@ -20,8 +20,8 @@ public class AdjacencyListMapTest {
         MapBuilder builder = factory.createBuilder();
 
         List<Intersection> intersections = Arrays.asList(
-                new Intersection(0, 0),
-                new Intersection(1, 0)
+                new Intersection(0, 0, 0),
+                new Intersection(1, 1, 0)
         );
 
         for(var intersection: intersections) {
@@ -43,8 +43,8 @@ public class AdjacencyListMapTest {
         MapBuilder builder = factory.createBuilder();
 
         List<Intersection> intersections = Arrays.asList(
-                new Intersection(0, 0),
-                new Intersection(1, 0)
+                new Intersection(1, 0, 0),
+                new Intersection(2, 1, 0)
         );
 
         assertThrows(AssertionError.class, ()->builder.addSegment(new Segment(intersections.get(0), 5, "Rue des fleurs", intersections.get(1))));

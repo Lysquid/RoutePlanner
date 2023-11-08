@@ -184,7 +184,7 @@ public class XMLParserTest {
                 new Intersection(3, 45.75171, 4.8718166)));
 
         assertTrue(segments.isEmpty());
-        assertEquals(new Intersection(45.74979, 4.87572), warehouse.warehouse);
+        assertEquals(new Intersection(0, 45.74979, 4.87572), warehouse.warehouse);
     }
 
     @Test

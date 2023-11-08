@@ -12,7 +12,7 @@ public class AddCourierCommandTest{
 
     @Test
     public void testUndoApply(){
-        Courier courier = new Courier();
+        Courier courier = new Courier(1);
         Session session = new Session();
         AddCourierCommand command = new AddCourierCommand(courier, session);
 
@@ -30,7 +30,7 @@ public class AddCourierCommandTest{
 
     @Test
     public void testReversedCommand(){
-        Courier courier = new Courier();
+        Courier courier = new Courier(1);
         Session session = new Session();
         session.addCourier(courier);
         AddCourierCommand command = new AddCourierCommand(courier, session);
