@@ -8,17 +8,14 @@ import java.util.List;
 
 public class Courier extends Observable {
 
-    static int count = 0;
-
+    private final int id;
     private Route route;
     private List<DeliveryRequest> requests;
-    private final int id;
 
-    public Courier() {
+    public Courier(int id) {
+        this.id = id;
         this.requests = new ArrayList<>();
         this.route = null;
-        Courier.count += 1;
-        this.id = count;
     }
 
     public List<DeliveryRequest> getRequests() {
@@ -47,6 +44,9 @@ public class Courier extends Observable {
         this.notifyObservers(EventType.DELIVERY_REMOVE, request);
     }
 
+    public int getId() {
+        return id;
+    }
 
     @Override
     public String toString() {

@@ -55,7 +55,7 @@ public class GraphicalView implements View, Initializable {
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
         Button button = (Button) actionEvent.getSource();
         File file = fileChooser.showOpenDialog(button.getScene().getWindow());
-        controller.loadMap(file);
+        this.controller.loadMap(file);
     }
 
     public void undo(ActionEvent actionEvent) {
@@ -114,15 +114,28 @@ public class GraphicalView implements View, Initializable {
         this.countCouriers.setText(String.valueOf(session.getCouriers().size()));
     }
 
-    public void selectCourier(ActionEvent event) {
+    public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
     }
 
-    public void addCourier(ActionEvent event) {
+    public void addCourier(ActionEvent actionEvent) {
         this.controller.addCourier();
     }
 
-    public void removeCourier(ActionEvent event) {
+    public void removeCourier(ActionEvent actionEvent) {
         this.controller.removeCourier(this.selectedCourier.getValue());
+    }
+
+    public void loadSession(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Session File");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
+        Button button = (Button) actionEvent.getSource();
+        File file = fileChooser.showOpenDialog(button.getScene().getWindow());
+        this.controller.loadSession(file);
+    }
+
+    public void saveSession(ActionEvent event) {
+        this.controller.saveSession();
     }
 }

@@ -55,7 +55,7 @@ public interface State {
     String toString();
 
     default void addCourier(Session session, CommandStack commandStack) {
-        commandStack.add(new AddCourierCommand(new Courier(), session));
+        commandStack.add(new AddCourierCommand(new Courier(session.getCouriers().size()+1), session));
     }
 
     default void removeCourier(Session session, Courier courier, CommandStack commandStack) {

@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.controller;
 
+import fr.blazanome.routeplanner.controller.state.MapLoadedState;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
@@ -11,9 +12,11 @@ import fr.blazanome.routeplanner.observer.EventType;
 import fr.blazanome.routeplanner.observer.Observer;
 import fr.blazanome.routeplanner.observer.Observers;
 import fr.blazanome.routeplanner.tools.XMLMapParser;
+import fr.blazanome.routeplanner.tools.XMLSessionSerializer;
 import fr.blazanome.routeplanner.view.View;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Controller {
 
@@ -139,6 +142,26 @@ public class Controller {
                 this.compute(courier);
             }
             default -> {}
+        }
+    }
+
+    public void saveSession() {
+        XMLSessionSerializer serializer = new XMLSessionSerializer();
+        serializer.serialize(this.session);
+
+    }
+
+    public void loadSession(File file) {
+
+        XMLSessionSerializer serializer = new XMLSessionSerializer();
+        try {
+            Session session = serializer.parse(file, this.session.getMap());
+            session.setMap(this.session.getMap());
+            session.addObserver(view);
+            this.setSession(session);
+            this.setCurrentState(new MapLoadedState());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

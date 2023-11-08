@@ -72,7 +72,7 @@ public class MapHandler extends AbstractMapHandler {
                 long id = Long.parseLong(attr.getValue(ID));
                 double latitude = Double.parseDouble(attr.getValue(LATITUDE));
                 double longitude = Double.parseDouble(attr.getValue(LONGITUDE));
-                this.intersections.put(id, new Intersection(latitude, longitude));
+                this.intersections.put(id, new Intersection(id, latitude, longitude));
                 break;
             case SEGMENT:
                 long destination = Long.parseLong(attr.getValue(DESTINATION));

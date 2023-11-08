@@ -27,8 +27,8 @@
             <HBox styleClass="group">
                 <Button text="Undo" onAction="#undo"/>
                 <Button text="Redo" onAction="#redo"/>
-                <Button text="Load"/>
-                <Button text="Save"/>
+                <Button text="Load" onAction="#loadSession"/>
+                <Button text="Save" onAction="#saveSession"/>
             </HBox>
 
             <!-- Couriers -->

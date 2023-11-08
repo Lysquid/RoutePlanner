@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Session extends Observable {
 
-    transient private IMap map;
+    private IMap map;
     private final List<Courier> couriers;
 
     public Session() {

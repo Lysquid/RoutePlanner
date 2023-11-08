@@ -26,4 +26,13 @@ public enum Timeframe {
     public String getLabel() {
         return this.label;
     }
+
+    public static Timeframe fromString(String text) {
+        for (Timeframe timeframe : Timeframe.values()) {
+            if (timeframe.label.equalsIgnoreCase(text)) {
+                return timeframe;
+            }
+        }
+        throw new IllegalArgumentException("No constant with label " + text + " found");
+    }
 }

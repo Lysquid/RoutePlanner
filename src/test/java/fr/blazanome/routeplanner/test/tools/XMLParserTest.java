@@ -93,10 +93,10 @@ public class XMLParserTest {
         IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTest.xml"));
 
         List<Intersection> expectedIntersections = Arrays.asList(
-                new Intersection(45.74979, 4.87572),
-                new Intersection(45.754536, 4.866525),
-                new Intersection(45.751904, 4.857877),
-                new Intersection(45.75171, 4.8718166));
+                new Intersection(0, 45.74979, 4.87572),
+                new Intersection(1, 45.754536, 4.866525),
+                new Intersection(2, 45.751904, 4.857877),
+                new Intersection(3, 45.75171, 4.8718166));
         assertThat(intersections).hasSameElementsAs(expectedIntersections);
 
         assertThat(segments).hasSameElementsAs(Arrays.asList(
@@ -178,10 +178,10 @@ public class XMLParserTest {
                 new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestIntersectionsOnly.xml"));
 
         assertThat(intersections).hasSameElementsAs(Arrays.asList(
-                new Intersection(45.74979, 4.87572),
-                new Intersection(45.754536, 4.866525),
-                new Intersection(45.751904, 4.857877),
-                new Intersection(45.75171, 4.8718166)));
+                new Intersection(0, 45.74979, 4.87572),
+                new Intersection(1, 45.754536, 4.866525),
+                new Intersection(2, 45.751904, 4.857877),
+                new Intersection(3, 45.75171, 4.8718166)));
 
         assertTrue(segments.isEmpty());
         assertEquals(new Intersection(45.74979, 4.87572), warehouse.warehouse);
