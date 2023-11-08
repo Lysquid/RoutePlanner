@@ -66,6 +66,30 @@ public class CommandStackTest {
     }
 
     @Test
+    public void testUndo() {
+        this.counter = 0;
+        var stack = new CommandStack();
+        var command1 = new TestCommand(1);
+        stack.add(command1);
+        assertEquals(1, this.counter);
+        stack.undo();
+        assertEquals(0, this.counter);
+    }
+
+    @Test
+    public void testRedo() {
+        this.counter = 0;
+        var stack = new CommandStack();
+        var command1 = new TestCommand(1);
+        stack.add(command1);
+        assertEquals(1, this.counter);
+        stack.undo();
+        assertEquals(0, this.counter);
+        stack.redo();
+        assertEquals(1, this.counter);
+    }
+
+    @Test
     public void testAddAfterUndo() {
         this.counter = 0;
         var command1 = new TestCommand(1);
