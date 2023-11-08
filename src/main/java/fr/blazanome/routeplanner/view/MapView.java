@@ -38,8 +38,8 @@ public class MapView extends Pane {
     private final Canvas canvas;
     private List<ButtonIntersection> buttonIntersectionList;
     private final Scale zoomTransform;
-    double mouseX=0.0;
-    double mouseY=0.0;
+    private double mouseX=0.0;
+    private double mouseY=0.0;
     //sets up listeners and the canvas
     public MapView() {
         //sets up the canvas and updates for wdith
@@ -68,15 +68,15 @@ public class MapView extends Pane {
             double scaleFactor = 1.05; // Adjust the zoom factor as needed
             if (delta > 0) {
                 // Zoom in
-                this.offsetX=this.offsetX-mouseX*(scaleFactor-1)/this.zoomTransform.getX();
-                this.offsetY=this.offsetY-mouseY*(scaleFactor-1)/this.zoomTransform.getX();
+                this.offsetX=this.offsetX-this.mouseX*(scaleFactor-1)/this.zoomTransform.getX();
+                this.offsetY=this.offsetY-this.mouseY*(scaleFactor-1)/this.zoomTransform.getX();
                 this.zoomTransform.setX(this.zoomTransform.getX() * scaleFactor);
                 this.zoomTransform.setY(this.zoomTransform.getY() * scaleFactor);
 
             } else if (delta < 0) {
                 // Zoom out
-                this.offsetX=this.offsetX+mouseX*((1-(1/scaleFactor)))/this.zoomTransform.getX();
-                this.offsetY=this.offsetY+mouseY*((1-(1/scaleFactor)))/this.zoomTransform.getX();
+                this.offsetX=this.offsetX+this.mouseX*((1-(1/scaleFactor)))/this.zoomTransform.getX();
+                this.offsetY=this.offsetY+this.mouseY*((1-(1/scaleFactor)))/this.zoomTransform.getX();
                 this.zoomTransform.setX(this.zoomTransform.getX() / scaleFactor);
                 this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
             }
