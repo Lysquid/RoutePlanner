@@ -4,15 +4,11 @@ import fr.blazanome.routeplanner.model.*;
 
 public class AddDeliveryCommand implements Command {
     private Courier courier;
-    private Intersection selectedIntersection;
-    private Timeframe timeframe;
     private DeliveryRequest deliveryRequest;
 
-    public AddDeliveryCommand(Courier courier, Intersection selectedIntersection, Timeframe timeframe) {
+    public AddDeliveryCommand(Courier courier, DeliveryRequest deliveryRequest) {
         this.courier = courier;
-        this.selectedIntersection = selectedIntersection;
-        this.timeframe = timeframe;
-        this.deliveryRequest = new DeliveryRequest(this.selectedIntersection, timeframe);
+        this.deliveryRequest = deliveryRequest;
     }
 
     public void apply() {
