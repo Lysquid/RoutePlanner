@@ -56,13 +56,13 @@ public class CommandStackTest {
     @Test
     public void testUndoNothing() {
         this.counter = 0;
-        new CommandStack().undo(); // Should not throw expection
+        new CommandStack().undo(); // Should not throw exception
     }
 
     @Test
     public void testNothingToRedo() {
         this.counter = 0;
-        new CommandStack().redo(); // Should not throw excpetion
+        new CommandStack().redo(); // Should not throw exception
     }
 
     @Test

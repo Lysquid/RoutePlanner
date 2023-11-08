@@ -1,34 +1,40 @@
 package fr.blazanome.routeplanner.test.controller;
 
 import fr.blazanome.routeplanner.controller.AddCourierCommand;
-import fr.blazanome.routeplanner.controller.Command;
-import fr.blazanome.routeplanner.controller.CommandStack;
-import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
-import fr.blazanome.routeplanner.controller.state.MapLoadedState;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Session;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AddCourierCommandTest{
-    int counter = 0;
 
     @Test
-    public void testUndo(){
+    public void testUndoApply(){
         Courier courier = new Courier();
         Session session = new Session();
-        MapLoadedState currentState = new MapLoadedState();
         AddCourierCommand command = new AddCourierCommand(courier, session);
-        CommandStack stack = new CommandStack();
 
-        currentState.addCourier(session,stack);
+        command.apply();
         assertEquals(1,session.getCouriers().size());
         command.undo();
         assertEquals(0,session.getCouriers().size());
+        command.apply();
+        assertEquals(1,session.getCouriers().size());
+        command.apply();
+        assertEquals(2,session.getCouriers().size());
+        command.undo();
+        assertEquals(1,session.getCouriers().size());
 
+
+    }
+
+    @Test
+    public void testNothingToUndo(){
+        Courier courier = new Courier();
+        Session session = new Session();
+        AddCourierCommand command = new AddCourierCommand(courier, session);
+
+        command.undo();     //Should not throw exception
     }
 }
