@@ -42,7 +42,7 @@ public class Courier extends Observable {
     }
 
     public void removeDelivery(DeliveryRequest request) {
-        this.requests.remove(this.requests.size() - 1);
+        this.requests.remove(request);
         this.notifyObservers(request);
     }
 

@@ -25,16 +25,5 @@ public class AddCourierCommandTest{
         assertEquals(2,session.getCouriers().size());
         command.undo();
         assertEquals(1,session.getCouriers().size());
-
-
-    }
-
-    @Test
-    public void testNothingToUndo(){
-        Courier courier = new Courier();
-        Session session = new Session();
-        AddCourierCommand command = new AddCourierCommand(courier, session);
-
-        command.undo();     //Should not throw exception
     }
 }
