@@ -7,7 +7,7 @@ import javafx.scene.shape.Shape;
 
 public class ButtonIntersection extends ToggleButton {
 
-    private static final int RADIUS = 5;
+    private static final int RADIUS = 4;
     private static final Shape circle = new Circle(RADIUS);
     private final Intersection intersection;
 

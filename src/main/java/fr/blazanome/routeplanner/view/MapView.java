@@ -42,7 +42,7 @@ public class MapView extends Pane {
     private double mouseY=0.0;
     //sets up listeners and the canvas
     public MapView() {
-        //sets up the canvas and updates for wdith
+        //sets up the canvas and updates for width
         this.canvas = new Canvas();
         this.gc = this.canvas.getGraphicsContext2D();
         this.root = new Group();
@@ -116,6 +116,9 @@ public class MapView extends Pane {
 
     void draw() {
 
+        double i = 0.0;
+        double k = 1.0;
+
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
 
@@ -125,9 +128,16 @@ public class MapView extends Pane {
             this.gc.clearRect(0, 0, this.getWidth(), this.getHeight());
             this.drawPlainSegments(this.session.getMap().getSegments());
             this.drawIntersections();
+            // color changing
+
+            //Normally the changing of the Colour would happen for every route, here I did it on every step of the route to demonstrate how it works
+
             for (Courier courier : this.session.getCouriers()) {
                 if (courier.getRoute() != null) {
-                    this.drawRoute(courier.getRoute().getPath());
+                    i= i + 1.0/(double)session.getCouriers().size();
+                    Color c = new Color(1 - i, i, i, 1.0);
+
+                    this.drawRoute(courier.getRoute().getPath(),c);
                 }
             }
         }
@@ -138,7 +148,7 @@ public class MapView extends Pane {
     void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
             this.gc.setStroke(Color.BLACK);
-            this.gc.setLineWidth(2);
+            this.gc.setLineWidth(1.5);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
 
@@ -154,14 +164,11 @@ public class MapView extends Pane {
 
     }
 
-    void drawRoute(Iterable<Segment> iterableSegment) {
+    void drawRoute(Iterable<Segment> iterableSegment, Color c) {
         //the code should be very different from the other function once it's actually implemented.
-        double i = 0.0;
+
         //double personeCount=1.0;
         for (Segment segment : iterableSegment) {
-            //i=i+1.0/personeCount;
-            //Normally the changing of the Colour would happen for every route, here I did it on every step of the route to demonstrate how it works
-            Color c = new Color(1 - i, i, i, 1.0);
             this.gc.setStroke(c);
             this.gc.setLineWidth(5);
             Intersection start = segment.getOrigin();
