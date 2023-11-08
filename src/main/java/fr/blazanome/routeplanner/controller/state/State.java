@@ -42,15 +42,14 @@ public interface State {
     default void removeDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
     };
 
-    default void compute(TourGenerationAlgorithm algorithm, Session session) {
-        for (Courier courier : session.getCouriers()) {
-            if (courier.getRequests().isEmpty())
-                continue;
-            IMap map = session.getMap();
-            Route route = algorithm.computeTour(map, courier.getRequests());
-            courier.setRoute(route);
-        }
-        session.updatedPaths();
+    default void compute(Courier courier, TourGenerationAlgorithm algorithm, Session session) {
+        // TODO: Remove la route
+        if (courier.getRequests().isEmpty())
+            return;
+
+        IMap map = session.getMap();
+        Route route = algorithm.computeTour(map, courier.getRequests());
+        courier.setRoute(route);
     }
 
     String toString();

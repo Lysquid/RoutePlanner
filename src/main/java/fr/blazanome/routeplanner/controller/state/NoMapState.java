@@ -23,14 +23,12 @@ public class NoMapState implements State {
         try {
             IMap map = controller.getMapParser().parse(file);
             Session session = new Session();
-            session.addObserver(view);
+            controller.setSession(session);
 
             Courier courier1 = new Courier();
-            courier1.addObserver(view);
             session.addCourier(courier1);
 
             session.setMap(map);
-            controller.setSession(session);
             controller.setCurrentState(new MapLoadedState());
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();

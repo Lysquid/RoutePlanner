@@ -14,9 +14,13 @@ public class Observable {
         this.observers.add(o);
     }
 
-    public void notifyObservers(Object message) {
+    public void removeObserver(Observer o) {
+        this.observers.remove(o);
+    }
+
+    public void notifyObservers(EventType eventType, Object message) {
         for(var observer: this.observers) {
-            observer.update(this, message);
+            observer.update(this, eventType, message);
         }
     }
 }

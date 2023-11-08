@@ -7,6 +7,7 @@ import fr.blazanome.routeplanner.model.DeliveryRequest;
 import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.model.Timeframe;
+import fr.blazanome.routeplanner.observer.EventType;
 import fr.blazanome.routeplanner.observer.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -69,10 +70,6 @@ public class GraphicalView implements View, Initializable {
         this.controller.addDelivery(this.selectedCourier.getValue(), this.timeframe.getValue());
     }
 
-    public void compute(ActionEvent actionEvent) {
-        this.controller.compute();
-    }
-
     public void selectIntersection(ActionEvent actionEvent) {
         ButtonIntersection button = (ButtonIntersection) actionEvent.getSource();
         this.controller.selectIntersection(button.getIntersection());
@@ -83,15 +80,15 @@ public class GraphicalView implements View, Initializable {
     }
 
     @Override
-    public void update(Observable observable, Object message) {
+    public void update(Observable observable, EventType eventType, Object message) {
         if (message instanceof IMap) {
             Session session = (Session) observable;
             this.mapView.setUp(session);
-            this.mapView.draw(session);
+            this.mapView.draw();
             this.updateCouriers(session);
             this.selectedCourier.setValue(session.getCouriers().get(0));
-        } else if (message instanceof Session) {
-            this.mapView.draw((Session) observable);
+        } else if (eventType == EventType.ROUTE_COMPUTED) {
+            this.mapView.draw();
         } else if (observable instanceof Courier courier) {
             this.updateRequests();
         } else if (observable instanceof Session session) {

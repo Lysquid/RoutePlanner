@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.model;
 
+import fr.blazanome.routeplanner.observer.EventType;
 import fr.blazanome.routeplanner.observer.Observable;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Courier extends Observable {
 
     public void addDelivery(DeliveryRequest request) {
         this.requests.add(request);
-        this.notifyObservers(request);
+        this.notifyObservers(EventType.DELIVERY_ADD, request);
     }
 
     /**
@@ -38,12 +39,12 @@ public class Courier extends Observable {
 
     public void setRoute(Route route) {
         this.route = route;
-        this.notifyObservers(route);
+        this.notifyObservers(EventType.ROUTE_COMPUTED, route);
     }
 
     public void removeDelivery(DeliveryRequest request) {
         this.requests.remove(request);
-        this.notifyObservers(request);
+        this.notifyObservers(EventType.DELIVERY_REMOVE, request);
     }
 
 

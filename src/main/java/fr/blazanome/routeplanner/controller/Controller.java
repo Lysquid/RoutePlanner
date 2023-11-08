@@ -7,6 +7,9 @@ import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.*;
+import fr.blazanome.routeplanner.observer.EventType;
+import fr.blazanome.routeplanner.observer.Observer;
+import fr.blazanome.routeplanner.observer.Observers;
 import fr.blazanome.routeplanner.tools.XMLMapParser;
 import fr.blazanome.routeplanner.view.View;
 
@@ -18,6 +21,9 @@ public class Controller {
     private Session session;
     public State currentState;
     private CommandStack commandStack;
+
+    private Observer sessionObserver;
+    private Observer courierObserver;
 
     private final TourGenerationAlgorithm tourGenerationAlgorithm;
 
@@ -31,6 +37,9 @@ public class Controller {
         this.mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
         this.tourGenerationAlgorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
                 new TSP1());
+
+        this.sessionObserver = Observers.typed(Session.class, this::onSessionChange);
+        this.courierObserver = Observers.typed(Courier.class, this::onCourierChange);
     }
 
     public void setCurrentState(State newState) {
@@ -49,8 +58,8 @@ public class Controller {
         this.currentState.redo(this.commandStack);
     }
 
-    public void compute() {
-        this.currentState.compute(this.tourGenerationAlgorithm, this.session);
+    public void compute(Courier courier) {
+        this.currentState.compute(courier, this.tourGenerationAlgorithm, this.session);
     }
 
     public void selectIntersection(Intersection intersection) {
@@ -74,7 +83,13 @@ public class Controller {
     }
 
     public void setSession(Session session) {
+        if (this.session != null) {
+            this.session.removeObserver(this.sessionObserver);
+            this.session.removeObserver(this.view);
+        }
         this.session = session;
+        this.session.addObserver(this.sessionObserver);
+        this.session.addObserver(this.view);
     }
 
     public void addCourier() {
@@ -91,5 +106,39 @@ public class Controller {
 
     public TourGenerationAlgorithm getTourGenerationAlgorithm() {
         return this.tourGenerationAlgorithm;
+    }
+
+    private void onSessionChange(Session session, EventType eventType, Object message) {
+        if (eventType == null) {
+            System.err.println("Null event found");
+            return;
+        }
+        switch (eventType) {
+            case COURIER_ADD -> {
+
+                Courier courier = (Courier) message;
+                courier.addObserver(this.courierObserver);
+                courier.addObserver(this.view);
+            }
+            case COURIER_REMOVE -> {
+                Courier courier = (Courier) message;
+                courier.removeObserver(this.courierObserver);
+                courier.removeObserver(this.view);
+            }
+            default -> {}
+        }
+    }
+
+    private void onCourierChange(Courier courier, EventType eventType, Object message) {
+        if (eventType == null) {
+            System.err.println("Null event found");
+            return;
+        }
+        switch (eventType) {
+            case DELIVERY_ADD, DELIVERY_REMOVE -> {
+                this.compute(courier);
+            }
+            default -> {}
+        }
     }
 }

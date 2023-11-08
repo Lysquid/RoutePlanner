@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.model;
 
+import fr.blazanome.routeplanner.observer.EventType;
 import fr.blazanome.routeplanner.observer.Observable;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Session extends Observable {
 
     public void setMap(IMap map) {
         this.map = map;
-        this.notifyObservers(map);
+        this.notifyObservers(EventType.MAP_LOADED, map);
     }
 
     public List<Courier> getCouriers() {
@@ -29,15 +30,11 @@ public class Session extends Observable {
 
     public void addCourier(Courier courier) {
         this.couriers.add(courier);
-        this.notifyObservers(courier);
+        this.notifyObservers(EventType.COURIER_ADD, courier);
     }
 
     public void removeCourier(Courier courier) {
         this.couriers.remove(courier);
-        this.notifyObservers(courier);
-    }
-
-    public void updatedPaths() {
-        this.notifyObservers(this);
+        this.notifyObservers(EventType.DELIVERY_REMOVE, courier);
     }
 }

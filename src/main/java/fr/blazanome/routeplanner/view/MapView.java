@@ -54,8 +54,8 @@ public class MapView extends Pane {
         clippingRect.widthProperty().bind(this.widthProperty());
         this.setClip(clippingRect);
 
-        this.widthProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
-        this.heightProperty().addListener((observable, oldValue, newValue) -> draw(this.session));
+        this.widthProperty().addListener((observable, oldValue, newValue) -> draw());
+        this.heightProperty().addListener((observable, oldValue, newValue) -> draw());
 
         // Handle mouse scroll events for zooming
         // Adds listener for zooming and dragging
@@ -80,7 +80,7 @@ public class MapView extends Pane {
                 this.zoomTransform.setX(this.zoomTransform.getX() / scaleFactor);
                 this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
             }
-            draw(this.session);
+            draw();
         });
         setOnMouseMoved(event -> {
             this.mouseX=event.getX();
@@ -114,18 +114,18 @@ public class MapView extends Pane {
         }
     }
 
-    void draw(Session session) {
+    void draw() {
 
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
 
         // Re-draw everything on the canvas
-        if (session != null) {
+        if (this.session != null) {
             //Checks that draw has been called then clears the canvas and redraws all the relevant points
             this.gc.clearRect(0, 0, this.getWidth(), this.getHeight());
-            this.drawPlainSegments(session.getMap().getSegments());
+            this.drawPlainSegments(this.session.getMap().getSegments());
             this.drawIntersections();
-            for (Courier courier : session.getCouriers()) {
+            for (Courier courier : this.session.getCouriers()) {
                 if (courier.getRoute() != null) {
                     this.drawRoute(courier.getRoute().getPath());
                 }
@@ -227,7 +227,7 @@ public class MapView extends Pane {
             this.offsetX = this.offsetX + deltaX/this.zoomTransform.getX();
             this.offsetY = this.offsetY + deltaY/this.zoomTransform.getY();
             // Iterate through child nodes and adjust their positions
-            this.draw(this.session);
+            this.draw();
 
             this.initialX = event.getSceneX();
             this.initialY = event.getSceneY();
