@@ -156,10 +156,16 @@ public class Controller {
         XMLSessionSerializer serializer = new XMLSessionSerializer();
         try {
             Session session = serializer.parse(file, this.session.getMap());
-            session.setMap(this.session.getMap());
-            session.addObserver(view);
+            IMap map = this.session.getMap();
             this.setSession(session);
+            session.setMap(map);
             this.setCurrentState(new MapLoadedState());
+
+            for (Courier courier : this.session.getCouriers()) {
+                courier.addObserver(this.courierObserver);
+                courier.addObserver(this.view);
+                this.compute(courier);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

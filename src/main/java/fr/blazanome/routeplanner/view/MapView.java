@@ -93,6 +93,10 @@ public class MapView extends Pane {
 
         this.session = session;
 
+        if (this.buttonIntersectionList != null) {
+            this.buttonIntersectionList.forEach(this.root.getChildren()::remove);
+        }
+
         this.buttonIntersectionList = new ArrayList<>();
         ToggleGroup toggleGroup = new ToggleGroup();
 

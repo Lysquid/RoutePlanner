@@ -89,6 +89,7 @@ public class GraphicalView implements View, Initializable {
             this.selectedCourier.setValue(session.getCouriers().get(0));
         } else if (eventType == EventType.ROUTE_COMPUTED) {
             this.mapView.draw();
+            this.updateRequests();
         } else if (observable instanceof Courier courier) {
             this.updateRequests();
         } else if (observable instanceof Session session) {
