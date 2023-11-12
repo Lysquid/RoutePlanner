@@ -13,17 +13,12 @@ public class IntersectionSelectedState implements State {
         this.selectedIntersection = selectedIntersection;
     }
 
-    public Intersection getSelectedIntersection() {
-        return selectedIntersection;
-    }
-
     @Override
     public void selectIntersection(Controller controller, View view, Intersection intersection) {
 
         if(this.selectedIntersection.equals(intersection)) {
-            controller.setCurrentState(new NoMapState()); // TODO : set to state with no intersection selected
+            controller.setCurrentState(new MapLoadedState());
         } else {
-            System.out.println(intersection.getLatitude() + " ; " + intersection.getLongitude());
             controller.setCurrentState(new IntersectionSelectedState(intersection));
         }
         view.setDisableAddDelivery(false);
@@ -35,10 +30,4 @@ public class IntersectionSelectedState implements State {
         view.setDisableAddDelivery(true);
     }
 
-    @Override
-    public String toString() {
-        return "IntersectionSelectedState{" +
-                "selectedIntersection=" + selectedIntersection +
-                '}';
-    }
 }
