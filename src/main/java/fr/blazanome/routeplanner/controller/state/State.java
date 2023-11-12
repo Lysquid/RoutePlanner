@@ -9,8 +9,11 @@ import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.controller.ReverseCommand;
 import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.view.View;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,21 @@ import java.util.List;
 public interface State {
 
     default void loadMap(Controller controller, View view, File file) {
+        try {
+            IMap map = controller.getMapParser().parse(file);
+            Session session = new Session();
+            controller.setSession(session);
+
+            Courier courier1 = new Courier(1);
+            courier1.addObserver(view);
+            session.addCourier(courier1);
+
+            session.setMap(map);
+            controller.setCurrentState(new MapLoadedState());
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     default void undo(CommandStack commandStack) {
@@ -31,7 +49,6 @@ public interface State {
     }
 
     default void selectIntersection(Controller controller, View view, Intersection intersection) {
-        System.out.println(intersection.getLatitude() + " ; " + intersection.getLongitude());
         controller.setCurrentState(new IntersectionSelectedState(intersection));
         view.setDisableAddDelivery(false);
     }

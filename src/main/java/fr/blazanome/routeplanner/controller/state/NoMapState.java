@@ -18,27 +18,4 @@ import java.io.IOException;
  */
 public class NoMapState implements State {
 
-    @Override
-    public void loadMap(Controller controller, View view, File file) {
-        try {
-            IMap map = controller.getMapParser().parse(file);
-            Session session = new Session();
-            controller.setSession(session);
-
-            Courier courier1 = new Courier(1);
-            courier1.addObserver(view);
-            session.addCourier(courier1);
-
-            session.setMap(map);
-            controller.setCurrentState(new MapLoadedState());
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return "NoMapState{}";
-    }
 }
