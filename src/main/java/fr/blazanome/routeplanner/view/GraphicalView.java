@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.view;
 
+import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Delivery;
@@ -9,6 +10,8 @@ import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.model.Timeframe;
 import fr.blazanome.routeplanner.observer.EventType;
 import fr.blazanome.routeplanner.observer.Observable;
+import fr.blazanome.routeplanner.observer.Observer;
+import fr.blazanome.routeplanner.observer.Observers;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -22,6 +25,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class GraphicalView implements View, Initializable {
@@ -38,9 +42,16 @@ public class GraphicalView implements View, Initializable {
     public TableView<DeliveryRequest> deliveriesTable;
     public TableView<Delivery> planningTable;
 
+    public Button undoButton;
+    public Button redoButton;
+
+    private Observer commandStackObserver;
+
 
     public GraphicalView() {
+        this.commandStackObserver = Observers.typed(CommandStack.class, this::onCommandStackUpdate);
         this.controller = new Controller(this);
+        this.controller.getCommandStack().addObserver(this.commandStackObserver);
     }
 
     @Override
@@ -94,6 +105,13 @@ public class GraphicalView implements View, Initializable {
             this.updateRequests();
         } else if (observable instanceof Session session) {
             this.updateCouriers(session);
+        }
+    }
+
+    private void onCommandStackUpdate(CommandStack commandStack, EventType eventType, Object message) {
+        if (Objects.requireNonNull(eventType) == EventType.COMMAND_STACK_UPDATE) {
+            this.undoButton.setDisable(!commandStack.canUndo());
+            this.redoButton.setDisable(!commandStack.canRedo());
         }
     }
 

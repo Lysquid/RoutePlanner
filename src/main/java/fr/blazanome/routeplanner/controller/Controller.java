@@ -145,6 +145,14 @@ public class Controller {
         }
     }
 
+    public boolean canUndo() {
+        return this.commandStack.canUndo();
+    }
+
+    public boolean canRedo() {
+        return this.commandStack.canRedo();
+    }
+
     public void saveSession() {
         XMLSessionSerializer serializer = new XMLSessionSerializer();
         serializer.serialize(this.session);
