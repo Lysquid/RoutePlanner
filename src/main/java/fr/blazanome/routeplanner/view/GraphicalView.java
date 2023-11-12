@@ -32,12 +32,9 @@ public class GraphicalView implements View, Initializable {
 
     protected final Controller controller;
 
-    public Text countCouriers;
     public MapView mapView;
     public ComboBox<Courier> selectedCourier;
     public ComboBox<Timeframe> timeframe;
-    public Label deliveryIntersection;
-
     public Button addDelivery;
     public TableView<DeliveryRequest> deliveriesTable;
     public TableView<Delivery> planningTable;
@@ -58,6 +55,8 @@ public class GraphicalView implements View, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.timeframe.setItems(FXCollections.observableArrayList(Timeframe.values()));
         this.timeframe.setValue(Timeframe.H8);
+        this.deliveriesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        this.planningTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void loadMap(ActionEvent actionEvent) {
@@ -130,7 +129,6 @@ public class GraphicalView implements View, Initializable {
     private void updateCouriers(Session session) {
         this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
         this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size()-1));
-        this.countCouriers.setText(String.valueOf(session.getCouriers().size()));
     }
 
     public void selectCourier(ActionEvent actionEvent) {

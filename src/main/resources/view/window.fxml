@@ -18,35 +18,34 @@
 
         <VBox styleClass="left">
 
-            <!-- Load Map -->
+            <!-- Load and controls -->
             <HBox styleClass="group">
-                <Button text="Load a map" onAction="#loadMap"/>
+                <VBox>
+                    <Text text="Map"/>
+                    <HBox>
+                        <Button text="Load a map" onAction="#loadMap"/>
+                    </HBox>
+                    <Text text="Session"/>
+                    <HBox>
+                        <Button text="Load a session" onAction="#loadSession"/>
+                        <Button text="Save the session" onAction="#saveSession"/>
+                    </HBox>
+                    <Text text="Controls"/>
+                    <HBox>
+                        <Button text="Undo" onAction="#undo"/>
+                        <Button text="Redo" onAction="#redo"/>
+                    </HBox>
+                </VBox>
             </HBox>
-
-            <!-- Controls -->
-            <HBox styleClass="group">
-                <Button text="Undo" disable="true" onAction="#undo" fx:id="undoButton"/>
-                <Button text="Redo" disable="true" onAction="#redo" fx:id="redoButton"/>
-                <Button text="Load" onAction="#loadSession"/>
-                <Button text="Save" onAction="#saveSession"/>
-            </HBox>
-
-            <!-- Couriers -->
-            <VBox styleClass="group">
-                <TextFlow>
-                    <Text text="Number of couriers : "/>
-                    <Text text="0" fx:id="countCouriers"/>
-                </TextFlow>
-                <HBox>
-                    <Button text="Add" onAction="#addCourier"/>
-                    <Button text="Remove" onAction="#removeCourier"/>
-                </HBox>
-            </VBox>
 
             <!-- Courier -->
             <VBox styleClass="group">
-                <Text text="Courier tour"/>
-                <ComboBox fx:id="selectedCourier" onAction="#selectCourier"/>
+                <Text text="Courier"/>
+                <HBox>
+                    <ComboBox fx:id="selectedCourier" onAction="#selectCourier"/>
+                    <Button text="+" onAction="#addCourier"/>
+                    <Button text="-" onAction="#removeCourier"/>
+                </HBox>
                 <TabPane>
                     <Tab closable="false" text="Request">
                         <VBox styleClass="group">
@@ -69,14 +68,6 @@
                                     </TableColumn>
                                 </columns>
                             </TableView>
-                            <Text text="New delivery"/>
-                            <GridPane hgap="10" vgap="10">
-                                <Text text="At" GridPane.rowIndex="1"/>
-                                <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <Text text="To" GridPane.rowIndex="2"/>
-                                <Label fx:id="deliveryIntersection" text="coords" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                            </GridPane>
-                            <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
                         </VBox>
                     </Tab>
                     <Tab closable="false" text="Planning">
@@ -104,7 +95,17 @@
                         </VBox>
                     </Tab>
                 </TabPane>
+                <Button text="Remove delivery"/>
+            </VBox>
 
+            <!-- New delivery -->
+            <VBox styleClass="group">
+                <Text text="New delivery"/>
+                <GridPane hgap="10">
+                    <Text text="At" GridPane.rowIndex="1"/>
+                    <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                </GridPane>
+                <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
             </VBox>
 
         </VBox>

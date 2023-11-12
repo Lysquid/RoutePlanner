@@ -25,10 +25,10 @@ public class MapView extends Pane {
 
     private Session session; // reference kept to redraw on cursor drag, zoom, etc (no event from controller)
     private final Group root;
-    double minX = Double.MAX_VALUE;
-    double minY = Double.MAX_VALUE;
-    double maxY = 0;
-    double maxX = 0;
+    double minX;
+    double minY;
+    double maxY;
+    double maxX;
     private double initialX;
     private double initialY;
     private double offsetX = 0.0;
@@ -90,6 +90,11 @@ public class MapView extends Pane {
 
     // General drawing section
     public void setUp(Session session) {
+
+        this.minX = Double.MAX_VALUE;
+        this.minY = Double.MAX_VALUE;
+        this.maxY = 0;
+        this.maxX = 0;
 
         this.session = session;
 

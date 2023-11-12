@@ -19,13 +19,13 @@ HBox {
 }
 
 MapView {
-    -fx-background-color: #6be256;
+    -fx-background-color: #C0C0C0;
     -fx-min-width: 800;
-    -fx-min-height: 500;
+    -fx-min-height: 800;
 }
 
 ButtonIntersection {
-    -fx-background-color: white;
+    -fx-background-color: black;
     -fx-border-style: none;
 }
 
@@ -35,4 +35,8 @@ ButtonIntersection:selected {
 
 #warehouse {
     -fx-background-color: blue;
+}
+
+TableView {
+    -fx-pref-height: 250;
 }
