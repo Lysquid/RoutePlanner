@@ -37,4 +37,11 @@ public class Session extends Observable {
         this.couriers.remove(courier);
         this.notifyObservers(EventType.DELIVERY_REMOVE, courier);
     }
+
+    public void setCouriers(List<Courier> couriers) {
+        this.couriers.clear();
+        for (Courier courier: couriers) {
+            this.addCourier(courier);
+        }
+    }
 }

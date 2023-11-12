@@ -8,6 +8,7 @@ import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.controller.ReverseCommand;
 import fr.blazanome.routeplanner.model.*;
+import fr.blazanome.routeplanner.tools.XMLSessionSerializer;
 import fr.blazanome.routeplanner.view.View;
 import org.xml.sax.SAXException;
 
@@ -77,5 +78,24 @@ public interface State {
 
     default void removeCourier(Session session, Courier courier, CommandStack commandStack) {
         commandStack.add(new ReverseCommand(new AddCourierCommand(courier, session)));
+    }
+
+    default void saveSession(File file, Session session) {
+        XMLSessionSerializer serializer = new XMLSessionSerializer();
+        serializer.serialize(session.getCouriers(), file);
+    };
+
+    default void loadSession(Controller controller, File file, Session session, View view) {
+        XMLSessionSerializer serializer = new XMLSessionSerializer();
+        try {
+            session.setCouriers(serializer.parse(file, session.getMap()));
+            for (Courier courier : session.getCouriers()) {
+                courier.addObserver(controller.courierObserver);
+                courier.addObserver(view);
+                controller.compute(courier);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

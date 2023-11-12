@@ -14,10 +14,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XMLSessionSerializer {
 
-    public void serialize(Session session, File file) {
+    public void serialize(List<Courier> couriers, File file) {
 
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -25,10 +27,10 @@ public class XMLSessionSerializer {
             Document doc = dBuilder.newDocument();
 
             // root element
-            Element couriersList = doc.createElement("couriers");
+            Element couriersList = doc.createElement("session");
             doc.appendChild(couriersList);
 
-            for (Courier courier : session.getCouriers()) {
+            for (Courier courier : couriers) {
 
                 // courier element
                 Element courierElem = doc.createElement("courier");
@@ -77,7 +79,7 @@ public class XMLSessionSerializer {
         return null;
     }
 
-    public Session parse(File file, IMap map) throws IOException {
+    public List<Courier> parse(File file, IMap map) throws IOException {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -85,7 +87,7 @@ public class XMLSessionSerializer {
             doc.getDocumentElement().normalize();
 
             NodeList courierList = doc.getElementsByTagName("courier");
-            Session session = new Session();
+            ArrayList<Courier> couriers = new ArrayList<>();
 
             for (int i = 0; i < courierList.getLength(); i++) {
                 Node courierNode = courierList.item(i);
@@ -104,17 +106,18 @@ public class XMLSessionSerializer {
                             String timeframe = requestElement.getAttribute("timeframe");
                             long intersectionId = Long.parseLong(requestElement.getTextContent());
                             Intersection intersection = XMLSessionSerializer.getIntersection(map, intersectionId);
-
-                            DeliveryRequest deliveryRequest = new DeliveryRequest(intersection, Timeframe.fromString(timeframe));
-                            courier.addDelivery(deliveryRequest);
+                            if (intersection != null) {
+                                DeliveryRequest deliveryRequest = new DeliveryRequest(intersection, Timeframe.fromString(timeframe));
+                                courier.addDelivery(deliveryRequest);
+                            }
                         }
                     }
 
-                    session.addCourier(courier);
+                    couriers.add(courier);
                 }
             }
 
-            return session;
+            return couriers;
 
         } catch (Exception e) {
             throw new RuntimeException(e);

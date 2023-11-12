@@ -26,7 +26,7 @@ public class Controller {
     private CommandStack commandStack;
 
     private Observer sessionObserver;
-    private Observer courierObserver;
+    public Observer courierObserver;
 
     private final TourGenerationAlgorithm tourGenerationAlgorithm;
 
@@ -154,28 +154,11 @@ public class Controller {
     }
 
     public void saveSession(File file) {
-        XMLSessionSerializer serializer = new XMLSessionSerializer();
-        serializer.serialize(this.session, file);
-
+        this.currentState.saveSession(file, this.session);
     }
 
     public void loadSession(File file) {
-
-        XMLSessionSerializer serializer = new XMLSessionSerializer();
-        try {
-            Session session = serializer.parse(file, this.session.getMap());
-            IMap map = this.session.getMap();
-            this.setSession(session);
-            session.setMap(map);
-            this.setCurrentState(new MapLoadedState());
-
-            for (Courier courier : this.session.getCouriers()) {
-                courier.addObserver(this.courierObserver);
-                courier.addObserver(this.view);
-                this.compute(courier);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.currentState.loadSession(this, file, this.session, this.view);
+        this.setCurrentState(new MapLoadedState());
     }
 }
