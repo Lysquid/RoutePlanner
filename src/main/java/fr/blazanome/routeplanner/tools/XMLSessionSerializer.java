@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class XMLSessionSerializer {
 
-    public void serialize(Session session) {
+    public void serialize(Session session, File file) {
 
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -60,7 +60,7 @@ public class XMLSessionSerializer {
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Enable indentation
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("session.xml"));
+            StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
 
         } catch (ParserConfigurationException | TransformerException e) {

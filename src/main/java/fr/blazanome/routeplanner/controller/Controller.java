@@ -153,9 +153,9 @@ public class Controller {
         return this.commandStack.canRedo();
     }
 
-    public void saveSession() {
+    public void saveSession(File file) {
         XMLSessionSerializer serializer = new XMLSessionSerializer();
-        serializer.serialize(this.session);
+        serializer.serialize(this.session, file);
 
     }
 

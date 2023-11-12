@@ -145,14 +145,19 @@ public class GraphicalView implements View, Initializable {
 
     public void loadSession(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Session File");
+        fileChooser.setTitle("Load a session");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
         Button button = (Button) actionEvent.getSource();
         File file = fileChooser.showOpenDialog(button.getScene().getWindow());
         this.controller.loadSession(file);
     }
 
-    public void saveSession(ActionEvent event) {
-        this.controller.saveSession();
+    public void saveSession(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save the session");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
+        Button button = (Button) actionEvent.getSource();
+        File file = fileChooser.showSaveDialog(button.getScene().getWindow());
+        this.controller.saveSession(file);
     }
 }
