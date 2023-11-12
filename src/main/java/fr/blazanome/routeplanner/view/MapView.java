@@ -250,7 +250,7 @@ public class MapView extends Pane {
     }
 
     private void handleMouseDragged(MouseEvent event) {
-        if (event.isSecondaryButtonDown()) {
+        if (event.isPrimaryButtonDown() || event.isSecondaryButtonDown()) {
             double deltaX = event.getSceneX() - this.initialX;
             double deltaY = event.getSceneY() - this.initialY;
             this.offsetX = this.offsetX + deltaX / this.zoomTransform.getX();
