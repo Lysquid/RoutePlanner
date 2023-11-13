@@ -18,9 +18,11 @@ import fr.blazanome.routeplanner.observer.Observers;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -49,7 +51,6 @@ public class GraphicalView implements View, Initializable {
 
     public java.util.Map<Button, List<Class<? extends State>>> buttonEnabledStates = new HashMap<>();
     private Observer commandStackObserver;
-
 
     public GraphicalView() {
         this.commandStackObserver = Observers.typed(CommandStack.class, this::onCommandStackUpdate);
@@ -120,6 +121,9 @@ public class GraphicalView implements View, Initializable {
             this.updateCouriers(session);
             this.selectedCourier.setValue(session.getCouriers().get(0));
         } else if (eventType == EventType.ROUTE_COMPUTED) {
+            if (message == null) {
+                this.showRouteComputeError((Courier) observable);
+            }
             this.mapView.draw();
             this.updateRequests();
         } else if (observable instanceof Courier courier) {
@@ -127,6 +131,11 @@ public class GraphicalView implements View, Initializable {
         } else if (observable instanceof Session session) {
             this.updateCouriers(session);
         }
+    }
+
+    private void showRouteComputeError(Courier courier) {
+        Alert alert = new Alert(AlertType.ERROR, "No route can fulfill your requirements for " + courier.toString());
+        alert.showAndWait();
     }
 
     private void onCommandStackUpdate(CommandStack commandStack, EventType eventType, Object message) {
@@ -150,7 +159,7 @@ public class GraphicalView implements View, Initializable {
 
     private void updateCouriers(Session session) {
         this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
-        this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size()-1));
+        this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
     }
 
     public void selectCourier(ActionEvent actionEvent) {
