@@ -1,10 +1,10 @@
 package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.model.Intersection;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.Button;
 import javafx.scene.shape.Circle;
 
-public class ButtonIntersection extends ToggleButton {
+public class ButtonIntersection extends Button {
 
     private static final int RADIUS = 5;
     private static final Circle circle = new Circle(RADIUS);

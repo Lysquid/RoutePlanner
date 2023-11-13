@@ -128,6 +128,9 @@ public class GraphicalView implements View, Initializable {
                 entry.getKey().setDisable(true);
             }
         }
+        if(this.mapView != null) {
+            this.mapView.onStateChange(controller, state);
+        }
     }
 
     @Override

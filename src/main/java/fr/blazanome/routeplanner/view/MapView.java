@@ -1,9 +1,11 @@
 package fr.blazanome.routeplanner.view;
 
-import fr.blazanome.routeplanner.model.Courier;
-import fr.blazanome.routeplanner.model.Intersection;
-import fr.blazanome.routeplanner.model.Segment;
-import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.controller.Controller;
+import fr.blazanome.routeplanner.controller.state.DeliverySelectedState;
+import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
+import fr.blazanome.routeplanner.controller.state.MapLoadedState;
+import fr.blazanome.routeplanner.controller.state.State;
+import fr.blazanome.routeplanner.model.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -14,6 +16,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -42,6 +46,12 @@ public class MapView extends Pane {
     private double mouseX = 0.0;
     private double mouseY = 0.0;
     private Courier currentCourier;
+
+    private static final Color INTERSECTION_SELECTED_COLOR = Color.WHITE;
+
+    private static final Color[] DEFAULT_COLOR_LIST = {Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN ,
+            Color.YELLOW  , Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK };
+
     // sets up listeners and the canvas
     public MapView() {
         currentCourier=null;
@@ -88,7 +98,6 @@ public class MapView extends Pane {
         }
 
         this.buttonIntersectionList = new ArrayList<>();
-        ToggleGroup toggleGroup = new ToggleGroup();
 
         for (Intersection intersection : session.getMap().getIntersections()) {
             // compute the bounds of the map to display all intersection
@@ -102,7 +111,6 @@ public class MapView extends Pane {
             if (intersection == session.getMap().getWarehouse()) {
                 button.setId("warehouse");
             }
-            toggleGroup.getToggles().add(button);
             this.root.getChildren().add(button);
             this.buttonIntersectionList.add(button);
         }
@@ -115,7 +123,6 @@ public class MapView extends Pane {
     void draw() {
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
-        Color[] defaultColorList={Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN , Color.YELLOW, Color.GREEN, Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK};
         // Re-draw everything on the canvas
         if (this.session != null) {
             // Checks that draw has been called then clears the canvas and redraws all the
@@ -131,8 +138,8 @@ public class MapView extends Pane {
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
                     Color c;
-                    if (courier.getId()-1 < defaultColorList.length) {
-                        c = defaultColorList[courier.getId()-1];
+                    if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
+                        c = DEFAULT_COLOR_LIST[courier.getId()-1];
                     } else {
                         c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
                     }
@@ -141,6 +148,56 @@ public class MapView extends Pane {
                     }
                 }
             }
+            this.redrawIntersections();
+        }
+    }
+
+    public void onStateChange(Controller controller, State state) {
+        if(state instanceof IntersectionSelectedState s) {
+            this.selectIntersection(s.getSelectedIntersection());
+        } else if(state instanceof DeliverySelectedState s) {
+            this.selectIntersection(s.getDeliveryRequest().getIntersection());
+        } else if(state instanceof MapLoadedState s) {
+            this.redrawIntersections();
+        }
+
+    }
+
+    private void selectIntersection(Intersection intersection){
+        this.redrawIntersections();
+        for (var b: this.buttonIntersectionList) {
+            if(b.getIntersection().equals(intersection)) {
+                b.setStyle(String.format( "-fx-background-color: #%02X%02X%02X",
+                        (int)( INTERSECTION_SELECTED_COLOR.getRed() * 255 ),
+                        (int)( INTERSECTION_SELECTED_COLOR.getGreen() * 255 ),
+                        (int)( INTERSECTION_SELECTED_COLOR.getBlue() * 255 ) ));
+            }
+        }
+    };
+
+    private void redrawIntersections() {
+        Random generator = new Random(10);
+        for(var b: this.buttonIntersectionList){
+            b.setStyle("-fx-background-color: black");
+            for (Courier courier : session.getCouriers()) {
+                if (this.currentCourier == null || this.currentCourier == courier) {
+                    Color c;
+                    if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
+                        c = DEFAULT_COLOR_LIST[courier.getId()-1];
+                    } else {
+                        c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
+                    }
+                        for(var request: courier.getRequests()){
+                            if(request.getIntersection().equals(b.getIntersection())) {
+                                //b.setBackground(new Background(new BackgroundFill(c, null, null)));
+                                b.setStyle(String.format( "-fx-background-color: #%02X%02X%02X",
+                                        (int)( c.getRed() * 255 ),
+                                        (int)( c.getGreen() * 255 ),
+                                        (int)( c.getBlue() * 255 ) ));
+                            }
+                        }
+                    }
+                }
         }
     }
 

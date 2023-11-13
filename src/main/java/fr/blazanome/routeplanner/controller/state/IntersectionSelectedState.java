@@ -28,4 +28,8 @@ public class IntersectionSelectedState implements State {
         commandStack.add(new AddDeliveryCommand(courier, new DeliveryRequest(selectedIntersection, timeframe)));
     }
 
+    public final Intersection getSelectedIntersection() {
+        return this.selectedIntersection;
+    }
+
 }

@@ -29,10 +29,6 @@ ButtonIntersection {
     -fx-border-style: none;
 }
 
-ButtonIntersection:selected {
-    -fx-background-color: red!important;
-}
-
 #warehouse {
     -fx-background-color: blue;
 }

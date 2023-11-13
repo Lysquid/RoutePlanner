@@ -5,7 +5,6 @@ import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.controller.ReverseCommand;
 import fr.blazanome.routeplanner.model.*;
-import fr.blazanome.routeplanner.view.View;
 
 /**
  * DeliverySelectedState
@@ -23,5 +22,9 @@ public class DeliverySelectedState implements State {
     public void removeDelivery(Controller controller, CommandStack commandStack) {
         commandStack.add(new ReverseCommand(new AddDeliveryCommand(this.courier, this.deliveryRequest)));
         controller.setCurrentState(new MapLoadedState());
+    }
+
+    public DeliveryRequest getDeliveryRequest() {
+        return this.deliveryRequest;
     }
 }
