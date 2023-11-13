@@ -167,10 +167,7 @@ public class MapView extends Pane {
         this.redrawIntersections();
         for (var b: this.buttonIntersectionList) {
             if(b.getIntersection().equals(intersection)) {
-                b.setStyle(String.format( "-fx-background-color: #%02X%02X%02X",
-                        (int)( INTERSECTION_SELECTED_COLOR.getRed() * 255 ),
-                        (int)( INTERSECTION_SELECTED_COLOR.getGreen() * 255 ),
-                        (int)( INTERSECTION_SELECTED_COLOR.getBlue() * 255 ) ));
+                b.setColor(INTERSECTION_SELECTED_COLOR);
             }
         }
     };
@@ -189,11 +186,7 @@ public class MapView extends Pane {
                     }
                         for(var request: courier.getRequests()){
                             if(request.getIntersection().equals(b.getIntersection())) {
-                                //b.setBackground(new Background(new BackgroundFill(c, null, null)));
-                                b.setStyle(String.format( "-fx-background-color: #%02X%02X%02X",
-                                        (int)( c.getRed() * 255 ),
-                                        (int)( c.getGreen() * 255 ),
-                                        (int)( c.getBlue() * 255 ) ));
+                                b.setColor(c);
                             }
                         }
                     }

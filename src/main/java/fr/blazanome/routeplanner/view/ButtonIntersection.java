@@ -2,6 +2,7 @@ package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.model.Intersection;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class ButtonIntersection extends Button {
@@ -39,4 +40,11 @@ public class ButtonIntersection extends Button {
         return Math.max(radius,1.0);
     }
 
+    public void setColor(Color color) {
+        this.setStyle(String.format("-fx-background-color: #%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255))
+        );
+    }
 }
