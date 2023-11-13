@@ -148,7 +148,7 @@ public class MapView extends Pane {
     void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
             this.gc.setStroke(Color.BLACK);
-            this.gc.setLineWidth(1.5);
+            this.gc.setLineWidth(1.5*this.zoomTransform.getX());
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
 
@@ -169,7 +169,7 @@ public class MapView extends Pane {
         //double personeCount=1.0;
         for (Segment segment : iterableSegment) {
             this.gc.setStroke(c);
-            this.gc.setLineWidth(2);
+            this.gc.setLineWidth(2.0*this.zoomTransform.getX());
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
             // Calculate scaled positions for the segments
