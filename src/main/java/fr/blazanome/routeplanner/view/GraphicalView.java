@@ -8,7 +8,6 @@ import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Delivery;
 import fr.blazanome.routeplanner.model.DeliveryRequest;
-import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Session;
 import fr.blazanome.routeplanner.model.Timeframe;
 import fr.blazanome.routeplanner.observer.EventType;
@@ -204,10 +203,13 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void drawOnlySelectCourier() {
-        this.oneCourier = !this.oneCourier;
-        if (oneCourier) {
+    public void drawOnlySelectCourier(){
+        this.oneCourier=!this.oneCourier;
+        if(oneCourier) {
             this.mapView.draw(this.selectedCourier.getValue());
+        }
+        else{
+            this.mapView.draw(null);
         }
     }
 
