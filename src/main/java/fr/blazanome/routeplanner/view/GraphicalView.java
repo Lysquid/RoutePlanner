@@ -151,11 +151,8 @@ public class GraphicalView implements View, Initializable {
 
                 this.updateRequests();
             }
-            case COURIER_REMOVE -> {
+            case COURIER_REMOVE, COURIER_ADD -> {
                 this.mapView.draw();
-                this.updateCouriers((Session) observable);
-            }
-            case COURIER_ADD -> {
                 this.updateCouriers((Session) observable);
             }
             case DELIVERY_ADD, DELIVERY_REMOVE -> {
