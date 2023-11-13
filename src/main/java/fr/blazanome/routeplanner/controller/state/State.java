@@ -48,10 +48,14 @@ public interface State {
         controller.setCurrentState(new IntersectionSelectedState(intersection));
     }
 
+    default void selectDelivery(Controller controller, DeliveryRequest deliveryRequest, Courier courier) {
+        controller.setCurrentState(new DeliverySelectedState(deliveryRequest, courier));
+    }
+
     default void addDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
     };
 
-    default void removeDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
+    default void removeDelivery(Controller controller, CommandStack commandStack) {
     };
 
     default void compute(Courier courier, TourGenerationAlgorithm algorithm, Session session) {
@@ -72,6 +76,10 @@ public interface State {
 
     default void removeCourier(Session session, Courier courier, CommandStack commandStack) {
         commandStack.add(new ReverseCommand(new AddCourierCommand(courier, session)));
+    }
+
+    default void selectCourier(Controller controller, Courier courier) {
+        controller.setCurrentState(new MapLoadedState());
     }
 
     default void saveSession(File file, Session session) {

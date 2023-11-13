@@ -72,8 +72,12 @@ public class Controller {
         this.currentState.addDelivery(this.view, this.session, courier, timeframe, this.commandStack);
     }
 
-    public void removeDelivery(Courier courier, Timeframe timeframe) {
-        this.currentState.removeDelivery(this.view, this.session, courier, timeframe, this.commandStack);
+    public void selectDelivery(DeliveryRequest deliveryRequest, Courier courier) {
+        this.currentState.selectDelivery(this, deliveryRequest, courier);
+    }
+
+    public void removeDelivery() {
+        this.currentState.removeDelivery(this, this.commandStack);
     }
 
     public CommandStack getCommandStack() {
@@ -100,6 +104,10 @@ public class Controller {
 
     public void removeCourier(Courier courier) {
         this.currentState.removeCourier(this.session, courier, this.commandStack);
+    }
+
+    public void selectCourier(Courier courier) {
+        this.currentState.selectCourier(this, courier);
     }
 
     public XMLMapParser getMapParser() {

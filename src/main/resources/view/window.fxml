@@ -96,7 +96,7 @@
                         </VBox>
                     </Tab>
                 </TabPane>
-                <Button fx:id="removeDelivery" text="Remove delivery"/>
+                <Button fx:id="removeDelivery" onAction="#removeDelivery" text="Remove delivery"/>
             </VBox>
 
             <!-- New delivery -->

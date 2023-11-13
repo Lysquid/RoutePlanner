@@ -21,8 +21,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseButton;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -70,6 +72,17 @@ public class GraphicalView implements View, Initializable {
         this.buttonEnabledStates.put(this.addDelivery, (Arrays.asList(IntersectionSelectedState.class)));
         this.buttonEnabledStates.put(this.removeDelivery, (Arrays.asList(DeliverySelectedState.class)));
 
+        this.deliveriesTable.setRowFactory(tv -> {
+            TableRow<DeliveryRequest> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
+                    this.onDeliveryTableSelect(row.getItem());
+                }
+            });
+
+            return row;
+        });
+
         this.onStateChange(this.controller, this.controller.getCurrentState());
     }
 
@@ -94,9 +107,17 @@ public class GraphicalView implements View, Initializable {
         this.controller.addDelivery(this.selectedCourier.getValue(), this.timeframe.getValue());
     }
 
+    public void removeDelivery(ActionEvent event) {
+        this.controller.removeDelivery();
+    }
+
     public void selectIntersection(ActionEvent actionEvent) {
         ButtonIntersection button = (ButtonIntersection) actionEvent.getSource();
         this.controller.selectIntersection(button.getIntersection());
+    }
+
+    public void onDeliveryTableSelect(DeliveryRequest request) {
+        this.controller.selectDelivery(request, this.selectedCourier.getValue());
     }
 
     public void setDisableAddDelivery(boolean bool) {
@@ -179,9 +200,11 @@ public class GraphicalView implements View, Initializable {
     }
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
-        if(oneCourier) {
+        if(this.oneCourier) {
             this.mapView.draw(this.selectedCourier.getValue());
         }
+
+        this.controller.selectCourier(this.selectedCourier.getValue());
     }
 
     public void addCourier(ActionEvent actionEvent) {
