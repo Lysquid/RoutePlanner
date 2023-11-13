@@ -35,7 +35,7 @@ public class Session extends Observable {
 
     public void removeCourier(Courier courier) {
         this.couriers.remove(courier);
-        this.notifyObservers(EventType.DELIVERY_REMOVE, courier);
+        this.notifyObservers(EventType.COURIER_REMOVE, courier);
     }
 
     public void setCouriers(List<Courier> couriers) {

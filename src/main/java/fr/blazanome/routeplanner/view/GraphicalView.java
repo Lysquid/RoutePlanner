@@ -59,7 +59,7 @@ public class GraphicalView implements View, Initializable {
         this.commandStackObserver = Observers.typed(CommandStack.class, this::onCommandStackUpdate);
         this.controller = new Controller(this);
         this.controller.getCommandStack().addObserver(this.commandStackObserver);
-        this.oneCourier=false;
+        this.oneCourier = false;
     }
 
     @Override
@@ -137,27 +137,50 @@ public class GraphicalView implements View, Initializable {
 
     @Override
     public void update(Observable observable, EventType eventType, Object message) {
+        switch (eventType) {
+            case MAP_LOADED -> {
+                Session session = (Session) observable;
+                this.mapView.setUp(session);
+                if (oneCourier) {
+                    this.mapView.draw(this.selectedCourier.getValue());
+                } else {
+                    this.mapView.draw(null);
+                }
+                this.updateCouriers(session);
+                this.selectedCourier.setValue(session.getCouriers().get(0));
+            }
+            case ROUTE_COMPUTED -> {
+
+                if (oneCourier) {
+                    this.mapView.draw(this.selectedCourier.getValue());
+                } else {
+                    this.mapView.draw(null);
+                }
+
+                if (message == null) {
+                    this.showRouteComputeError((Courier) observable);
+                }
+
+                this.updateRequests();
+            }
+            case COURIER_REMOVE -> {
+                if (oneCourier) {
+                    this.mapView.draw(this.selectedCourier.getValue());
+                } else {
+                    this.mapView.draw(null);
+                }
+                this.updateCouriers((Session) observable);
+                System.out.println("jtest");
+            }
+            case COURIER_ADD -> {
+                this.updateCouriers((Session) observable);
+            }
+            case DELIVERY_ADD, DELIVERY_REMOVE -> {
+                this.updateRequests();
+            }
+        }
         if (message instanceof IMap) {
-            Session session = (Session) observable;
-            this.mapView.setUp(session);
-            if(oneCourier) {
-                this.mapView.draw(this.selectedCourier.getValue());
-            }
-            else{
-                this.mapView.draw(null);
-            }
-            this.updateCouriers(session);
-            this.selectedCourier.setValue(session.getCouriers().get(0));
         } else if (eventType == EventType.ROUTE_COMPUTED) {
-            if (message == null) {
-                this.showRouteComputeError((Courier) observable);
-            }
-            if (oneCourier) {
-                this.mapView.draw(this.selectedCourier.getValue());
-            } else{
-                this.mapView.draw(null);
-            }
-            this.updateRequests();
         } else if (observable instanceof Courier courier) {
             this.updateRequests();
         } else if (observable instanceof Session session) {
@@ -188,19 +211,22 @@ public class GraphicalView implements View, Initializable {
             }
         }
     }
-    public void drawOnlySelectCourier(){
-        this.oneCourier=!this.oneCourier;
-        if(oneCourier) {
+
+    public void drawOnlySelectCourier() {
+        this.oneCourier = !this.oneCourier;
+        if (oneCourier) {
             this.mapView.draw(this.selectedCourier.getValue());
         }
     }
+
     private void updateCouriers(Session session) {
         this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
         this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
     }
+
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
-        if(this.oneCourier) {
+        if (this.oneCourier) {
             this.mapView.draw(this.selectedCourier.getValue());
         }
 
