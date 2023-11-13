@@ -32,8 +32,8 @@
                     </HBox>
                     <Text text="Controls"/>
                     <HBox>
-                        <Button text="Undo" onAction="#undo"/>
-                        <Button text="Redo" onAction="#redo"/>
+                        <Button text="Undo" disable="true" onAction="#undo" fx:id="undoButton"/>
+                        <Button text="Redo" disable="true" onAction="#redo" fx:id="redoButton"/>
                     </HBox>
                 </VBox>
             </HBox>
