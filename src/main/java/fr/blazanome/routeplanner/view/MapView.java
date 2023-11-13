@@ -41,9 +41,10 @@ public class MapView extends Pane {
     private final Scale zoomTransform;
     private double mouseX = 0.0;
     private double mouseY = 0.0;
-
+    private Courier currentCourier;
     // sets up listeners and the canvas
     public MapView() {
+        currentCourier=null;
         // sets up the canvas and updates for width
         this.canvas = new Canvas();
         this.gc = this.canvas.getGraphicsContext2D();
@@ -56,8 +57,8 @@ public class MapView extends Pane {
         clippingRect.widthProperty().bind(this.widthProperty());
         this.setClip(clippingRect);
 
-        this.widthProperty().addListener((observable, oldValue, newValue) -> draw());
-        this.heightProperty().addListener((observable, oldValue, newValue) -> draw());
+        this.widthProperty().addListener((observable, oldValue, newValue) -> draw(this.currentCourier));
+        this.heightProperty().addListener((observable, oldValue, newValue) -> draw(this.currentCourier));
 
         // Handle mouse scroll events for zooming
         // Adds listener for zooming and dragging
@@ -107,15 +108,14 @@ public class MapView extends Pane {
         }
     }
 
-    void draw() {
 
-
+    void draw(Courier selectedCourier) {
+        this.currentCourier = selectedCourier;
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
         Color[] defaultColorList={Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN , Color.YELLOW  , Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK};
         // Re-draw everything on the canvas
         int count=0;
-
         if (this.session != null) {
             // Checks that draw has been called then clears the canvas and redraws all the
             // relevant points
@@ -127,20 +127,27 @@ public class MapView extends Pane {
             // Normally the changing of the Colour would happen for every route, here I did
             // it on every step of the route to demonstrate how it works
             Random generator = new Random(10);
+            if(selectedCourier==null){
+                for (Courier courier : session.getCouriers()) {
+                    Color c;
+                    if (count < defaultColorList.length) {
+                        c = defaultColorList[count];
+                    } else {
 
-            for (Courier courier : session.getCouriers()) {
-                Color c;
-                if (count < defaultColorList.length) {
-                    c = defaultColorList[count];
-                } else {
+                        c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
+                    }
+                    if (courier.getRoute() != null) {
 
-                    c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
+                        this.drawRoute(courier.getRoute().getPath(), c);
+                    }
+                    count++;
                 }
-                if (courier.getRoute() != null) {
-
-                    this.drawRoute(courier.getRoute().getPath(), c);
+            }
+            else{
+                Color c= defaultColorList[0];
+                if (selectedCourier.getRoute() != null) {
+                    this.drawRoute(selectedCourier.getRoute().getPath(), c);
                 }
-                count++;
             }
         }
     }
@@ -227,7 +234,7 @@ public class MapView extends Pane {
         this.zoomTransform.setX(1.0);
         this.zoomTransform.setY(1.0);
         this.resizeButton();
-        this.draw();
+        this.draw(this.currentCourier);
     }
     // turns latitude and longitude into x and y coordinates
     void resizeButton(){
@@ -286,7 +293,7 @@ public class MapView extends Pane {
             this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
         }
         this.resizeButton();
-        this.draw();
+        this.draw(this.currentCourier);
 
     }
     // Action to make the dragging possible
@@ -302,7 +309,7 @@ public class MapView extends Pane {
             this.offsetX = this.offsetX + deltaX / this.zoomTransform.getX();
             this.offsetY = this.offsetY + deltaY / this.zoomTransform.getY();
             // Iterate through child nodes and adjust their positions
-            this.draw();
+            this.draw(this.currentCourier);
 
             this.initialX = event.getSceneX();
             this.initialY = event.getSceneY();
@@ -325,5 +332,6 @@ public class MapView extends Pane {
         return this.propertyOnAction.get();
 
     }
+
 
 }

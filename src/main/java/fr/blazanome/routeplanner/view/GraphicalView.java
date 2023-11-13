@@ -48,6 +48,7 @@ public class GraphicalView implements View, Initializable {
 
     public Button undoButton;
     public Button redoButton;
+    public boolean oneCourier;
 
     public java.util.Map<Button, List<Class<? extends State>>> buttonEnabledStates = new HashMap<>();
     private Observer commandStackObserver;
@@ -56,6 +57,7 @@ public class GraphicalView implements View, Initializable {
         this.commandStackObserver = Observers.typed(CommandStack.class, this::onCommandStackUpdate);
         this.controller = new Controller(this);
         this.controller.getCommandStack().addObserver(this.commandStackObserver);
+        this.oneCourier=false;
     }
 
     @Override
@@ -117,14 +119,24 @@ public class GraphicalView implements View, Initializable {
         if (message instanceof IMap) {
             Session session = (Session) observable;
             this.mapView.setUp(session);
-            this.mapView.draw();
+            if(oneCourier) {
+                this.mapView.draw(this.selectedCourier.getValue());
+            }
+            else{
+                this.mapView.draw(null);
+            }
             this.updateCouriers(session);
             this.selectedCourier.setValue(session.getCouriers().get(0));
         } else if (eventType == EventType.ROUTE_COMPUTED) {
             if (message == null) {
                 this.showRouteComputeError((Courier) observable);
             }
-            this.mapView.draw();
+            if(oneCourier) {
+                this.mapView.draw(this.selectedCourier.getValue());
+            }
+            else{
+                this.mapView.draw(null);
+            }
             this.updateRequests();
         } else if (observable instanceof Courier courier) {
             this.updateRequests();
@@ -156,12 +168,19 @@ public class GraphicalView implements View, Initializable {
             }
         }
     }
-
+    public void drawOnlySelectCourier(){
+        this.oneCourier=!this.oneCourier;
+        if(oneCourier) {
+            this.mapView.draw(this.selectedCourier.getValue());
+        }
+        else{
+            this.mapView.draw(null);
+        }
+    }
     private void updateCouriers(Session session) {
         this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
         this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
     }
-
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
     }
