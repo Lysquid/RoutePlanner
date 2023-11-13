@@ -195,10 +195,10 @@ public class GraphicalView implements View, Initializable {
     public void drawOnlySelectCourier(){
         this.oneCourier=!this.oneCourier;
         if(oneCourier) {
-            this.mapView.SetSelectedCourier(this.selectedCourier.getValue());
+            this.mapView.setSelectedCourier(this.selectedCourier.getValue());
         }
         else{
-            this.mapView.SetSelectedCourier(null);
+            this.mapView.setSelectedCourier(null);
         }
         this.mapView.draw();
 
@@ -212,7 +212,7 @@ public class GraphicalView implements View, Initializable {
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
         if (this.oneCourier) {
-            this.mapView.SetSelectedCourier(this.selectedCourier.getValue());
+            this.mapView.setSelectedCourier(this.selectedCourier.getValue());
             this.mapView.draw();
         }
 

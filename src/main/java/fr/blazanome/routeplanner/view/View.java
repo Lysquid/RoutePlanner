@@ -6,6 +6,6 @@ import fr.blazanome.routeplanner.observer.Observer;
 
 public interface View extends Observer {
 
-    public void onStateChange(Controller controller, State state);
+    void onStateChange(Controller controller, State state);
 
 }

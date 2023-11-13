@@ -107,8 +107,8 @@ public class MapView extends Pane {
             this.buttonIntersectionList.add(button);
         }
     }
-    void SetSelectedCourier(Courier selectedCourier){
-        this.currentCourier=selectedCourier;
+    void setSelectedCourier(Courier selectedCourier){
+        this.currentCourier = selectedCourier;
     }
 
     void draw() {
