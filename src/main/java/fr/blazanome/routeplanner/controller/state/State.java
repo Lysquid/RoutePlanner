@@ -29,6 +29,7 @@ public interface State {
             session.addCourier(courier1);
 
             session.setMap(map);
+            controller.getCommandStack().reset();
             controller.setCurrentState(new MapLoadedState());
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();

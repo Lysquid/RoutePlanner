@@ -54,4 +54,10 @@ public class CommandStack extends Observable {
     public boolean canRedo() {
         return this.currentIndex < this.commands.size() - 1;
     }
+
+    public void reset() {
+        this.currentIndex = -1;
+        this.commands = new ArrayList<>();
+        this.notifyObservers(EventType.COMMAND_STACK_UPDATE, null);
+    }
 }

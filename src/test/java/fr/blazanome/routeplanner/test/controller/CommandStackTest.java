@@ -109,4 +109,17 @@ public class CommandStackTest {
         assertEquals(101, this.counter);
     }
 
+    @Test
+    public void testReset() {
+        this.counter = 0;
+        var command1 = new TestCommand(1);
+        var stack = new CommandStack();
+
+        stack.add(command1);
+        assertEquals(1,this.counter);
+        stack.reset();
+        stack.undo();
+        assertEquals(1, this.counter);
+    }
+
 }
