@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -20,6 +21,7 @@ import javafx.scene.transform.Scale;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MapView extends Pane {
 
@@ -63,25 +65,7 @@ public class MapView extends Pane {
         this.root.getTransforms().add(this.zoomTransform);
         setOnMousePressed(this::handleMousePressed);
         setOnMouseDragged(this::handleMouseDragged);
-        setOnScroll(event -> {
-            double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
-            double scaleFactor = 1.05; // Adjust the zoom factor as needed
-            if (delta > 0) {
-                // Zoom in
-                this.offsetX = this.offsetX - this.mouseX * (scaleFactor - 1) / this.zoomTransform.getX();
-                this.offsetY = this.offsetY - this.mouseY * (scaleFactor - 1) / this.zoomTransform.getX();
-                this.zoomTransform.setX(this.zoomTransform.getX() * scaleFactor);
-                this.zoomTransform.setY(this.zoomTransform.getY() * scaleFactor);
-
-            } else if (delta < 0) {
-                // Zoom out
-                this.offsetX = this.offsetX + this.mouseX * ((1 - (1 / scaleFactor))) / this.zoomTransform.getX();
-                this.offsetY = this.offsetY + this.mouseY * ((1 - (1 / scaleFactor))) / this.zoomTransform.getX();
-                this.zoomTransform.setX(this.zoomTransform.getX() / scaleFactor);
-                this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
-            }
-            draw();
-        });
+        setOnScroll(this::handleScroll);
         setOnMouseMoved(event -> {
             this.mouseX = event.getX();
             this.mouseY = event.getY();
@@ -125,13 +109,13 @@ public class MapView extends Pane {
 
     void draw() {
 
-        double i = 0.0;
-        double k = 1.0;
 
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
-
+        Color[] defaultColorList={Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN , Color.YELLOW  , Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK};
         // Re-draw everything on the canvas
+        int count=0;
+
         if (this.session != null) {
             // Checks that draw has been called then clears the canvas and redraws all the
             // relevant points
@@ -142,15 +126,21 @@ public class MapView extends Pane {
 
             // Normally the changing of the Colour would happen for every route, here I did
             // it on every step of the route to demonstrate how it works
+            Random generator = new Random(10);
 
-            for (int courierId = this.session.getCouriers().size() - 1; courierId >= 0; courierId--) {
-                Courier courier = this.session.getCouriers().get(courierId);
+            for (Courier courier : session.getCouriers()) {
+                Color c;
+                if (count < defaultColorList.length) {
+                    c = defaultColorList[count];
+                } else {
+
+                    c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
+                }
                 if (courier.getRoute() != null) {
-                    i = i + 1.0 / (double) session.getCouriers().size();
-                    Color c = new Color(1 - i, i, i, 1.0);
 
                     this.drawRoute(courier.getRoute().getPath(), c);
                 }
+                count++;
             }
         }
     }
@@ -177,13 +167,11 @@ public class MapView extends Pane {
     }
 
     void drawRoute(Iterable<Segment> iterableSegment, Color c) {
-        // the code should be very different from the other function once it's actually
-        // implemented.
-
-        // double personeCount=1.0;
+        //the code should be very different from the other function once it's actually implemented.
+        //double personeCount=1.0;
         for (Segment segment : iterableSegment) {
             this.gc.setStroke(c);
-            this.gc.setLineWidth(5);
+            this.gc.setLineWidth(2);
             Intersection start = segment.getOrigin();
             Intersection end = segment.getDestination();
             // Calculate scaled positions for the segments
@@ -191,8 +179,34 @@ public class MapView extends Pane {
             double scaledY1 = this.positionY(start) * this.zoomTransform.getY();
             double scaledX2 = this.positionX(end) * this.zoomTransform.getX();
             double scaledY2 = this.positionY(end) * this.zoomTransform.getY();
-            // Draw the scaled segment
-            gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2);
+            double pente=(scaledX1-scaledX2)/(scaledY1-scaledY2);
+            //calculates one of the two vectors that follows the line from the start to end and
+            double dx=pente/(Math.sqrt(Math.pow(pente,2)+1.0));
+            double dy=1/(Math.sqrt(Math.pow(pente,2)+1.0));
+            //Finds the perpendicular vector by calculating it as (px 1) then normalizing it
+            double perpendicularx=-dy/dx;
+            double perpendiculary=1/(Math.sqrt(Math.pow(perpendicularx,2)+1.0));
+            perpendicularx=perpendicularx/(Math.sqrt(Math.pow(perpendicularx,2)+1.0));
+            gc.strokeLine(scaledX1, scaledY1, scaledX2, scaledY2 );
+
+
+
+            //This sets the size of the arrow and makes sure it resizes when we zoom in
+            double arrow = 6 * this.zoomTransform.getX();
+            //In this function we draw an arrow at the end point by tracing two lines from the end point to two other points.
+            //These two points are found by going 6 units down the line then 6 units following a vector perpendicular to the line this gives two lines at a 45° angle on either side
+            //The if exists because depending the circumstance the vector could be going either direction
+            if((scaledX1<scaledX2 && scaledY1<scaledY2)||(scaledX1>scaledX2 && scaledY1<scaledY2)) {
+                gc.strokeLine(scaledX2, scaledY2, scaledX2 + perpendicularx * arrow - dx * arrow, scaledY2 + arrow * perpendiculary - arrow * dy);
+                gc.strokeLine(scaledX2, scaledY2, scaledX2 - perpendicularx * arrow - dx * arrow, scaledY2 - arrow * perpendiculary - arrow * dy);
+            }
+            else{
+                gc.strokeLine(scaledX2, scaledY2, scaledX2 + perpendicularx * arrow + dx * arrow, scaledY2 + arrow * perpendiculary + arrow * dy);
+                gc.strokeLine(scaledX2, scaledY2, scaledX2 - perpendicularx * arrow + dx * arrow, scaledY2 - arrow * perpendiculary + arrow * dy);
+
+            }
+            //gc.strokeLine(scaledX1, scaledY1, scaledX1, scaledY1);
+
         }
     }
 
@@ -207,8 +221,20 @@ public class MapView extends Pane {
             bt.setVisible(true);
         }
     }
-
+    void resetPosition(){
+        this.offsetY=0;
+        this.offsetX=0;
+        this.zoomTransform.setX(1.0);
+        this.zoomTransform.setY(1.0);
+        this.resizeButton();
+        this.draw();
+    }
     // turns latitude and longitude into x and y coordinates
+    void resizeButton(){
+        for(ButtonIntersection intersection : this.buttonIntersectionList){
+            intersection.updateRadius(this.zoomTransform.getX());
+        }
+    }
 
     double ConvertToX(double lat, double lon) {
         return Math.cos((Math.PI / 180.0) * lat) * 111.0 * lon;
@@ -242,7 +268,27 @@ public class MapView extends Pane {
     double ratioWidth() {
         return Math.min(this.getWidth(), this.getHeight() * (this.maxX - this.minX) / (this.maxY - this.minY));
     }
+    private void handleScroll(ScrollEvent event){
+        double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
+        double scaleFactor = 1.05; // Adjust the zoom factor as needed
+        if (delta > 0) {
+            // Zoom in
+            this.offsetX=this.offsetX-this.mouseX*(scaleFactor-1)/this.zoomTransform.getX();
+            this.offsetY=this.offsetY-this.mouseY*(scaleFactor-1)/this.zoomTransform.getX();
+            this.zoomTransform.setX(this.zoomTransform.getX() * scaleFactor);
+            this.zoomTransform.setY(this.zoomTransform.getY() * scaleFactor);
 
+        } else if (delta < 0) {
+            // Zoom out
+            this.offsetX=this.offsetX+this.mouseX*((1-(1/scaleFactor)))/this.zoomTransform.getX();
+            this.offsetY=this.offsetY+this.mouseY*((1-(1/scaleFactor)))/this.zoomTransform.getX();
+            this.zoomTransform.setX(this.zoomTransform.getX() / scaleFactor);
+            this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
+        }
+        this.resizeButton();
+        this.draw();
+
+    }
     // Action to make the dragging possible
     private void handleMousePressed(MouseEvent event) {
         this.initialX = event.getSceneX();
