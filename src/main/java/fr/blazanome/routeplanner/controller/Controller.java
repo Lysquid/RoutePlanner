@@ -6,6 +6,8 @@ import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
 import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
+import fr.blazanome.routeplanner.algorithm.tsp.TSP2;
+import fr.blazanome.routeplanner.algorithm.tsp.TSP3;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.*;
@@ -39,7 +41,7 @@ public class Controller {
         this.commandStack = new CommandStack();
 
         var tourGenerationAlgorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
-                new TSP1.Factory());
+                new TSP3.Factory());
         this.courierRouteUpdater = new AnytimeCourierRouteUpdater(this.view::onTaskCountChange, tourGenerationAlgorithm);
 
         this.sessionObserver = Observers.typed(Session.class, this::onSessionChange);

@@ -9,7 +9,7 @@ import java.util.stream.StreamSupport;
 
 public class TSP1 extends TemplateTSP {
 	@Override
-	protected int bound(Integer currentVertex, Collection<Integer> unvisited) {
+	protected double bound(Integer currentVertex, Collection<Integer> unvisited) {
 		return 0;
 	}
 
