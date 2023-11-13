@@ -33,6 +33,10 @@ ButtonIntersection {
     -fx-background-color: blue;
 }
 
+#selected {
+    -fx-background-color: white;
+}
+
 TableView {
     -fx-pref-height: 243;
 }

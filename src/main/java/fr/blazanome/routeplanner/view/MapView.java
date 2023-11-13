@@ -47,8 +47,6 @@ public class MapView extends Pane {
     private double mouseY = 0.0;
     private Courier currentCourier;
 
-    private static final Color INTERSECTION_SELECTED_COLOR = Color.WHITE;
-
     private static final Color[] DEFAULT_COLOR_LIST = {Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN ,
             Color.YELLOW  , Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK };
 
@@ -158,18 +156,37 @@ public class MapView extends Pane {
         } else if(state instanceof DeliverySelectedState s) {
             this.selectIntersection(s.getDeliveryRequest().getIntersection());
         } else if(state instanceof MapLoadedState s) {
-            this.redrawIntersections();
+            this.deselectIntersection();
         }
 
     }
 
-    private void selectIntersection(Intersection intersection){
-        this.redrawIntersections();
+    private void deselectIntersection() {
+        if(buttonIntersectionList == null) {
+            return;
+        }
         for (var b: this.buttonIntersectionList) {
-            if(b.getIntersection().equals(intersection)) {
-                b.setColor(INTERSECTION_SELECTED_COLOR);
+            if(b.getId() != null && b.getId().equals("selected")) {
+                b.setId(null);
             }
         }
+        redrawIntersections();
+    }
+
+    private void selectIntersection(Intersection intersection){
+        if(buttonIntersectionList == null) {
+            return;
+        }
+        for (var b: this.buttonIntersectionList) {
+            if(b.getId() != null && b.getId().equals("selected")) {
+                b.setId(null);
+            }
+            if(b.getIntersection().equals(intersection)) {
+                b.setId("selected");
+                b.setStyle(null);
+            }
+        }
+        redrawIntersections();
     };
 
     private void redrawIntersections() {
@@ -178,6 +195,9 @@ public class MapView extends Pane {
             return;
         }
         for(var b: this.buttonIntersectionList){
+            if(b.getId() != null && (b.getId().equals("selected") || b.getId().equals("warehouse"))){
+                continue;
+            }
             b.setStyle("-fx-background-color: black");
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
