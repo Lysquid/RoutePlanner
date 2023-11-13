@@ -228,8 +228,10 @@ public class MapView extends Pane {
     }
     // turns latitude and longitude into x and y coordinates
     void resizeButton(){
-        for(ButtonIntersection intersection : this.buttonIntersectionList){
-            intersection.updateRadius(this.zoomTransform.getX());
+        if (buttonIntersectionList != null) {
+            for (ButtonIntersection intersection : this.buttonIntersectionList) {
+                intersection.updateRadius(this.zoomTransform.getX());
+            }
         }
     }
 

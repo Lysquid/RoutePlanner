@@ -166,7 +166,9 @@ public class Controller {
 
     public void loadSession(File file) {
         this.currentState.loadSession(this, file, this.session, this.view);
-        this.setCurrentState(new MapLoadedState());
+        if (session != null) {
+            this.setCurrentState(new MapLoadedState());
+        }
     }
 
 }
