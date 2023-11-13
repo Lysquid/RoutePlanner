@@ -170,7 +170,6 @@ public class GraphicalView implements View, Initializable {
                     this.mapView.draw(null);
                 }
                 this.updateCouriers((Session) observable);
-                System.out.println("jtest");
             }
             case COURIER_ADD -> {
                 this.updateCouriers((Session) observable);
@@ -178,13 +177,6 @@ public class GraphicalView implements View, Initializable {
             case DELIVERY_ADD, DELIVERY_REMOVE -> {
                 this.updateRequests();
             }
-        }
-        if (message instanceof IMap) {
-        } else if (eventType == EventType.ROUTE_COMPUTED) {
-        } else if (observable instanceof Courier courier) {
-            this.updateRequests();
-        } else if (observable instanceof Session session) {
-            this.updateCouriers(session);
         }
     }
 
