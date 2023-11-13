@@ -27,13 +27,13 @@
                     </HBox>
                     <Text text="Session"/>
                     <HBox>
-                        <Button text="Load a session" onAction="#loadSession"/>
-                        <Button text="Save the session" onAction="#saveSession"/>
+                        <Button text="Load a session" fx:id="loadSessionButton" onAction="#loadSession" disable="true"/>
+                        <Button text="Save the session" fx:id="saveSessionButton" onAction="#saveSession" disable="true"/>
                     </HBox>
                     <Text text="Controls"/>
                     <HBox>
-                        <Button text="Undo" disable="true" onAction="#undo" fx:id="undoButton"/>
-                        <Button text="Redo" disable="true" onAction="#redo" fx:id="redoButton"/>
+                        <Button text="Undo" onAction="#undo" fx:id="undoButton" disable="true"/>
+                        <Button text="Redo" onAction="#redo" fx:id="redoButton" disable="true"/>
                     </HBox>
                 </VBox>
             </HBox>
@@ -43,8 +43,8 @@
                 <Text text="Courier"/>
                 <HBox>
                     <ComboBox fx:id="selectedCourier" onAction="#selectCourier"/>
-                    <Button text="+" onAction="#addCourier"/>
-                    <Button text="-" onAction="#removeCourier"/>
+                    <Button text="+" disable="true" fx:id="addCourierButton" onAction="#addCourier"/>
+                    <Button text="-" disable="true" fx:id="removeCourierButton" onAction="#removeCourier"/>
                 </HBox>
                 <CheckBox text="Show this courier only" fx:id="oneCourier" onAction="#setOnlyOneCourier"/>
                 <TabPane>
@@ -96,7 +96,7 @@
                         </VBox>
                     </Tab>
                 </TabPane>
-                <Button fx:id="removeDelivery" onAction="#removeDelivery" text="Remove delivery"/>
+                <Button fx:id="removeDeliveryButton" onAction="#removeDelivery" text="Remove delivery" disable="true"/>
             </VBox>
 
             <!-- New delivery -->
@@ -106,7 +106,7 @@
                     <Text text="At" GridPane.rowIndex="1"/>
                     <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 </GridPane>
-                <Button text="Add delivery" fx:id="addDelivery" onAction="#addDelivery"/>
+                <Button text="Add a delivery request" fx:id="addDeliveryButton" onAction="#addDelivery" disable="true"/>
             </VBox>
 
         </VBox>

@@ -4,6 +4,7 @@ import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.controller.state.DeliverySelectedState;
 import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
+import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Delivery;
@@ -39,14 +40,17 @@ public class GraphicalView implements View, Initializable {
     public ComboBox<Courier> selectedCourier;
     public CheckBox oneCourier;
     public ComboBox<Timeframe> timeframe;
-    public Button addDelivery;
-    public Button removeDelivery;
+    public Button addDeliveryButton;
+    public Button removeDeliveryButton;
     public TableView<DeliveryRequest> deliveriesTable;
     public TableView<Delivery> planningTable;
     public Button undoButton;
     public Button redoButton;
 
-    public java.util.Map<Button, List<Class<? extends State>>> buttonEnabledStates = new HashMap<>();
+    public Button removeCourierButton;
+    public Button loadSessionButton;
+    public Button saveSessionButton;
+    public Button addCourierButton;
     private Observer commandStackObserver;
 
     public GraphicalView() {
@@ -61,9 +65,6 @@ public class GraphicalView implements View, Initializable {
         this.timeframe.setValue(Timeframe.H8);
         this.deliveriesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         this.planningTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        this.buttonEnabledStates.put(this.addDelivery, (Arrays.asList(IntersectionSelectedState.class)));
-        this.buttonEnabledStates.put(this.removeDelivery, (Arrays.asList(DeliverySelectedState.class)));
 
         this.deliveriesTable.setRowFactory(tv -> {
             TableRow<DeliveryRequest> row = new TableRow<>();
@@ -115,22 +116,13 @@ public class GraphicalView implements View, Initializable {
         this.controller.selectDelivery(request, this.selectedCourier.getValue());
     }
 
-    public void setDisableAddDelivery(boolean bool) {
-        this.addDelivery.setDisable(bool);
-    }
-
     @Override
     public void onStateChange(Controller controller, State state) {
-        for (var entry : this.buttonEnabledStates.entrySet()) {
-            if (entry.getValue().contains(state.getClass())) {
-                entry.getKey().setDisable(false);
-            } else {
-                entry.getKey().setDisable(true);
-            }
-        }
-        if(this.mapView != null) {
-            this.mapView.onStateChange(controller, state);
-        }
+        if (state instanceof NoMapState)
+            return;
+        this.addDeliveryButton.setDisable(!(state instanceof IntersectionSelectedState) || this.selectedCourier.getValue() == null);
+        this.removeDeliveryButton.setDisable(!(state instanceof DeliverySelectedState));
+        this.mapView.onStateChange(controller, state);
     }
 
     @Override
@@ -143,6 +135,11 @@ public class GraphicalView implements View, Initializable {
 
                 this.updateCouriers(session);
                 this.selectedCourier.setValue(session.getCouriers().get(0));
+
+                this.loadSessionButton.setDisable(false);
+                this.saveSessionButton.setDisable(false);
+                this.addCourierButton.setDisable(false);
+                this.removeCourierButton.setDisable(false);
             }
             case ROUTE_COMPUTED -> {
 
@@ -201,7 +198,10 @@ public class GraphicalView implements View, Initializable {
 
     private void updateCouriers(Session session) {
         this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
-        this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
+        if (!session.getCouriers().isEmpty())
+            this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
+        this.removeCourierButton.setDisable(session.getCouriers().isEmpty());
+        this.addDeliveryButton.setDisable(this.addDeliveryButton.isDisabled() && this.selectedCourier.getValue() == null);
     }
 
     public void selectCourier(ActionEvent actionEvent) {
