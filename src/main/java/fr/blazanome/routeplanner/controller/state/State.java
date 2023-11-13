@@ -1,8 +1,6 @@
 package fr.blazanome.routeplanner.controller.state;
 
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
-import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
-import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.controller.AddCourierCommand;
 import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
@@ -15,8 +13,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * State
@@ -30,7 +26,6 @@ public interface State {
             controller.setSession(session);
 
             Courier courier1 = new Courier(1);
-            courier1.addObserver(view);
             session.addCourier(courier1);
 
             session.setMap(map);
@@ -90,8 +85,6 @@ public interface State {
         try {
             session.setCouriers(serializer.parse(file, session.getMap()));
             for (Courier courier : session.getCouriers()) {
-                courier.addObserver(controller.courierObserver);
-                courier.addObserver(view);
                 controller.compute(courier);
             }
         } catch (IOException e) {

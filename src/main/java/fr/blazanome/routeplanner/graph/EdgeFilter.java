@@ -1,7 +1,5 @@
 package fr.blazanome.routeplanner.graph;
 
-import java.util.function.BiPredicate;
-
 /**
  * EdgeFilter
  */

@@ -1,7 +1,5 @@
 package fr.blazanome.routeplanner.tools;
 
-import fr.blazanome.routeplanner.model.AdjacencyListMap;
-import fr.blazanome.routeplanner.model.IMap;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Segment;
 import fr.blazanome.routeplanner.model.map.MapBuilder;

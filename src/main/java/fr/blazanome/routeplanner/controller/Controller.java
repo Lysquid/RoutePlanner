@@ -12,11 +12,9 @@ import fr.blazanome.routeplanner.observer.EventType;
 import fr.blazanome.routeplanner.observer.Observer;
 import fr.blazanome.routeplanner.observer.Observers;
 import fr.blazanome.routeplanner.tools.XMLMapParser;
-import fr.blazanome.routeplanner.tools.XMLSessionSerializer;
 import fr.blazanome.routeplanner.view.View;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Controller {
 
@@ -26,7 +24,7 @@ public class Controller {
     private CommandStack commandStack;
 
     private Observer sessionObserver;
-    public Observer courierObserver;
+    private Observer courierObserver;
 
     private final TourGenerationAlgorithm tourGenerationAlgorithm;
 
