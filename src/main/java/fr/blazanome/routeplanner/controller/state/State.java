@@ -88,6 +88,7 @@ public interface State {
         XMLSessionSerializer serializer = new XMLSessionSerializer();
         try {
             session.setCouriers(serializer.parse(file, session.getMap()));
+            controller.getCommandStack().reset();
             for (Courier courier : session.getCouriers()) {
                 controller.compute(courier);
             }
