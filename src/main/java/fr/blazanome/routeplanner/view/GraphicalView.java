@@ -131,10 +131,9 @@ public class GraphicalView implements View, Initializable {
             if (message == null) {
                 this.showRouteComputeError((Courier) observable);
             }
-            if(oneCourier) {
+            if (oneCourier) {
                 this.mapView.draw(this.selectedCourier.getValue());
-            }
-            else{
+            } else{
                 this.mapView.draw(null);
             }
             this.updateRequests();
@@ -173,9 +172,6 @@ public class GraphicalView implements View, Initializable {
         if(oneCourier) {
             this.mapView.draw(this.selectedCourier.getValue());
         }
-        else{
-            this.mapView.draw(null);
-        }
     }
     private void updateCouriers(Session session) {
         this.selectedCourier.setItems(FXCollections.observableArrayList(session.getCouriers()));
@@ -183,6 +179,9 @@ public class GraphicalView implements View, Initializable {
     }
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
+        if(oneCourier) {
+            this.mapView.draw(this.selectedCourier.getValue());
+        }
     }
 
     public void addCourier(ActionEvent actionEvent) {

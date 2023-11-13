@@ -113,9 +113,8 @@ public class MapView extends Pane {
         this.currentCourier = selectedCourier;
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
-        Color[] defaultColorList={Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN , Color.YELLOW  , Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK};
+        Color[] defaultColorList={Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN , Color.YELLOW, Color.GREEN, Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK};
         // Re-draw everything on the canvas
-        int count=0;
         if (this.session != null) {
             // Checks that draw has been called then clears the canvas and redraws all the
             // relevant points
@@ -127,26 +126,17 @@ public class MapView extends Pane {
             // Normally the changing of the Colour would happen for every route, here I did
             // it on every step of the route to demonstrate how it works
             Random generator = new Random(10);
-            if(selectedCourier==null){
-                for (Courier courier : session.getCouriers()) {
+            for (Courier courier : session.getCouriers()) {
+                if (selectedCourier == null || selectedCourier == courier) {
                     Color c;
-                    if (count < defaultColorList.length) {
-                        c = defaultColorList[count];
+                    if (courier.getId()-1 < defaultColorList.length) {
+                        c = defaultColorList[courier.getId()-1];
                     } else {
-
                         c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
                     }
                     if (courier.getRoute() != null) {
-
                         this.drawRoute(courier.getRoute().getPath(), c);
                     }
-                    count++;
-                }
-            }
-            else{
-                Color c= defaultColorList[0];
-                if (selectedCourier.getRoute() != null) {
-                    this.drawRoute(selectedCourier.getRoute().getPath(), c);
                 }
             }
         }
