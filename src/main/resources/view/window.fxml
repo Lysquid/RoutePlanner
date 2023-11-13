@@ -46,7 +46,7 @@
                     <Button text="+" onAction="#addCourier"/>
                     <Button text="-" onAction="#removeCourier"/>
                 </HBox>
-                <CheckBox text="Show this courier only" onAction="#drawOnlySelectCourier"/>
+                <CheckBox text="Show this courier only" fx:id="oneCourier" onAction="#setOnlyOneCourier"/>
                 <TabPane>
                     <Tab closable="false" text="Request">
                         <VBox styleClass="group">

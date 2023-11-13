@@ -17,11 +17,7 @@ import fr.blazanome.routeplanner.observer.Observers;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.stage.FileChooser;
@@ -41,15 +37,14 @@ public class GraphicalView implements View, Initializable {
 
     public MapView mapView;
     public ComboBox<Courier> selectedCourier;
+    public CheckBox oneCourier;
     public ComboBox<Timeframe> timeframe;
     public Button addDelivery;
     public Button removeDelivery;
     public TableView<DeliveryRequest> deliveriesTable;
     public TableView<Delivery> planningTable;
-
     public Button undoButton;
     public Button redoButton;
-    public boolean oneCourier;
 
     public java.util.Map<Button, List<Class<? extends State>>> buttonEnabledStates = new HashMap<>();
     private Observer commandStackObserver;
@@ -58,7 +53,6 @@ public class GraphicalView implements View, Initializable {
         this.commandStackObserver = Observers.typed(CommandStack.class, this::onCommandStackUpdate);
         this.controller = new Controller(this);
         this.controller.getCommandStack().addObserver(this.commandStackObserver);
-        this.oneCourier = false;
     }
 
     @Override
@@ -192,16 +186,12 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void drawOnlySelectCourier(){
-        this.oneCourier=!this.oneCourier;
-        if(oneCourier) {
+    public void setOnlyOneCourier(){
+        if (this.oneCourier.isSelected()) {
             this.mapView.setSelectedCourier(this.selectedCourier.getValue());
-        }
-        else{
+        } else{
             this.mapView.setSelectedCourier(null);
         }
-        this.mapView.draw();
-
     }
 
     private void updateCouriers(Session session) {
@@ -211,9 +201,8 @@ public class GraphicalView implements View, Initializable {
 
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
-        if (this.oneCourier) {
+        if (this.oneCourier.isSelected()) {
             this.mapView.setSelectedCourier(this.selectedCourier.getValue());
-            this.mapView.draw();
         }
 
         this.controller.selectCourier(this.selectedCourier.getValue());

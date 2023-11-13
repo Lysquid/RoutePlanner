@@ -109,6 +109,7 @@ public class MapView extends Pane {
     }
     void setSelectedCourier(Courier selectedCourier){
         this.currentCourier = selectedCourier;
+        this.draw();
     }
 
     void draw() {
