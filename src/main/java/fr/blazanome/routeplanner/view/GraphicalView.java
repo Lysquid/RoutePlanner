@@ -85,7 +85,9 @@ public class GraphicalView implements View, Initializable {
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
         Button button = (Button) actionEvent.getSource();
         File file = fileChooser.showOpenDialog(button.getScene().getWindow());
-        this.controller.loadMap(file);
+        if (file != null) {
+            this.controller.loadMap(file);
+        }
     }
 
     public void undo(ActionEvent actionEvent) {
@@ -222,7 +224,9 @@ public class GraphicalView implements View, Initializable {
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
         Button button = (Button) actionEvent.getSource();
         File file = fileChooser.showOpenDialog(button.getScene().getWindow());
-        this.controller.loadSession(file);
+        if (file != null) {
+            this.controller.loadSession(file);
+        }
     }
 
     public void saveSession(ActionEvent actionEvent) {
@@ -231,6 +235,8 @@ public class GraphicalView implements View, Initializable {
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
         Button button = (Button) actionEvent.getSource();
         File file = fileChooser.showSaveDialog(button.getScene().getWindow());
-        this.controller.saveSession(file);
+        if (file != null) {
+            this.controller.saveSession(file);
+        }
     }
 }
