@@ -13,6 +13,5 @@ public class DeliverySelectedState implements State {
     @Override
     public void removeDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
         commandStack.add(new ReverseCommand(new AddCourierCommand(courier, session)));
-        view.setDisableAddDelivery(true);
     }
 }

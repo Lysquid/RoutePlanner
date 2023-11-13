@@ -20,7 +20,7 @@ public class Controller {
 
     private final View view;
     private Session session;
-    public State currentState;
+    private State currentState;
     private CommandStack commandStack;
 
     private Observer sessionObserver;
@@ -32,7 +32,7 @@ public class Controller {
 
     public Controller(View view) {
         this.view = view;
-        this.currentState = new NoMapState();
+        this.setCurrentState(new NoMapState());
         this.commandStack = new CommandStack();
 
         this.mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
@@ -45,6 +45,7 @@ public class Controller {
 
     public void setCurrentState(State newState) {
         this.currentState = newState;
+        this.view.onStateChange(this, newState);
     }
 
     public void loadMap(File file) {
@@ -159,4 +160,5 @@ public class Controller {
         this.currentState.loadSession(this, file, this.session, this.view);
         this.setCurrentState(new MapLoadedState());
     }
+
 }

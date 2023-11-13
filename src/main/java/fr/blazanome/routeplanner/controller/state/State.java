@@ -46,7 +46,6 @@ public interface State {
 
     default void selectIntersection(Controller controller, View view, Intersection intersection) {
         controller.setCurrentState(new IntersectionSelectedState(intersection));
-        view.setDisableAddDelivery(false);
     }
 
     default void addDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {

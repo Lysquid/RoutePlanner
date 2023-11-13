@@ -2,6 +2,9 @@ package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
+import fr.blazanome.routeplanner.controller.state.DeliverySelectedState;
+import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
+import fr.blazanome.routeplanner.controller.state.State;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Delivery;
 import fr.blazanome.routeplanner.model.DeliveryRequest;
@@ -17,14 +20,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -36,12 +40,14 @@ public class GraphicalView implements View, Initializable {
     public ComboBox<Courier> selectedCourier;
     public ComboBox<Timeframe> timeframe;
     public Button addDelivery;
+    public Button removeDelivery;
     public TableView<DeliveryRequest> deliveriesTable;
     public TableView<Delivery> planningTable;
 
     public Button undoButton;
     public Button redoButton;
 
+    public java.util.Map<Button, List<Class<? extends State>>> buttonEnabledStates = new HashMap<>();
     private Observer commandStackObserver;
 
 
@@ -57,6 +63,11 @@ public class GraphicalView implements View, Initializable {
         this.timeframe.setValue(Timeframe.H8);
         this.deliveriesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         this.planningTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        this.buttonEnabledStates.put(this.addDelivery, (Arrays.asList(IntersectionSelectedState.class)));
+        this.buttonEnabledStates.put(this.removeDelivery, (Arrays.asList(DeliverySelectedState.class)));
+
+        this.onStateChange(this.controller, this.controller.getCurrentState());
     }
 
     public void loadMap(ActionEvent actionEvent) {
@@ -87,6 +98,17 @@ public class GraphicalView implements View, Initializable {
 
     public void setDisableAddDelivery(boolean bool) {
         this.addDelivery.setDisable(bool);
+    }
+
+    @Override
+    public void onStateChange(Controller controller, State state) {
+        for (var entry : this.buttonEnabledStates.entrySet()) {
+            if (entry.getValue().contains(state.getClass())) {
+                entry.getKey().setDisable(false);
+            } else {
+                entry.getKey().setDisable(true);
+            }
+        }
     }
 
     @Override

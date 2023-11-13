@@ -21,13 +21,11 @@ public class IntersectionSelectedState implements State {
         } else {
             controller.setCurrentState(new IntersectionSelectedState(intersection));
         }
-        view.setDisableAddDelivery(false);
     }
 
     @Override
     public void addDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
         commandStack.add(new AddDeliveryCommand(courier, new DeliveryRequest(selectedIntersection, timeframe)));
-        view.setDisableAddDelivery(true);
     }
 
 }

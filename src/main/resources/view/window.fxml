@@ -95,7 +95,7 @@
                         </VBox>
                     </Tab>
                 </TabPane>
-                <Button text="Remove delivery"/>
+                <Button fx:id="removeDelivery" text="Remove delivery"/>
             </VBox>
 
             <!-- New delivery -->
@@ -105,7 +105,7 @@
                     <Text text="At" GridPane.rowIndex="1"/>
                     <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 </GridPane>
-                <Button text="Add delivery" fx:id="addDelivery" disable="true" onAction="#addDelivery"/>
+                <Button text="Add delivery" fx:id="addDelivery" onAction="#addDelivery"/>
             </VBox>
 
         </VBox>
