@@ -185,6 +185,9 @@ public class GraphicalView implements View, Initializable {
             } else {
                 this.planningTable.setItems(FXCollections.emptyObservableList());
             }
+        } else {
+            this.deliveriesTable.setItems(FXCollections.emptyObservableList());
+            this.planningTable.setItems(FXCollections.emptyObservableList());
         }
     }
 
