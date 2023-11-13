@@ -174,6 +174,9 @@ public class MapView extends Pane {
 
     private void redrawIntersections() {
         Random generator = new Random(10);
+        if(buttonIntersectionList == null) {
+            return;
+        }
         for(var b: this.buttonIntersectionList){
             b.setStyle("-fx-background-color: black");
             for (Courier courier : session.getCouriers()) {
@@ -184,13 +187,13 @@ public class MapView extends Pane {
                     } else {
                         c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
                     }
-                        for(var request: courier.getRequests()){
-                            if(request.getIntersection().equals(b.getIntersection())) {
-                                b.setColor(c);
-                            }
+                    for(var request: courier.getRequests()){
+                        if(request.getIntersection().equals(b.getIntersection())) {
+                            b.setColor(c);
                         }
                     }
                 }
+            }
         }
     }
 
