@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<session>
+    <courier id="1">
+        <request timeframe="8h-9h">0</request>
+        <request timeframe="8h-9h">1</request>
+        <request timeframe="8h-9h">2</request>
+        <request timeframe="8h-9h">3</request>
+    </courier>
+    <courier id="2"/>
+</session>

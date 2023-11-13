@@ -90,7 +90,7 @@ public class XMLParserTest {
 
         MapBuilderFactory mapBuilderFactory = new TestMapBuilderFactory(intersections, segments, warehouse);
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
-        IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTest.xml"));
+        IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTest.xml"));
 
         List<Intersection> expectedIntersections = Arrays.asList(
                 new Intersection(0, 45.74979, 4.87572),
@@ -116,7 +116,7 @@ public class XMLParserTest {
 
         MapBuilderFactory mapBuilderFactory = new TestMapBuilderFactory(intersections, segments, warehouse);
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
-        IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyMap.xml"));
+        IMap map = xmlParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTestEmptyMap.xml"));
 
         assertTrue(intersections.isEmpty());
         assertTrue(segments.isEmpty());
@@ -130,7 +130,7 @@ public class XMLParserTest {
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
 
         assertThrows(SAXException.class, () -> xmlParser
-                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestEmptyXML.xml")));
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTestEmptyXML.xml")));
 
     }
 
@@ -143,7 +143,7 @@ public class XMLParserTest {
         MapBuilderFactory mapBuilderFactory = new TestMapBuilderFactory(intersections, segments, warehouse);
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
         IMap map = xmlParser
-                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement1.xml"));
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTestWrongElement1.xml"));
 
         assertTrue(intersections.isEmpty());
         assertTrue(segments.isEmpty());
@@ -159,7 +159,7 @@ public class XMLParserTest {
         MapBuilderFactory mapBuilderFactory = new TestMapBuilderFactory(intersections, segments, warehouse);
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
         IMap map = xmlParser
-                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestWrongElement2.xml"));
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTestWrongElement2.xml"));
 
         assertTrue(intersections.isEmpty());
         assertTrue(segments.isEmpty());
@@ -175,7 +175,7 @@ public class XMLParserTest {
         MapBuilderFactory mapBuilderFactory = new TestMapBuilderFactory(intersections, segments, warehouse);
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
         IMap map = xmlParser.parse(
-                new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestIntersectionsOnly.xml"));
+                new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTestIntersectionsOnly.xml"));
 
         assertThat(intersections).hasSameElementsAs(Arrays.asList(
                 new Intersection(0, 45.74979, 4.87572),
@@ -193,6 +193,6 @@ public class XMLParserTest {
         XMLMapParser xmlParser = new XMLMapParser(mapBuilderFactory);
 
         assertThrows(RuntimeException.class, () -> xmlParser
-                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/XMLParserTestSegmentsOnly.xml")));
+                .parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTestSegmentsOnly.xml")));
     }
 }

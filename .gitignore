@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 session*.xml
 sessions/
+src/test/resources/fr/blazanome/routeplanner/tools/session/SavedSession.xml
 
 ### IntelliJ IDEA ###
 /.idea/
