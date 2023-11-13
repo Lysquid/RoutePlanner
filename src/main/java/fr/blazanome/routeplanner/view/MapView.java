@@ -211,7 +211,7 @@ public class MapView extends Pane {
     }
 
     void drawIntersections() {
-        int radius = 5;
+        double radius =this.buttonIntersectionList.get(1).calculateRadius(this.zoomTransform.getX());
         for (ButtonIntersection bt : this.buttonIntersectionList) {
             Intersection intersection = bt.getIntersection();
             double x = this.positionX(intersection) - radius;
