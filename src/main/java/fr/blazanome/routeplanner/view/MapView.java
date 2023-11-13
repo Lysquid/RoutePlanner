@@ -57,8 +57,8 @@ public class MapView extends Pane {
         clippingRect.widthProperty().bind(this.widthProperty());
         this.setClip(clippingRect);
 
-        this.widthProperty().addListener((observable, oldValue, newValue) -> draw(this.currentCourier));
-        this.heightProperty().addListener((observable, oldValue, newValue) -> draw(this.currentCourier));
+        this.widthProperty().addListener((observable, oldValue, newValue) -> draw());
+        this.heightProperty().addListener((observable, oldValue, newValue) -> draw());
 
         // Handle mouse scroll events for zooming
         // Adds listener for zooming and dragging
@@ -107,10 +107,11 @@ public class MapView extends Pane {
             this.buttonIntersectionList.add(button);
         }
     }
+    void SetSelectedCourier(Courier selectedCourier){
+        this.currentCourier=selectedCourier;
+    }
 
-
-    void draw(Courier selectedCourier) {
-        this.currentCourier = selectedCourier;
+    void draw() {
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
         Color[] defaultColorList={Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN , Color.YELLOW, Color.GREEN, Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK};
@@ -127,7 +128,7 @@ public class MapView extends Pane {
             // it on every step of the route to demonstrate how it works
             Random generator = new Random(10);
             for (Courier courier : session.getCouriers()) {
-                if (selectedCourier == null || selectedCourier == courier) {
+                if (this.currentCourier == null || this.currentCourier == courier) {
                     Color c;
                     if (courier.getId()-1 < defaultColorList.length) {
                         c = defaultColorList[courier.getId()-1];
@@ -188,19 +189,20 @@ public class MapView extends Pane {
 
 
 
+            double length=Math.sqrt(Math.pow(scaledX1-scaledX2,2)+Math.pow(scaledY1-scaledY2,2));
+            double ratio=1.0/4.0;
             //This sets the size of the arrow and makes sure it resizes when we zoom in
             double arrow = 6 * this.zoomTransform.getX();
             //In this function we draw an arrow at the end point by tracing two lines from the end point to two other points.
             //These two points are found by going 6 units down the line then 6 units following a vector perpendicular to the line this gives two lines at a 45° angle on either side
             //The if exists because depending the circumstance the vector could be going either direction
             if((scaledX1<scaledX2 && scaledY1<scaledY2)||(scaledX1>scaledX2 && scaledY1<scaledY2)) {
-                gc.strokeLine(scaledX2, scaledY2, scaledX2 + perpendicularx * arrow - dx * arrow, scaledY2 + arrow * perpendiculary - arrow * dy);
-                gc.strokeLine(scaledX2, scaledY2, scaledX2 - perpendicularx * arrow - dx * arrow, scaledY2 - arrow * perpendiculary - arrow * dy);
+                gc.strokeLine(scaledX2-(length*ratio)*dx, scaledY2-(length*ratio)*dy, scaledX2 + perpendicularx * arrow - dx * (arrow+length*ratio), scaledY2 + arrow * perpendiculary - (arrow+length*ratio) * dy);
+                gc.strokeLine(scaledX2-(length*ratio)*dx, scaledY2-(length*ratio)*dy, scaledX2 - perpendicularx * arrow - dx * (arrow+length*ratio), scaledY2 - arrow * perpendiculary - (arrow+length*ratio) * dy);
             }
             else{
-                gc.strokeLine(scaledX2, scaledY2, scaledX2 + perpendicularx * arrow + dx * arrow, scaledY2 + arrow * perpendiculary + arrow * dy);
-                gc.strokeLine(scaledX2, scaledY2, scaledX2 - perpendicularx * arrow + dx * arrow, scaledY2 - arrow * perpendiculary + arrow * dy);
-
+                gc.strokeLine(scaledX2+(length*ratio)*dx, scaledY2+(length*ratio)*dy, scaledX2 + perpendicularx * arrow + dx * (arrow+length*ratio), scaledY2 + arrow * perpendiculary + (arrow+length*ratio) * dy);
+                gc.strokeLine(scaledX2+(length*ratio)*dx, scaledY2+(length*ratio)*dy, scaledX2 - perpendicularx * arrow + dx * (arrow+length*ratio), scaledY2 - arrow * perpendiculary + (arrow+length*ratio) * dy);
             }
             //gc.strokeLine(scaledX1, scaledY1, scaledX1, scaledY1);
 
@@ -224,7 +226,7 @@ public class MapView extends Pane {
         this.zoomTransform.setX(1.0);
         this.zoomTransform.setY(1.0);
         this.resizeButton();
-        this.draw(this.currentCourier);
+        this.draw();
     }
     // turns latitude and longitude into x and y coordinates
     void resizeButton(){
@@ -285,7 +287,7 @@ public class MapView extends Pane {
             this.zoomTransform.setY(this.zoomTransform.getY() / scaleFactor);
         }
         this.resizeButton();
-        this.draw(this.currentCourier);
+        this.draw();
 
     }
     // Action to make the dragging possible
@@ -301,7 +303,7 @@ public class MapView extends Pane {
             this.offsetX = this.offsetX + deltaX / this.zoomTransform.getX();
             this.offsetY = this.offsetY + deltaY / this.zoomTransform.getY();
             // Iterate through child nodes and adjust their positions
-            this.draw(this.currentCourier);
+            this.draw();
 
             this.initialX = event.getSceneX();
             this.initialY = event.getSceneY();

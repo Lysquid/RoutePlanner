@@ -140,22 +140,15 @@ public class GraphicalView implements View, Initializable {
             case MAP_LOADED -> {
                 Session session = (Session) observable;
                 this.mapView.setUp(session);
-                if (oneCourier) {
-                    this.mapView.draw(this.selectedCourier.getValue());
-                } else {
-                    this.mapView.draw(null);
-                }
+                this.mapView.draw();
+
                 this.updateCouriers(session);
                 this.selectedCourier.setValue(session.getCouriers().get(0));
             }
             case ROUTE_COMPUTED -> {
 
-                if (oneCourier) {
-                    this.mapView.draw(this.selectedCourier.getValue());
-                } else {
-                    this.mapView.draw(null);
-                }
 
+                this.mapView.draw();
                 if (message == null) {
                     this.showRouteComputeError((Courier) observable);
                 }
@@ -163,11 +156,7 @@ public class GraphicalView implements View, Initializable {
                 this.updateRequests();
             }
             case COURIER_REMOVE -> {
-                if (oneCourier) {
-                    this.mapView.draw(this.selectedCourier.getValue());
-                } else {
-                    this.mapView.draw(null);
-                }
+                this.mapView.draw();
                 this.updateCouriers((Session) observable);
             }
             case COURIER_ADD -> {
@@ -206,11 +195,13 @@ public class GraphicalView implements View, Initializable {
     public void drawOnlySelectCourier(){
         this.oneCourier=!this.oneCourier;
         if(oneCourier) {
-            this.mapView.draw(this.selectedCourier.getValue());
+            this.mapView.SetSelectedCourier(this.selectedCourier.getValue());
         }
         else{
-            this.mapView.draw(null);
+            this.mapView.SetSelectedCourier(null);
         }
+        this.mapView.draw();
+
     }
 
     private void updateCouriers(Session session) {
@@ -221,7 +212,8 @@ public class GraphicalView implements View, Initializable {
     public void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
         if (this.oneCourier) {
-            this.mapView.draw(this.selectedCourier.getValue());
+            this.mapView.SetSelectedCourier(this.selectedCourier.getValue());
+            this.mapView.draw();
         }
 
         this.controller.selectCourier(this.selectedCourier.getValue());
