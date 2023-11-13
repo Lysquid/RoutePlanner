@@ -59,10 +59,6 @@ public interface State {
     };
 
     default void compute(Courier courier, TourGenerationAlgorithm algorithm, Session session) {
-        // TODO: Remove la route
-        if (courier.getRequests().isEmpty())
-            return;
-
         IMap map = session.getMap();
         Route route = algorithm.computeTour(map, courier.getRequests());
         courier.setRoute(route);

@@ -28,6 +28,9 @@ public class TwoStepTourGenerationAlogrithm implements TourGenerationAlgorithm {
 
     @Override
     public Route computeTour(IMap map, List<DeliveryRequest> requests) {
+        if (requests.isEmpty())
+            return null;
+
         var warehouseId = map.getVertexId(map.getWarehouse());
         var vertexIds = new ArrayList<>(
                 requests.stream().map(DeliveryRequest::getIntersection).map(map::getVertexId).toList());

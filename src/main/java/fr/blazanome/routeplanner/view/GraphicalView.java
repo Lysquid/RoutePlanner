@@ -146,9 +146,9 @@ public class GraphicalView implements View, Initializable {
             }
             case ROUTE_COMPUTED -> {
 
-
+                Courier courier = (Courier) observable;
                 this.mapView.draw();
-                if (message == null) {
+                if (message == null && !courier.getRequests().isEmpty()) {
                     this.showRouteComputeError((Courier) observable);
                 }
 
