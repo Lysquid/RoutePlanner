@@ -49,7 +49,10 @@ public class MapView extends Pane {
 
     private static final Color[] DEFAULT_COLOR_LIST = {Color.RED , Color.BLUE , Color.MAGENTA , Color.CYAN ,
             Color.YELLOW  , Color.WHITE , Color.GRAY , Color.ORANGE , Color.PINK };
-
+    /**
+     * Constructor for MapView, sets up the items like root and canvas that store the elements of the map
+     * The sets up the calls for functions on resizing and moving the map
+     */
     // sets up listeners and the canvas
     public MapView() {
         currentCourier=null;
@@ -80,7 +83,11 @@ public class MapView extends Pane {
             this.mouseY = event.getY();
         });
     }
-
+    /**
+     * Resets the intersection list so that it contains a button for every intersection
+     * Calculates the edges of the map.
+     * @param session Session stores the information about the map and user that needs to be highlighted
+     */
     // General drawing section
     public void setUp(Session session) {
 
@@ -113,11 +120,16 @@ public class MapView extends Pane {
             this.buttonIntersectionList.add(button);
         }
     }
+    /**
+     * @param selectedCourier either the courier that is currently selected by the user or null depending on if all courier should be drawn
+     */
     void setSelectedCourier(Courier selectedCourier){
         this.currentCourier = selectedCourier;
         this.draw();
     }
-
+    /**
+     * on a clear canvas draws the segments, the routes taken for the couriers or the selected courier and updates the intersections
+     */
     void draw() {
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
@@ -149,7 +161,10 @@ public class MapView extends Pane {
             this.redrawIntersections();
         }
     }
-
+    /**
+     * @param controller controls the states
+     * @param state   the current situation of the UI that changes what actions are possible. Is updated based upon general needs
+     */
     public void onStateChange(Controller controller, State state) {
         if(state instanceof IntersectionSelectedState s) {
             this.selectIntersection(s.getSelectedIntersection());
@@ -160,7 +175,9 @@ public class MapView extends Pane {
         }
 
     }
-
+    /**
+     * Sets the Id to null for any selected intersection. And then redraws the intersections
+     */
     private void deselectIntersection() {
         if(buttonIntersectionList == null) {
             return;
@@ -172,7 +189,10 @@ public class MapView extends Pane {
         }
         redrawIntersections();
     }
-
+    /**
+     * Sets the Id to null for any selected intersection. Adds a selected intersection and then redraws the intersections
+     * @param intersection the intersection that will be added as selected
+     */
     private void selectIntersection(Intersection intersection){
         if(buttonIntersectionList == null) {
             return;
@@ -188,7 +208,9 @@ public class MapView extends Pane {
         }
         redrawIntersections();
     };
-
+    /**
+     * Colors intersections where a delivery is being done
+     */
     private void redrawIntersections() {
         Random generator = new Random(10);
         if(buttonIntersectionList == null) {
@@ -218,7 +240,10 @@ public class MapView extends Pane {
     }
 
     // Specific kinds of drawing
-
+    /**
+     * Draws in black a line for each segment in the list
+     * @param iterableSegment A list of segments, each have a start and end point for the line to use
+     */
     void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
             this.gc.setStroke(Color.BLACK);
@@ -237,7 +262,11 @@ public class MapView extends Pane {
         }
 
     }
-
+    /**
+     * Draws a line from point to point using the chosen colour and add lines such that it forms and arrow pointing towards the end point
+     * @param iterableSegment A list of segments each have a start and end point
+     * @param c the colour of the segment
+     */
     void drawRoute(Iterable<Segment> iterableSegment, Color c) {
         //the code should be very different from the other function once it's actually implemented.
         //double personeCount=1.0;
