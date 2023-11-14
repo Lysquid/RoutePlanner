@@ -198,7 +198,7 @@ public class MapView extends Pane {
             if(b.getId() != null && (b.getId().equals("selected") || b.getId().equals("warehouse"))){
                 continue;
             }
-            b.setStyle("-fx-background-color: black");
+            b.setStyle(null);
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
                     Color c;

@@ -2,6 +2,7 @@ plugins {
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("jacoco")
+    id("java")
 }
 
 application {
@@ -24,6 +25,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.openjfx:javafx-fxml:17")
     testImplementation("org.assertj:assertj-core:3.11.1")
+}
+
+tasks.javadoc {
+    source("all")
 }
 
 tasks.test {

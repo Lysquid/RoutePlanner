@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface TourGenerationAlgorithm {
     /**
-     * @param graph 
+     * @param map
      * @param vertices all the vertices the tour needs to pass through
      * @return a list of vertices representing the route in the graph 
      * going through each vertices. Two vertices next to each other in
