@@ -2,7 +2,7 @@ package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.controller.state.DeliverySelectedState;
+import fr.blazanome.routeplanner.controller.state.RequestSelectedState;
 import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
@@ -112,11 +112,11 @@ public class GraphicalView implements View, Initializable {
     }
 
     public void addDelivery(ActionEvent actionEvent) {
-        this.controller.addDelivery(this.selectedCourier.getValue(), this.timeframe.getValue());
+        this.controller.addRequest(this.selectedCourier.getValue(), this.timeframe.getValue());
     }
 
     public void removeDelivery(ActionEvent event) {
-        this.controller.removeDelivery();
+        this.controller.removeRequest();
     }
 
     public void selectIntersection(ActionEvent actionEvent) {
@@ -125,7 +125,7 @@ public class GraphicalView implements View, Initializable {
     }
 
     public void onDeliveryTableSelect(DeliveryRequest request) {
-        this.controller.selectDelivery(request, this.selectedCourier.getValue());
+        this.controller.selectRequest(request, this.selectedCourier.getValue());
     }
 
     @Override
@@ -133,7 +133,7 @@ public class GraphicalView implements View, Initializable {
         if (state instanceof NoMapState)
             return;
         this.addDeliveryButton.setDisable(!(state instanceof IntersectionSelectedState) || this.selectedCourier.getValue() == null);
-        this.removeDeliveryButton.setDisable(!(state instanceof DeliverySelectedState));
+        this.removeDeliveryButton.setDisable(!(state instanceof RequestSelectedState));
         this.mapView.onStateChange(controller, state);
     }
 

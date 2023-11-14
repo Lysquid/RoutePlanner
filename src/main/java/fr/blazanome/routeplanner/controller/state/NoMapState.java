@@ -1,7 +1,6 @@
 package fr.blazanome.routeplanner.controller.state;
 
 import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
-import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Courier;
@@ -12,7 +11,8 @@ import fr.blazanome.routeplanner.view.View;
 import java.io.File;
 
 /**
- * NoMapState
+ * Initial state, when no map is loaded
+ * This state mostly disables many default behaviours of the states
  */
 public class NoMapState implements State {
 

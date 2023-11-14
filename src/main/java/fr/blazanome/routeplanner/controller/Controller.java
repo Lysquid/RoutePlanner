@@ -4,8 +4,6 @@ import fr.blazanome.routeplanner.controller.state.MapLoadedState;
 import fr.blazanome.routeplanner.algorithm.AnytimeCourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
-import fr.blazanome.routeplanner.algorithm.SimpleCourierRouteUpdater;
-import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
 import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
@@ -19,26 +17,27 @@ import fr.blazanome.routeplanner.view.View;
 
 import java.io.File;
 
+/**
+ * Controller of the MVC architecture, following a State pattern
+ */
 public class Controller {
 
     private final View view;
     private Session session;
     private State currentState;
-    private CommandStack commandStack;
-
-    private Observer sessionObserver;
-    private Observer courierObserver;
-
+    private final CommandStack commandStack;
+    private final Observer sessionObserver;
+    private final Observer courierObserver;
     private final CourierRouteUpdater courierRouteUpdater;
 
-    private final XMLMapParser mapParser;
-
+    /**
+     * @param view  The view of the MVC architecture
+     */
     public Controller(View view) {
         this.view = view;
         this.setCurrentState(new NoMapState());
         this.commandStack = new CommandStack();
 
-        this.mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
         var tourGenerationAlgorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
                 new TSP1.Factory());
         this.courierRouteUpdater = new AnytimeCourierRouteUpdater(this.view::onTaskCountChange, tourGenerationAlgorithm);
@@ -47,51 +46,90 @@ public class Controller {
         this.courierObserver = Observers.typed(Courier.class, this::onCourierChange);
     }
 
+    /**
+     * Set the new state of the state pattern
+     */
     public void setCurrentState(State newState) {
         this.currentState = newState;
         this.view.onStateChange(this, newState);
     }
 
+    /**
+     * Load a map from a file
+     */
     public void loadMap(File file) {
-        this.currentState.loadMap(this, this.view, file);
+        this.currentState.loadMap(this, file);
     }
 
+    /**
+     * Undo the last action, using the command pattern
+     */
     public void undo() {
         this.currentState.undo(this.commandStack);
     }
 
+    /**
+     * Redo the last undone action, using the command pattern
+     */
     public void redo() {
         this.currentState.redo(this.commandStack);
     }
 
+    /**
+     * Compute a route for a courier
+     */
     public void compute(Courier courier) {
         this.currentState.compute(courier, this.courierRouteUpdater, this.session);
     }
 
+    /**
+     * Called when an intersection was clicked on the view
+     */
     public void selectIntersection(Intersection intersection) {
         this.currentState.selectIntersection(this, this.view, intersection);
     }
 
-    public void addDelivery(Courier courier, Timeframe timeframe) {
-        this.currentState.addDelivery(this, courier, timeframe, this.commandStack);
+    /**
+     * Add a delivery request to a courier
+     * @param courier   the courier who must do the request
+     * @param timeframe the chosen timeframe
+     */
+    public void addRequest(Courier courier, Timeframe timeframe) {
+        this.currentState.addRequest(this, courier, timeframe, this.commandStack);
     }
 
-    public void selectDelivery(DeliveryRequest deliveryRequest, Courier courier) {
-        this.currentState.selectDelivery(this, deliveryRequest, courier);
+    /**
+     * Called when a request is selected in the view
+     * @param courier   the courier to whom the request belong
+     */
+    public void selectRequest(DeliveryRequest deliveryRequest, Courier courier) {
+        this.currentState.selectRequest(this, deliveryRequest, courier);
     }
 
-    public void removeDelivery() {
-        this.currentState.removeDelivery(this, this.commandStack);
+    /**
+     * Remove a request
+     */
+    public void removeRequest() {
+        this.currentState.removeRequest(this, this.commandStack);
     }
 
+    /**
+     * @return  the command stack of the command pattern
+     */
     public CommandStack getCommandStack() {
         return commandStack;
     }
 
+    /**
+     * @return  the current state
+     */
     public State getCurrentState() {
         return currentState;
     }
 
+    /**
+     * @param session   the session of the controller, encapsulating the model
+     */
     public void setSession(Session session) {
         if (this.session != null) {
             this.session.removeObserver(this.sessionObserver);
@@ -102,22 +140,39 @@ public class Controller {
         this.session.addObserver(this.view);
     }
 
+    /**
+     * Add a new courier
+     */
     public void addCourier() {
         this.currentState.addCourier(this.session, this.commandStack);
     }
 
+    /**
+     * Remove an existing courier
+     */
     public void removeCourier(Courier courier) {
         this.currentState.removeCourier(this.session, courier, this.commandStack);
     }
 
+    /**
+     * Called when a courier is selected in the view
+     */
     public void selectCourier(Courier courier) {
         this.currentState.selectCourier(this, courier);
     }
 
+    /**
+     * @return  the map parser for this controller
+     */
     public XMLMapParser getMapParser() {
-        return this.mapParser;
+        return new XMLMapParser(new AdjacencyListMap.BuilderFactory());
     }
 
+    /**
+     * Observer function of the Session
+     * @param eventType an enum describing the change
+     * @param message   the object that actually changed
+     */
     private void onSessionChange(Session session, EventType eventType, Object message) {
         if (eventType == null) {
             System.err.println("Null event found");
@@ -140,6 +195,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Observer function of the couriers
+     * @param eventType an enum describing the change
+     * @param message   the object that actually changed
+     */
     private void onCourierChange(Courier courier, EventType eventType, Object message) {
         if (eventType == null) {
             System.err.println("Null event found");
@@ -154,18 +214,17 @@ public class Controller {
         }
     }
 
-    public boolean canUndo() {
-        return this.commandStack.canUndo();
-    }
-
-    public boolean canRedo() {
-        return this.commandStack.canRedo();
-    }
-
+    /**
+     * Save the current session to a file
+     */
     public void saveSession(File file) {
         this.currentState.saveSession(file, this.session);
     }
 
+    /**
+     * Load a session from a file
+     * The map must already be loaded
+     */
     public void loadSession(File file) {
         this.currentState.loadSession(this, file, this.session, this.view);
         if (session != null) {
@@ -173,10 +232,16 @@ public class Controller {
         }
     }
 
+    /**
+     * Cancel the background tasks of computing a route
+     */
     public void cancelTasks() {
         this.courierRouteUpdater.cancel();
     }
 
+    /**
+     * Cleanup any thread running to gracefully shutdown
+     */
     public void shutdown() {
         this.courierRouteUpdater.shutdown();
     }

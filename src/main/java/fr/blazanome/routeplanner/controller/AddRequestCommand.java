@@ -2,11 +2,11 @@ package fr.blazanome.routeplanner.controller;
 
 import fr.blazanome.routeplanner.model.*;
 
-public class AddDeliveryCommand implements Command {
+public class AddRequestCommand implements Command {
     private Courier courier;
     private DeliveryRequest deliveryRequest;
 
-    public AddDeliveryCommand(Courier courier, DeliveryRequest deliveryRequest) {
+    public AddRequestCommand(Courier courier, DeliveryRequest deliveryRequest) {
         this.courier = courier;
         this.deliveryRequest = deliveryRequest;
     }

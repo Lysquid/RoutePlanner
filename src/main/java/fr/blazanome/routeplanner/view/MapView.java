@@ -1,7 +1,7 @@
 package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.controller.state.DeliverySelectedState;
+import fr.blazanome.routeplanner.controller.state.RequestSelectedState;
 import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
 import fr.blazanome.routeplanner.controller.state.MapLoadedState;
 import fr.blazanome.routeplanner.controller.state.State;
@@ -165,7 +165,7 @@ public class MapView extends Pane {
     public void onStateChange(Controller controller, State state) {
         if(state instanceof IntersectionSelectedState s) {
             this.selectIntersection(s.getSelectedIntersection());
-        } else if(state instanceof DeliverySelectedState s) {
+        } else if(state instanceof RequestSelectedState s) {
             this.selectIntersection(s.getDeliveryRequest().getIntersection());
         } else if(state instanceof MapLoadedState s) {
             this.deselectIntersection();
