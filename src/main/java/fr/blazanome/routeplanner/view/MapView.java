@@ -141,13 +141,13 @@ public class MapView extends Pane {
 
             // Normally the changing of the Colour would happen for every route, here I did
             // it on every step of the route to demonstrate how it works
-            Random generator = new Random(10);
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
                     Color c;
                     if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
                         c = DEFAULT_COLOR_LIST[courier.getId()-1];
                     } else {
+                        Random generator = new Random(courier.getId());
                         c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
                     }
                     if (courier.getRoute() != null) {
@@ -204,12 +204,12 @@ public class MapView extends Pane {
             }
         }
         redrawIntersections();
-    };
+    }
+
     /**
      * Colors intersections where a delivery is being done
      */
     private void redrawIntersections() {
-        Random generator = new Random(10);
         if(buttonIntersectionList == null) {
             return;
         }
@@ -224,6 +224,7 @@ public class MapView extends Pane {
                     if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
                         c = DEFAULT_COLOR_LIST[courier.getId()-1];
                     } else {
+                        Random generator = new Random(courier.getId());
                         c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
                     }
                     for(var request: courier.getRequests()){
