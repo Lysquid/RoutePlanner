@@ -50,6 +50,7 @@ public class GraphicalView implements View, Initializable {
     public Button loadSessionButton;
     public Button saveSessionButton;
     public Button addCourierButton;
+    public Button resetZoomButton;
     public Button cancelTasksButton;
     private Observer commandStackObserver;
 
@@ -151,6 +152,7 @@ public class GraphicalView implements View, Initializable {
                 this.saveSessionButton.setDisable(false);
                 this.addCourierButton.setDisable(false);
                 this.removeCourierButton.setDisable(false);
+                this.resetZoomButton.setDisable(false);
             }
             case ROUTE_COMPUTED -> {
 
