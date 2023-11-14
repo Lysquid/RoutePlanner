@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.controller.state;
 
+import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
@@ -28,7 +29,7 @@ public class NoMapState implements State {
     }
 
     @Override
-    public void compute(Courier courier, TourGenerationAlgorithm algorithm, Session session) {
+    public void compute(Courier courier, CourierRouteUpdater algorithm, Session session) {
     }
 
     @Override

@@ -21,14 +21,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -46,11 +44,13 @@ public class GraphicalView implements View, Initializable {
     public TableView<Delivery> planningTable;
     public Button undoButton;
     public Button redoButton;
+    public Text taskStatus;
 
     public Button removeCourierButton;
     public Button loadSessionButton;
     public Button saveSessionButton;
     public Button addCourierButton;
+    public Button cancelTasksButton;
     private Observer commandStackObserver;
 
     public GraphicalView() {
@@ -174,7 +174,7 @@ public class GraphicalView implements View, Initializable {
     }
 
     private void showRouteComputeError(Courier courier) {
-        Alert alert = new Alert(AlertType.ERROR, "No route can fulfill your requirements for " + courier.toString());
+        Alert alert = new Alert(AlertType.ERROR, "No route can fulfill your requirements for " + courier.toString() + " or you have canceled the computations too early.");
         alert.showAndWait();
     }
 
@@ -253,5 +253,27 @@ public class GraphicalView implements View, Initializable {
         if (file != null) {
             this.controller.saveSession(file);
         }
+    }
+
+    @Override
+    public void onTaskCountChange(int taskCount) {
+        if (taskCount == 1) {
+            this.taskStatus.setText("Computing route for " + taskCount + " courier...");
+            this.cancelTasksButton.setDisable(false);
+        } else if (taskCount > 1) {
+            this.taskStatus.setText("Computing route for " + taskCount + " couriers...");
+            this.cancelTasksButton.setDisable(false);
+        } else {
+            this.taskStatus.setText("No task running.");
+            this.cancelTasksButton.setDisable(true);
+        }
+    }
+
+    public void cancelTasks() {
+        this.controller.cancelTasks();
+    }
+
+    public Controller getController() {
+        return controller;
     }
 }

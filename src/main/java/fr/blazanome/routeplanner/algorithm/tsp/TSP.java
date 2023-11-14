@@ -3,6 +3,7 @@ package fr.blazanome.routeplanner.algorithm.tsp;
 import fr.blazanome.routeplanner.graph.Graph;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public interface TSP {
 	/**
@@ -10,10 +11,11 @@ public interface TSP {
 	 * (returns the best found tour whenever the time limit is reached)
 	 * Warning: The computed tour always start from vertex 0
 	 * @param timeLimit
+     * @param onNewRoute function to call when a new Route is found
 	 * @param g
 	 */
-	void searchSolution(int timeLimit, Graph g);
-
+	void searchSolution(int timeLimit, Graph g, Consumer<List<Integer>> onNewRoute);
+	
 	/**
 	 * @return 
 	 */
@@ -25,4 +27,7 @@ public interface TSP {
 	 */
 	double getSolutionCost();
 
+    public static interface Factory {
+        TSP build();
+    }
 }

@@ -10,6 +10,7 @@ import fr.blazanome.routeplanner.model.Segment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * TwoStepComputeTourAlogrithm
@@ -19,15 +20,15 @@ import java.util.List;
 public class TwoStepTourGenerationAlogrithm implements TourGenerationAlgorithm {
 
     private CompleteGraphAlgorithm completeGraphAlgorithm;
-    private TSP tspAlgorithm;
+    private TSP.Factory tspAlgorithmFactory;
 
-    public TwoStepTourGenerationAlogrithm(CompleteGraphAlgorithm completeGraphAlgorithm, TSP tspAlgorithm) {
+    public TwoStepTourGenerationAlogrithm(CompleteGraphAlgorithm completeGraphAlgorithm, TSP.Factory tspAlgorithmFactory) {
         this.completeGraphAlgorithm = completeGraphAlgorithm;
-        this.tspAlgorithm = tspAlgorithm;
+        this.tspAlgorithmFactory = tspAlgorithmFactory;
     }
 
     @Override
-    public Route computeTour(IMap map, List<DeliveryRequest> requests) {
+    public Route computeTour(IMap map, List<DeliveryRequest> requests, Consumer<Route> onNewRoute) {
         if (requests.isEmpty())
             return null;
 
@@ -49,13 +50,32 @@ public class TwoStepTourGenerationAlogrithm implements TourGenerationAlgorithm {
             return r2.getTimeframe().getStart() >= r1.getTimeframe().getStart();
         });
 
-        this.tspAlgorithm.searchSolution(Integer.MAX_VALUE, completeGraph);
-        List<Integer> routeInCompleteGraph = this.tspAlgorithm.getSolution();
+        Consumer<List<Integer>> onTspFind;
+        if (onNewRoute != null) {
+            onTspFind = (path) -> {
+                Route route = this.buildRoute(map, completeGraph, requests, new ArrayList<>(path));
+                if (route != null) {
+                    onNewRoute.accept(route);
+                }
+            };
+        } else {
+            onTspFind = (unused) -> {};
+        }
+
+        TSP tspAlgorithm = this.tspAlgorithmFactory.build();
+        tspAlgorithm.searchSolution(Integer.MAX_VALUE, completeGraph, onTspFind);
+        List<Integer> routeInCompleteGraph = tspAlgorithm.getSolution();
 
         // The TSP didn't find any solution
         if (routeInCompleteGraph == null) {
             return null;
         }
+
+        return this.buildRoute(map, completeGraph, requests, routeInCompleteGraph);
+    }
+
+    private Route buildRoute(IMap map, PathGraph completeGraph, List<DeliveryRequest> requests,
+            List<Integer> routeInCompleteGraph) {
         routeInCompleteGraph.add(0);
 
         List<Segment> path = new ArrayList<>();

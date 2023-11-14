@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.controller.state;
 
+import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.controller.AddCourierCommand;
 import fr.blazanome.routeplanner.controller.CommandStack;
@@ -8,6 +9,8 @@ import fr.blazanome.routeplanner.controller.ReverseCommand;
 import fr.blazanome.routeplanner.model.*;
 import fr.blazanome.routeplanner.tools.XMLSessionSerializer;
 import fr.blazanome.routeplanner.view.View;
+import javafx.application.Platform;
+
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,10 +62,8 @@ public interface State {
     default void removeDelivery(Controller controller, CommandStack commandStack) {
     };
 
-    default void compute(Courier courier, TourGenerationAlgorithm algorithm, Session session) {
-        IMap map = session.getMap();
-        Route route = algorithm.computeTour(map, courier.getRequests());
-        courier.setRoute(route);
+    default void compute(Courier courier, CourierRouteUpdater updater, Session session) {
+        updater.updateTour(courier, session.getMap());
     }
 
     String toString();

@@ -1,7 +1,10 @@
 package fr.blazanome.routeplanner.controller;
 
 import fr.blazanome.routeplanner.controller.state.MapLoadedState;
+import fr.blazanome.routeplanner.algorithm.AnytimeCourierRouteUpdater;
+import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
+import fr.blazanome.routeplanner.algorithm.SimpleCourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.TourGenerationAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
 import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
@@ -26,7 +29,7 @@ public class Controller {
     private Observer sessionObserver;
     private Observer courierObserver;
 
-    private final TourGenerationAlgorithm tourGenerationAlgorithm;
+    private final CourierRouteUpdater courierRouteUpdater;
 
     private final XMLMapParser mapParser;
 
@@ -36,8 +39,9 @@ public class Controller {
         this.commandStack = new CommandStack();
 
         this.mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
-        this.tourGenerationAlgorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
-                new TSP1());
+        var tourGenerationAlgorithm = new TwoStepTourGenerationAlogrithm(new DjikstraCompleteGraphAlgorithm(),
+                new TSP1.Factory());
+        this.courierRouteUpdater = new AnytimeCourierRouteUpdater(this.view::onTaskCountChange, tourGenerationAlgorithm);
 
         this.sessionObserver = Observers.typed(Session.class, this::onSessionChange);
         this.courierObserver = Observers.typed(Courier.class, this::onCourierChange);
@@ -61,7 +65,7 @@ public class Controller {
     }
 
     public void compute(Courier courier) {
-        this.currentState.compute(courier, this.tourGenerationAlgorithm, this.session);
+        this.currentState.compute(courier, this.courierRouteUpdater, this.session);
     }
 
     public void selectIntersection(Intersection intersection) {
@@ -114,10 +118,6 @@ public class Controller {
         return this.mapParser;
     }
 
-    public TourGenerationAlgorithm getTourGenerationAlgorithm() {
-        return this.tourGenerationAlgorithm;
-    }
-
     private void onSessionChange(Session session, EventType eventType, Object message) {
         if (eventType == null) {
             System.err.println("Null event found");
@@ -135,7 +135,8 @@ public class Controller {
                 courier.removeObserver(this.courierObserver);
                 courier.removeObserver(this.view);
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -148,7 +149,8 @@ public class Controller {
             case DELIVERY_ADD, DELIVERY_REMOVE -> {
                 this.compute(courier);
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -171,4 +173,11 @@ public class Controller {
         }
     }
 
+    public void cancelTasks() {
+        this.courierRouteUpdater.cancel();
+    }
+
+    public void shutdown() {
+        this.courierRouteUpdater.shutdown();
+    }
 }

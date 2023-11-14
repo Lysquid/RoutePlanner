@@ -114,6 +114,14 @@
                 <Button text="Add a delivery request" fx:id="addDeliveryButton" onAction="#addDelivery" disable="true"/>
             </VBox>
 
+            <!-- Load and controls -->
+            <HBox styleClass="group">
+                <VBox>
+                    <Text text="No task running." fx:id="taskStatus"/>
+                    <Button text="Cancel" onAction="#cancelTasks" fx:id="cancelTasksButton" disable="true"/>
+                </VBox>
+            </HBox>
+
         </VBox>
     </left>
 

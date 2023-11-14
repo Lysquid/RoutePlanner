@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class TemplateTSP implements TSP {
     private List<Integer> bestSol;
@@ -13,8 +14,9 @@ public abstract class TemplateTSP implements TSP {
     private double bestSolCost;
     private int timeLimit;
     private long startTime;
+    private boolean interrupted;
 
-    public void searchSolution(int timeLimit, Graph g) {
+    public void searchSolution(int timeLimit, Graph g, Consumer<List<Integer>> onNewRoute) {
         if (timeLimit <= 0)
             return;
 
@@ -22,6 +24,7 @@ public abstract class TemplateTSP implements TSP {
         this.timeLimit = timeLimit;
         this.graph = g;
         this.bestSol = null;
+        this.interrupted = false;
 
         Collection<Integer> unvisited = new HashSet<>(g.getVerticesCount() - 1);
         for (int i = 1; i < g.getVerticesCount(); i++)
@@ -29,7 +32,7 @@ public abstract class TemplateTSP implements TSP {
         List<Integer> visited = new ArrayList<>(g.getVerticesCount());
         visited.add(0); // The first visited vertex is 0
         this.bestSolCost = Integer.MAX_VALUE;
-        branchAndBound(0, unvisited, visited, 0);
+        branchAndBound(0, unvisited, visited, 0, onNewRoute);
     }
 
     public List<Integer> getSolution() {
@@ -78,13 +81,19 @@ public abstract class TemplateTSP implements TSP {
      *                      <code>visited</code>
      */
     private void branchAndBound(int currentVertex, Collection<Integer> unvisited,
-            List<Integer> visited, double currentCost) {
-        if (System.currentTimeMillis() - startTime > timeLimit)
+            List<Integer> visited, double currentCost, Consumer<List<Integer>> onNewRoute) {
+        if (System.currentTimeMillis() - startTime > timeLimit || Thread.interrupted()) {
+            this.interrupted = true;
+        }
+
+        if (this.interrupted) {
             return;
+        }
         if (unvisited.size() == 0) {
             if (graph.isArc(currentVertex, 0)) {
                 if (currentCost + graph.getCost(currentVertex, 0) < bestSolCost) {
                     this.bestSol = new ArrayList<>(visited);
+                    onNewRoute.accept(this.bestSol);
                     this.bestSolCost = currentCost + graph.getCost(currentVertex, 0);
                 }
             }
@@ -93,7 +102,7 @@ public abstract class TemplateTSP implements TSP {
                 visited.add(vertex);
                 unvisited.remove(vertex);
                 branchAndBound(vertex, unvisited, visited,
-                        currentCost + this.graph.getCost(currentVertex, vertex));
+                        currentCost + this.graph.getCost(currentVertex, vertex), onNewRoute);
                 visited.remove(visited.size() - 1);
                 unvisited.add(vertex);
             }

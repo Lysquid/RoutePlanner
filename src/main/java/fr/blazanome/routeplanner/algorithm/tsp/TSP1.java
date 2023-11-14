@@ -22,4 +22,12 @@ public class TSP1 extends TemplateTSP {
             .iterator();
     }
 
+    public static class Factory implements TSP.Factory {
+
+        @Override
+        public TSP build() {
+            return new TSP1();
+        }
+
+    }
 }

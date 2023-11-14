@@ -8,4 +8,6 @@ public interface View extends Observer {
 
     void onStateChange(Controller controller, State state);
 
+    void onTaskCountChange(int taskCount);
+
 }
