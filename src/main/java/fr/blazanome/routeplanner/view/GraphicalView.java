@@ -77,6 +77,17 @@ public class GraphicalView implements View, Initializable {
             return row;
         });
 
+        this.planningTable.setRowFactory(tv -> {
+            TableRow<Delivery> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
+                    this.onDeliveryTableSelect(row.getItem().getRequest());
+                }
+            });
+
+            return row;
+        });
+
         this.onStateChange(this.controller, this.controller.getCurrentState());
     }
 
