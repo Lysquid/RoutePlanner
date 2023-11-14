@@ -1,0 +1,20 @@
+@startuml
+
+hide empty description
+[*] --> NoMap
+
+NoMap --> MapLoaded : loadMap
+
+MapLoaded --> IntersectionSelected : clickIntersection
+MapLoaded --> DeliveySelected : clickDelivery
+
+IntersectionSelected --> MapLoaded : clickIntersection\n(the same)
+IntersectionSelected --> DeliveySelected : addDelivery
+IntersectionSelected --> DeliveySelected : clickDelivery
+IntersectionSelected --> IntersectionSelected : clickIntersection\n(an other one)
+
+DeliveySelected --> IntersectionSelected : clickIntersection
+DeliveySelected --> MapLoaded : removeDelivery
+DeliveySelected --> DeliveySelected : clickDelivery\n(an other one)
+
+@enduml
