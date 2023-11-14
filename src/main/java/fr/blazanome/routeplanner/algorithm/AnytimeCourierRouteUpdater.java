@@ -8,10 +8,8 @@ import fr.blazanome.routeplanner.model.Route;
 import javafx.application.Platform;
 
 /**
- * SimpleCourierRouteUpdater
- *
- * A CourierRouteUpdater which update the route only when the computation are
- * over
+ * A CourierRouteUpdater which update the route each time the algorithm find
+ * a new best solution
  */
 public class AnytimeCourierRouteUpdater extends ThreadPoolCourierRouteUpdater {
 
