@@ -1,5 +1,8 @@
 package fr.blazanome.routeplanner.model;
 
+/**
+ * A delivery request added by the user, it has an intersection and a timeframe for valid delivery hours
+ */
 public class DeliveryRequest {
     private final Intersection intersection;
     private final Timeframe timeframe;
@@ -23,9 +26,5 @@ public class DeliveryRequest {
 
     public double getLongitude() {
         return this.intersection.getLongitude();
-    }
-
-    public String getTimeframeLabel() {
-        return this.timeframe.getLabel();
     }
 }

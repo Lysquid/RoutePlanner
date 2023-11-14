@@ -3,7 +3,8 @@ package fr.blazanome.routeplanner.model;
 import fr.blazanome.routeplanner.graph.Graph;
 
 /**
- * Map
+ * Map Interface
+ * Abstracts the way to interact with a map
  */
 public interface IMap extends Graph {
 
