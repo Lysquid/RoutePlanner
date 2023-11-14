@@ -143,13 +143,7 @@ public class MapView extends Pane {
             // it on every step of the route to demonstrate how it works
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
-                    Color c;
-                    if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
-                        c = DEFAULT_COLOR_LIST[courier.getId()-1];
-                    } else {
-                        Random generator = new Random(courier.getId());
-                        c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
-                    }
+                    Color c = this.getCourierColor(courier);
                     if (courier.getRoute() != null) {
                         this.drawRoute(courier.getRoute().getPath(), c);
                     }
@@ -220,13 +214,7 @@ public class MapView extends Pane {
             b.setStyle(null);
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
-                    Color c;
-                    if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
-                        c = DEFAULT_COLOR_LIST[courier.getId()-1];
-                    } else {
-                        Random generator = new Random(courier.getId());
-                        c = new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
-                    }
+                    Color c = this.getCourierColor(courier);
                     for(var request: courier.getRequests()){
                         if(request.getIntersection().equals(b.getIntersection())) {
                             b.setColor(c);
@@ -234,6 +222,15 @@ public class MapView extends Pane {
                     }
                 }
             }
+        }
+    }
+
+    private Color getCourierColor(Courier courier){
+        if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
+            return DEFAULT_COLOR_LIST[courier.getId()-1];
+        } else {
+            Random generator = new Random(courier.getId());
+            return new Color(generator.nextDouble(), generator.nextDouble(), generator.nextDouble(), 1.0);
         }
     }
 
