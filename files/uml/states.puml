@@ -5,16 +5,16 @@ hide empty description
 
 NoMap --> MapLoaded : loadMap
 
-MapLoaded --> IntersectionSelected : clickIntersection
-MapLoaded --> DeliveySelected : clickDelivery
+MapLoaded --> IntersectionSelected : selectIntersection
+MapLoaded --> RequestSelected : selectRequest
 
-IntersectionSelected --> MapLoaded : clickIntersection\n(the same)
-IntersectionSelected --> DeliveySelected : addDelivery
-IntersectionSelected --> DeliveySelected : clickDelivery
-IntersectionSelected --> IntersectionSelected : clickIntersection\n(an other one)
+IntersectionSelected --> MapLoaded : selectIntersection\n(the same)
+IntersectionSelected --> RequestSelected : addDelivery
+IntersectionSelected --> RequestSelected : selectRequest
+IntersectionSelected --> IntersectionSelected : selectIntersection\n(an other one)
 
-DeliveySelected --> IntersectionSelected : clickIntersection
-DeliveySelected --> MapLoaded : removeDelivery
-DeliveySelected --> DeliveySelected : clickDelivery\n(an other one)
+RequestSelected --> IntersectionSelected : selectIntersection
+RequestSelected --> MapLoaded : removeDelivery
+RequestSelected --> RequestSelected : selectRequest\n(an other one)
 
 @enduml
