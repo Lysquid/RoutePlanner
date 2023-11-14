@@ -24,6 +24,8 @@
                     <Text text="Map"/>
                     <HBox>
                         <Button text="Load a map" onAction="#loadMap"/>
+                        <Button text="Reset zoom" onAction="#resetZoom"/>
+
                     </HBox>
                     <Text text="Session"/>
                     <HBox>

@@ -255,6 +255,10 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
+    public void resetZoom(){
+        this.mapView.resetPosition();
+    }
+
     @Override
     public void onTaskCountChange(int taskCount) {
         if (taskCount == 1) {
