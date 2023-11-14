@@ -17,8 +17,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serialize and deserialize a session to an XML file, to save and restore the couriers
+ */
 public class XMLSessionSerializer {
 
+    /**
+     * @param couriers  A list of couriers
+     * @param file      The file to save the serialized couriers to
+     */
     public void serialize(List<Courier> couriers, File file) {
 
         try {
@@ -70,6 +77,11 @@ public class XMLSessionSerializer {
         }
     }
 
+    /**
+     * Find an intersection in a map given its id
+     * @param intersectionId The id of the intersection, found in an XML map
+     * @return  The intersection object
+     */
     private static Intersection getIntersection(IMap map, long intersectionId) {
         for (Intersection intersection : map.getIntersections()) {
             if (intersection.getId() == intersectionId) {
@@ -79,6 +91,11 @@ public class XMLSessionSerializer {
         return null;
     }
 
+    /**
+     * @param file  The file containing the serialized session
+     * @param map   The map corresponding to the session to be parsed
+     * @return      The deserialized list of couriers
+     */
     public List<Courier> parse(File file, IMap map) throws IOException {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
