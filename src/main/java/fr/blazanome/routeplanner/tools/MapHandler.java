@@ -7,8 +7,14 @@ import fr.blazanome.routeplanner.model.map.MapBuilder;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * SAX handler that builds a map
+ */
 public class MapHandler extends AbstractMapHandler {
 
+    /**
+     * Representation a parsed segment, uses indices given in the XML file
+     */
     private class ParserSegment {
         private long destination;
         private double length;
@@ -45,6 +51,13 @@ public class MapHandler extends AbstractMapHandler {
 
     private long warehouse;
 
+    /**
+     * Handle characters
+     * @param ch
+     * @param start
+     * @param length
+     * @throws SAXException
+     */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (this.elementValue == null) {
@@ -54,12 +67,24 @@ public class MapHandler extends AbstractMapHandler {
         }
     }
 
+    /**
+     * Initializes structures that will be used to gradually parse the map
+     * @throws SAXException never throws, used to comply to SAX
+     */
     @Override
     public void startDocument() throws SAXException {
         this.intersections = new java.util.HashMap<Long, Intersection>();
         this.segments = new java.util.ArrayList<ParserSegment>();
     }
 
+    /**
+     * Handles when an element start is detected in the document
+     * @param uri the identifier of the element (unused)
+     * @param lName local (namespace) name
+     * @param qName qualified name of the element
+     * @param attr attributes of the element
+     * @throws SAXException never throws, used to comply to SAX
+     */
     @Override
     public void startElement(String uri, String lName, String qName, Attributes attr) throws SAXException {
         switch (qName) {
@@ -82,6 +107,10 @@ public class MapHandler extends AbstractMapHandler {
         }
     }
 
+    /**
+     * Uses the mapBuilder to construct the map with the data parsed in the document
+     * @param builder the MapBuilder used to build the map
+     */
     @Override
     public void buildMap(MapBuilder builder) {
         this.intersections.values().forEach(builder::addIntersection);
