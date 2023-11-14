@@ -18,7 +18,7 @@ public class TSPTest {
    public void testTSP1() {
        Graph graph = TestGraphs.graph1();
        TSP tsp = new TSP1();
-       tsp.searchSolution(Integer.MAX_VALUE, graph);
+       tsp.searchSolution(Integer.MAX_VALUE, graph, (i) -> {});
 
        assertEquals(Arrays.asList(0, 1, 4, 3, 5, 2), tsp.getSolution());
        assertEquals(37, tsp.getSolutionCost());
