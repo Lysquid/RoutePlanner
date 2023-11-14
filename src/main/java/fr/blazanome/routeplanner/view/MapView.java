@@ -13,11 +13,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -311,7 +308,9 @@ public class MapView extends Pane {
 
         }
     }
-
+    /**
+     * Calculates the size and location of the buttons
+     */
     void drawIntersections() {
         double radius =this.buttonIntersectionList.get(1).calculateRadius(this.zoomTransform.getX());
         for (ButtonIntersection bt : this.buttonIntersectionList) {
@@ -323,6 +322,9 @@ public class MapView extends Pane {
             bt.setVisible(true);
         }
     }
+    /**
+    * Resets the zoom and position
+     */
     void resetPosition(){
         this.offsetY=0;
         this.offsetX=0;
@@ -332,6 +334,9 @@ public class MapView extends Pane {
         this.draw();
     }
     // turns latitude and longitude into x and y coordinates
+    /**
+     * For each intersection calls a function that takes into account the level of zoom when defining the size of the button
+     */
     void resizeButton(){
         if (buttonIntersectionList != null) {
             for (ButtonIntersection intersection : this.buttonIntersectionList) {
@@ -339,24 +344,38 @@ public class MapView extends Pane {
             }
         }
     }
-
+    /**
+     * @param lat latitude of the point
+     * @param lon longitude of a point
+     * @return the coordinates following the x axis
+     */
     double ConvertToX(double lat, double lon) {
         return Math.cos((Math.PI / 180.0) * lat) * 111.0 * lon;
     }
-
+    /**
+     * @param lat latitude of the point
+     * @param lon longitude of a point
+     * @return the coordinates following the y axis
+     */
     double ConvertToY(double lat, double lon) {
         return 111.0 * lat;
     }
 
-    // Calculate from all the x and y coordinates where to place the item on the
-    // screen. Doesn't take into account zooming
+
+    /**
+     * @param intersection location the includes a latitude and longitude
+     * @return where to place it on the screen along the x axis
+     */
     double positionX(Intersection intersection) {
         return this.ratioWidth()
                 * (0.05 + 0.90 * ((this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - this.minX)
                         / (this.maxX - this.minX)))
                 + this.offsetX;
     }
-
+    /**
+     * @param intersection location the includes a latitude and longitude
+     * @return where to place it on the screen along the y axis
+     */
     double positionY(Intersection intersection) {
         return this.ratioHeight()
                 * (0.05 + 0.90 * ((this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - this.minY)
@@ -364,14 +383,22 @@ public class MapView extends Pane {
                 + this.offsetY;
 
     }
-
+    /**
+     * @return the maximum height the map can fit in without stretching or cutting parts of the map off in width
+     */
     double ratioHeight() {
         return Math.min(this.getHeight(), this.getWidth() * (this.maxY - this.minY) / (this.maxX - this.minX));
     }
-
+    /**
+     * @return the maximum width the map can fit in without stretching or cutting parts of the map off in height
+     */
     double ratioWidth() {
         return Math.min(this.getWidth(), this.getHeight() * (this.maxX - this.minX) / (this.maxY - this.minY));
     }
+    /**
+     * zooms in or out based on the direction of scrolling and moves the screen to stay centered around the position of the mouse
+     * @param event a scroll event
+     */
     private void handleScroll(ScrollEvent event){
         double delta = event.getDeltaY(); // Positive for zoom in, negative for zoom out
         double scaleFactor = 1.05; // Adjust the zoom factor as needed
@@ -393,12 +420,19 @@ public class MapView extends Pane {
         this.draw();
 
     }
+    /**
+     * Saves the location of a mousepress
+     * @param event information from when a mouse is pressed
+     */
     // Action to make the dragging possible
     private void handleMousePressed(MouseEvent event) {
         this.initialX = event.getSceneX();
         this.initialY = event.getSceneY();
     }
-
+    /**
+     * Shifts the screen to follow the dragging
+     * @param event information includinglocation of the mouse at the point in the drag
+     */
     private void handleMouseDragged(MouseEvent event) {
         if (event.isPrimaryButtonDown() || event.isSecondaryButtonDown()) {
             double deltaX = event.getSceneX() - this.initialX;
