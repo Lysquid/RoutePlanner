@@ -2,6 +2,10 @@ package fr.blazanome.routeplanner.model;
 
 import java.util.Objects;
 
+/**
+ * A road between two intersections (origin and destination)
+ * also has a name (street name) and a length
+ */
 public class Segment {
     private Intersection destination;
     private double length;

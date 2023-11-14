@@ -1,5 +1,8 @@
 package fr.blazanome.routeplanner.model;
 
+/**
+ * A road intersection, it has an id, a latitude and a longitude
+ */
 public class Intersection {
     private final long id;
     private final double latitude;
