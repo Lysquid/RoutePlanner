@@ -53,7 +53,7 @@ public interface State {
         controller.setCurrentState(new DeliverySelectedState(deliveryRequest, courier));
     }
 
-    default void addDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
+    default void addDelivery(Controller controller, Courier courier, Timeframe timeframe, CommandStack commandStack) {
     };
 
     default void removeDelivery(Controller controller, CommandStack commandStack) {

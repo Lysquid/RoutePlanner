@@ -69,7 +69,7 @@ public class Controller {
     }
 
     public void addDelivery(Courier courier, Timeframe timeframe) {
-        this.currentState.addDelivery(this.view, this.session, courier, timeframe, this.commandStack);
+        this.currentState.addDelivery(this, courier, timeframe, this.commandStack);
     }
 
     public void selectDelivery(DeliveryRequest deliveryRequest, Courier courier) {

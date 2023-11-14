@@ -168,6 +168,7 @@ public class GraphicalView implements View, Initializable {
             }
             case DELIVERY_ADD, DELIVERY_REMOVE -> {
                 this.updateRequests();
+                this.deliveriesTable.getSelectionModel().select((DeliveryRequest) message);
             }
         }
     }

@@ -24,8 +24,10 @@ public class IntersectionSelectedState implements State {
     }
 
     @Override
-    public void addDelivery(View view, Session session, Courier courier, Timeframe timeframe, CommandStack commandStack) {
-        commandStack.add(new AddDeliveryCommand(courier, new DeliveryRequest(selectedIntersection, timeframe)));
+    public void addDelivery(Controller controller, Courier courier, Timeframe timeframe, CommandStack commandStack) {
+        DeliveryRequest request = new DeliveryRequest(selectedIntersection, timeframe);
+        commandStack.add(new AddDeliveryCommand(courier, request));
+        controller.setCurrentState(new DeliverySelectedState(request, courier));
     }
 
     public final Intersection getSelectedIntersection() {
