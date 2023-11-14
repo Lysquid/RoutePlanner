@@ -26,6 +26,11 @@ public class Delivery {
         int m = this.time % 60;
         return String.format("%02d:%02d", h, m);
     }
+    public String getDepartureTime() {
+        int h = (this.time + 5)/ 60;
+        int m = (this.time + 5) % 60;
+        return String.format("%02d:%02d", h, m);
+    }
 
     public double getLongitude() {
         return this.request.getLongitude();
