@@ -13,6 +13,9 @@ public class Delivery {
         this.time = time;
     }
 
+    /**
+     * @return the delivery request that this delivery satisfies
+     */
     public DeliveryRequest getRequest() {
         return request;
     }
