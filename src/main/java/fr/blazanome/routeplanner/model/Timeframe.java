@@ -1,5 +1,8 @@
 package fr.blazanome.routeplanner.model;
 
+/**
+ * Timeframe for a delivery
+ */
 public enum Timeframe {
     H8(8, "8h-9h"),
     H9(9, "9h-10h"),
@@ -27,6 +30,11 @@ public enum Timeframe {
         return this.label;
     }
 
+    /**
+     * Build Timeframe from a string
+     * @param text the string corresponding to the label on one of the enum variant
+     * @return the timeframe
+     */
     public static Timeframe fromString(String text) {
         for (Timeframe timeframe : Timeframe.values()) {
             if (timeframe.label.equalsIgnoreCase(text)) {
