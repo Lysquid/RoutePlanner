@@ -378,9 +378,9 @@ public class MapView extends Pane {
      * @return where to place it on the screen along the y axis
      */
     double positionY(Intersection intersection) {
-        return this.ratioHeight()
+        return this.ratioHeight()-(this.ratioHeight()
                 * (0.05 + 0.90 * ((this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - this.minY)
-                        / (this.maxY - this.minY)))
+                        / (this.maxY - this.minY))))
                 + this.offsetY;
 
     }
