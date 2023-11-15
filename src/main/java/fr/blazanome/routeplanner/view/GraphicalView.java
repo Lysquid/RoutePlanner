@@ -68,7 +68,6 @@ public class GraphicalView implements View, Initializable {
     private Button resetZoomButton;
     @FXML
     private Button cancelTasksButton;
-    @FXML
     private Observer commandStackObserver;
 
     /**
