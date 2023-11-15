@@ -102,12 +102,14 @@ Nous avons utilisé JavaFX pour l'IHM. L'interface est décrite par un fichier F
 
 # Diagramme état-transition
 
-![Diagramme état-transition](out/uml/states.png){height=300}
+![Diagramme état-transition](out/uml/states.png)
 
 # Diagramme de classes et packages
 
 ![Diagramme des classes](class-diagrams/iter3.png)
+
 \newpage
+
 ![Diagramme des packages](out/graphviz/packages.png)
 
 ## Différence entre la première itération et le diagramme actuel
