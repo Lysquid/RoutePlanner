@@ -1,5 +1,5 @@
 ---
-title: "AGILE: Dossier de rendi"
+title: "AGILE: Dossier de rendu"
 titlepage: true
 logo: logo.jpg
 lof: true
@@ -15,13 +15,13 @@ lang: fr
 # titlepage-text-color: "FFFFFF"
 # titlepage-rule-color: "360049"
 # titlepage-rule-height: 0
-header-includes:
-- |
-  ```{=latex}
+header-includes: |
   \usepackage{pdflscape}
+  \usepackage{float}
   \newcommand{\blandscape}{\begin{landscape}}
   \newcommand{\elandscape}{\end{landscape}}
-    ```
+  \floatplacement{figure}{H}
+  
  #geometry: margin=1cm
 ---
 
@@ -102,12 +102,13 @@ Nous avons utilisé JavaFX pour l'IHM. L'interface est décrite par un fichier F
 
 # Diagramme état-transition
 
-![](out/uml/states.png)
+![Diagramme état-transition](out/uml/states.png){height=300}
 
 # Diagramme de classes et packages
 
-![](out/graphviz/packages.png)
-![](class-diagrams/iter3.png)
+![Diagramme des classes](class-diagrams/iter3.png)
+\newpage
+![Diagramme des packages](out/graphviz/packages.png)
 
 ## Différence entre la première itération et le diagramme actuel
 

@@ -14,7 +14,7 @@ gv-imgs := $(gv-srcs:$(gv-src-dir)/%.dot=$(gv-out-dir)/%.png)
 dossier-srcs := rendu.md
 dossier-pdfs := $(dossier-srcs:%.md=$(out-dir)/%.pdf)
 
-pandoc-args := --toc --toc-depth=2 --listings --template eisvogel 
+pandoc-args := --toc --toc-depth=2 --listings --template eisvogel
 
  $(info $(dossier-pdfs))
 
