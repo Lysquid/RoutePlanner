@@ -227,7 +227,10 @@ public class MapView extends Pane {
             }
         }
     }
-
+    /**
+     * @param courier the courier we want the color for, we want his Id
+     * @return the color, either from the list or generated from set seed randomness
+     */
     private Color getCourierColor(Courier courier){
         if (courier.getId()-1 < DEFAULT_COLOR_LIST.length) {
             return DEFAULT_COLOR_LIST[courier.getId()-1];
