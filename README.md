@@ -1,9 +1,5 @@
 # Route Planner
 
-## Run the application
-
-`java -jar RoutePlanner.jar`
-
 ## Run from source code
 
 `./gradlew run`
