@@ -1,5 +1,5 @@
 ---
-title: "AGILE: Dossier de rendu"
+title: "AGILE: Dossier de synthèse"
 titlepage: true
 logo: logo.jpg
 lof: true
