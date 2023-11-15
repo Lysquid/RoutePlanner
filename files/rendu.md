@@ -37,7 +37,7 @@ Le modèle est construit comme ceci :
 - `Map` : la carte, qui possède une liste d'`Intersection` et une liste de `Segment`, qui sont les routes entre les intersections.
 - `Courier` : un livreur, qui possède une liste de `DeliveryRequest` et une `Route`.
 - `DeliveryRequest` : une demande de livraison à une `Intersection` et pendant une certaine `Timeframe`.
-- `Route` : un chemin possédant une liste de `Segement`, qui sont les routes à emprunter pour honorer la liste de `Delievry`.
+- `Route` : un chemin possédant une liste de `Segment`, qui sont les routes à emprunter pour honorer la liste de `Delivery`.
 - `Delivery` : une livraison, qui répond à une `DeliveryRequest` et à laquelle s'ajoute un horaire de passage.
 
 ## Observer pattern
@@ -54,15 +54,15 @@ Le contrôleur doit réagir différemment aux actions de la vue en fonction de s
 
 Afin de pouvoir "undo" et "redo" certaines actions, nous avons utilisé le command pattern. Cela s'applique à l'ajout et la suppression de livreurs et de requêtes de livraison. Ces modifications sont encapsulées dans un objet `Command` ajouté au `CommandStack`. On peut ensuite naviguer dans l'historique des commandes avec `apply` and `undo`. Cet historique doit rester linéaire, donc l'ajout d'une commande après plusieurs undo supprime les commandes qui ont été "undo".
 
-## Gestion des graphs
+## Gestion des graphes
 
-L'implémentation des différents graphs utilisée est découplée des algorithmes à l'aide des interfaces `Graph`, `PathGraph` et `IMap`.
+L'implémentation des différents graphes utilisée est découplée des algorithmes à l'aide des interfaces `Graph`, `PathGraph` et `IMap`.
 
-- `Graph` est un graph simple composé de sommet et d'arêtes
-- `PathGraph` hérite de `Graph` et rajoute le concept de graph parent. Les arêtes d'un `PathGraph` sont des chemins dans son graph parent.
-- `IMap` est un graph qui permet de stocker et faire des convertions entre des indices de sommet et des `Intersection` et `Sommet`. Elle permet aussi de trouver la warehouse.
+- `Graph` est un graphe simple composé de sommet et d'arêtes
+- modèle est construit`PathGraph` hérite de `Graph` et rajoute le concept de graphe parent. Les arêtes d'un `PathGraph` sont des chemins dans son graphe parent.
+- `IMap` est un graphe qui permet de stocker et faire des conversions entre des indices de sommet et des `Intersection` et `Sommet`. Elle permet aussi de trouver la warehouse.
 
-Ces 3 formes de graph sont ensuite implémentées seulement sous forme de listes d'adjacences, mais on pourrait imaginer intégrer d'autres implémentations dans le futur si besoin.
+Ces 3 formes de graphe sont ensuite implémentées seulement sous forme de listes d'adjacences, mais on pourrait imaginer intégrer d'autres implémentations dans le futur si besoin.
 
 ## Création de la Map
 
@@ -77,7 +77,7 @@ Pour chaque implémentation de IMap, on doit donc implémenter ces 2 interfaces 
 
 Trois types d'algorithmes sont utilisés : 
 
-- `CompleteGraphAlgorithm` représente un algorithme qui génère le graph complet des plus courts chemins entre un ensemble de sommets dans un autre graph
+- `CompleteGraphAlgorithm` représente un algorithme qui génère le graphe complet des plus courts chemins entre un ensemble de sommets dans un autre graphe
 - `TSP` résout le problème du voyageur de commerce.
 - `TourGenerationAlgorithm` calcule la route et le planning à partir de la carte et d'un `Courier`
 
