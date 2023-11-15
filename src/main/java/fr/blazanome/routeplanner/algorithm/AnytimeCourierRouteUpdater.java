@@ -1,5 +1,6 @@
 package fr.blazanome.routeplanner.algorithm;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import fr.blazanome.routeplanner.model.Courier;
@@ -23,8 +24,14 @@ public class AnytimeCourierRouteUpdater extends ThreadPoolCourierRouteUpdater {
 
     @Override
     public void updateTour(Courier courier, IMap map) {
+        var requests = new ArrayList<>(courier.getRequests());
         this.spawnTask(courier, () -> {
-            Route route = this.tourGenerationAlgorithm.computeTour(map, courier.getRequests(),
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+            }
+
+            Route route = this.tourGenerationAlgorithm.computeTour(map, requests,
                     tmpRoute -> Platform.runLater(() -> courier.setRoute(tmpRoute)));
             Platform.runLater(() -> courier.setRoute(route));
         });

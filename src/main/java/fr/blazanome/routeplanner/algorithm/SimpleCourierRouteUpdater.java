@@ -26,6 +26,11 @@ public class SimpleCourierRouteUpdater extends ThreadPoolCourierRouteUpdater {
     @Override
     public void updateTour(Courier courier, IMap map) {
         this.spawnTask(courier, () -> {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+            }
+
             Route route = this.tourGenerationAlgorithm.computeTour(map, courier.getRequests(), null);
 
             Platform.runLater(() -> courier.setRoute(route));
