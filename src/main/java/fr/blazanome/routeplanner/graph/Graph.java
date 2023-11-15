@@ -21,15 +21,15 @@ public interface Graph {
      * @param start Start vertex
      * @param end   End vertex
      * @return the cost of the segment between start and end or a negative number if
-     *         <code>start</code> and <code>end</code>
-     *         are not neighbor
+     * <code>start</code> and <code>end</code>
+     * are not neighbor
      */
     double getCost(int start, int end);
 
     /**
      * Apply the given filter and keep only the edges for which the filter
      * returns true
-     * 
+     *
      * @param filter
      */
     void filterEdges(EdgeFilter filter);

@@ -32,6 +32,7 @@ public enum Timeframe {
 
     /**
      * Build Timeframe from a string
+     *
      * @param text the string corresponding to the label on one of the enum variant
      * @return the timeframe
      */

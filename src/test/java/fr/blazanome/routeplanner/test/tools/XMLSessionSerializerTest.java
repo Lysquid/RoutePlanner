@@ -23,7 +23,7 @@ public class XMLSessionSerializerTest {
         IMap map = mapParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTest.xml"));
 
         Courier courier = new Courier(1);
-        for (Intersection intersection: map.getIntersections()) {
+        for (Intersection intersection : map.getIntersections()) {
             courier.addDelivery(new DeliveryRequest(intersection, Timeframe.H8));
         }
         List<Courier> couriers = new ArrayList<>();
@@ -38,7 +38,8 @@ public class XMLSessionSerializerTest {
         assertEquals(contentOf(savedFile), contentOf(referenceFile));
     }
 
-    @Test void testLoad() throws ParserConfigurationException, IOException, SAXException {
+    @Test
+    void testLoad() throws ParserConfigurationException, IOException, SAXException {
         XMLMapParser mapParser = new XMLMapParser(new AdjacencyListMap.BuilderFactory());
         IMap map = mapParser.parse(new File("src/test/resources/fr/blazanome/routeplanner/tools/map/XMLParserTest.xml"));
 
@@ -49,9 +50,9 @@ public class XMLSessionSerializerTest {
         assertEquals(courier.getId(), 1);
 
         int i = 0;
-        for (Intersection intersection: map.getIntersections()) {
+        for (Intersection intersection : map.getIntersections()) {
             assertEquals(intersection.getId(), courier.getRequests().get(i).getIntersection().getId());
-            i ++;
+            i++;
         }
     }
 

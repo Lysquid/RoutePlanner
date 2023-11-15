@@ -26,6 +26,7 @@ public class XMLParserTest {
 
     List<Intersection> addedIntersections;
     List<Segment> addedSegments;
+
     class Warehouse {
         public Intersection warehouse;
     }

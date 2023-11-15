@@ -22,7 +22,7 @@ public class IntersectionSelectedState implements State {
      */
     @Override
     public void selectIntersection(Controller controller, View view, Courier courier, Timeframe timeframe, Intersection intersection) {
-        if(this.selectedIntersection.equals(intersection)) {
+        if (this.selectedIntersection.equals(intersection)) {
             controller.addRequest(courier, timeframe);
         } else {
             controller.setCurrentState(new IntersectionSelectedState(intersection));
@@ -37,7 +37,7 @@ public class IntersectionSelectedState implements State {
     }
 
     /**
-     * @return  the intersection currently selected
+     * @return the intersection currently selected
      */
     public final Intersection getSelectedIntersection() {
         return this.selectedIntersection;

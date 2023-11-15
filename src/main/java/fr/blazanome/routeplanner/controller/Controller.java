@@ -31,7 +31,7 @@ public class Controller {
     private final CourierRouteUpdater courierRouteUpdater;
 
     /**
-     * @param view  The view of the MVC architecture
+     * @param view The view of the MVC architecture
      */
     public Controller(View view) {
         this.view = view;
@@ -91,6 +91,7 @@ public class Controller {
 
     /**
      * Add a delivery request to a courier
+     *
      * @param courier   the courier who must do the request
      * @param timeframe the chosen timeframe
      */
@@ -100,7 +101,8 @@ public class Controller {
 
     /**
      * Called when a request is selected in the view
-     * @param courier   the courier to whom the request belong
+     *
+     * @param courier the courier to whom the request belong
      */
     public void selectRequest(DeliveryRequest deliveryRequest, Courier courier) {
         this.currentState.selectRequest(this, deliveryRequest, courier);
@@ -114,21 +116,21 @@ public class Controller {
     }
 
     /**
-     * @return  the command stack of the command pattern
+     * @return the command stack of the command pattern
      */
     public CommandStack getCommandStack() {
         return commandStack;
     }
 
     /**
-     * @return  the current state
+     * @return the current state
      */
     public State getCurrentState() {
         return currentState;
     }
 
     /**
-     * @param session   the session of the controller, encapsulating the model
+     * @param session the session of the controller, encapsulating the model
      */
     public void setSession(Session session) {
         if (this.session != null) {
@@ -162,7 +164,7 @@ public class Controller {
     }
 
     /**
-     * @return  the map parser for this controller
+     * @return the map parser for this controller
      */
     public XMLMapParser getMapParser() {
         return new XMLMapParser(new AdjacencyListMap.BuilderFactory());
@@ -170,6 +172,7 @@ public class Controller {
 
     /**
      * Observer function of the Session
+     *
      * @param eventType an enum describing the change
      * @param message   the object that actually changed
      */
@@ -197,6 +200,7 @@ public class Controller {
 
     /**
      * Observer function of the couriers
+     *
      * @param eventType an enum describing the change
      * @param message   the object that actually changed
      */

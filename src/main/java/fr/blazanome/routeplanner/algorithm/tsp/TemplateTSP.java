@@ -47,32 +47,32 @@ public abstract class TemplateTSP implements TSP {
 
     /**
      * Method that must be defined in TemplateTSP subclasses
-     * 
+     *
      * @param currentVertex
      * @param unvisited
      * @return a lower bound of the cost of paths in <code>g</code> starting from
-     *         <code>currentVertex</code>, visiting
-     *         every vertex in <code>unvisited</code> exactly once, and returning
-     *         back to vertex <code>0</code>.
+     * <code>currentVertex</code>, visiting
+     * every vertex in <code>unvisited</code> exactly once, and returning
+     * back to vertex <code>0</code>.
      */
     protected abstract double bound(Integer currentVertex, Collection<Integer> unvisited);
 
     /**
      * Method that must be defined in TemplateTSP subclasses
-     * 
+     *
      * @param currentVertex
      * @param unvisited
      * @param g
      * @return an iterator for visiting all vertices in <code>unvisited</code> which
-     *         are successors of <code>currentVertex</code>
+     * are successors of <code>currentVertex</code>
      */
     protected abstract Iterable<Integer> unvisitedNeighbors(Integer currentVertex, Collection<Integer> unvisited,
-            Graph g);
+                                                            Graph g);
 
     /**
      * Template method of a branch and bound algorithm for solving the TSP in
      * <code>g</code>.
-     * 
+     *
      * @param currentVertex the last visited vertex
      * @param unvisited     the set of vertex that have not yet been visited
      * @param visited       the sequence of vertices that have been already visited
@@ -81,13 +81,13 @@ public abstract class TemplateTSP implements TSP {
      *                      <code>visited</code>
      */
     private void branchAndBound(int currentVertex, Collection<Integer> unvisited,
-            List<Integer> visited, double currentCost, Consumer<List<Integer>> onNewRoute) {
+                                List<Integer> visited, double currentCost, Consumer<List<Integer>> onNewRoute) {
         if (System.currentTimeMillis() - startTime > timeLimit || Thread.interrupted()) {
             this.interrupted = true;
         }
 
         if (this.interrupted) {
-                return;
+            return;
         }
 
         if (unvisited.size() == 0) {

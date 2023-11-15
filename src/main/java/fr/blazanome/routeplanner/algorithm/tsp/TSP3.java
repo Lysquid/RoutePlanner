@@ -24,8 +24,8 @@ public class TSP3 extends TSP2 {
     /**
      * Prim method to calculate the cost of the MST used by the bound
      * algorithm for solving the TSP in <code>graph</code>.
-     * 
-     * @param vertices     the set of vertex that must be in the MST
+     *
+     * @param vertices the set of vertex that must be in the MST
      * @return the total cost of the MST
      */
     protected double prim(Collection<Integer> vertices) {
@@ -74,13 +74,13 @@ public class TSP3 extends TSP2 {
     /**
      * Bound method of the branch and bound algorithm for solving the TSP in
      * <code>graph</code>.
-     * 
+     *
      * @param currentVertex the last visited vertex
      * @param unvisited     the set of vertex that have not yet been visited
      * @return a lower bound of the cost of paths in <code>graph</code>, starting
-     *         from <code>currentVertex<code/>, visits all the unvisited nodes
-     *         exactly once
-     *         and returns to 0 (initial node of the TSP).
+     * from <code>currentVertex<code/>, visits all the unvisited nodes
+     * exactly once
+     * and returns to 0 (initial node of the TSP).
      */
     @Override
     protected double bound(Integer currentVertex, Collection<Integer> unvisited) {

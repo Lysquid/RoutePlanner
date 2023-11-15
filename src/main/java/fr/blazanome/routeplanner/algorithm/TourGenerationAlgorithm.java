@@ -12,12 +12,12 @@ import java.util.function.Consumer;
  */
 public interface TourGenerationAlgorithm {
     /**
-     * @param map 
-     * @param vertices all the vertices the tour needs to pass through
+     * @param map
+     * @param vertices   all the vertices the tour needs to pass through
      * @param onNewRoute a function to call each a new route is found.
-     *                   if set to null, wait until the last solution 
+     *                   if set to null, wait until the last solution
      *                   is found to construct the Route
-     * @return a list of vertices representing the route in the graph 
+     * @return a list of vertices representing the route in the graph
      * going through each vertices. Two vertices next to each other in
      * the list are guarrented to be neighbors
      */

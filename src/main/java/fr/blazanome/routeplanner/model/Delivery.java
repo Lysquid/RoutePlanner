@@ -22,7 +22,7 @@ public class Delivery {
 
     /**
      * @return returns time of the delivery (in minutes)
-     *         example : 120 corresponds to 02:00
+     * example : 120 corresponds to 02:00
      */
     public int getTime() {
         return time;
@@ -41,7 +41,7 @@ public class Delivery {
      * @return the departure time (5 minutes after the delivery time) at the format "hh:mm"
      */
     public String getDepartureTime() {
-        int h = (this.time + 5)/ 60;
+        int h = (this.time + 5) / 60;
         int m = (this.time + 5) % 60;
         return String.format("%02d:%02d", h, m);
     }

@@ -113,6 +113,7 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * Loads the file and calls a map loader
+     *
      * @param actionEvent the action linked to opening a file
      */
     @FXML
@@ -129,6 +130,7 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * calls the undo function in the controller
+     *
      * @param actionEvent unused
      */
     @FXML
@@ -138,6 +140,7 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * calls the redo function in the controller
+     *
      * @param actionEvent unused
      */
     @FXML
@@ -163,6 +166,7 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * finds the button that is clicked on then gets the intersection that's clicked on
+     *
      * @param actionEvent click action
      */
     @FXML
@@ -173,6 +177,7 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * Finds the current courier and then calls a selectRequest function in the controller
+     *
      * @param request the request that has been created
      */
     private void onDeliveryTableSelect(DeliveryRequest request) {
@@ -181,8 +186,9 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * Calls functions based upon the state
+     *
      * @param controller the controller that we will need to call
-     * @param state the current state of the application
+     * @param state      the current state of the application
      */
     @Override
     public void onStateChange(Controller controller, State state) {
@@ -195,9 +201,10 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * Calls the functions linked to the event such as loading a map or comuting a route
+     *
      * @param observable session or courier
      * @param eventType  the event that caused the action
-     * @param message the delivery request when not null
+     * @param message    the delivery request when not null
      */
     @Override
     public void update(Observable observable, EventType eventType, Object message) {
@@ -239,6 +246,7 @@ public class GraphicalView implements View, Initializable {
 
     /**
      * Shows and error message for a courier
+     *
      * @param courier the courier where route can't be calculated
      */
     private void showRouteComputeError(Courier courier) {
@@ -270,10 +278,10 @@ public class GraphicalView implements View, Initializable {
     }
 
     @FXML
-    private void setOnlyOneCourier(){
+    private void setOnlyOneCourier() {
         if (this.oneCourier.isSelected()) {
             this.mapView.setSelectedCourier(this.selectedCourier.getValue());
-        } else{
+        } else {
             this.mapView.setSelectedCourier(null);
         }
     }
@@ -283,7 +291,7 @@ public class GraphicalView implements View, Initializable {
         if (!session.getCouriers().isEmpty())
             this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
         this.removeCourierButton.setDisable(session.getCouriers().isEmpty());
-        if(this.controller.getCurrentState() instanceof IntersectionSelectedState) {
+        if (this.controller.getCurrentState() instanceof IntersectionSelectedState) {
             this.addDeliveryButton.setDisable(this.selectedCourier.getValue() == null);
         }
     }
@@ -333,12 +341,13 @@ public class GraphicalView implements View, Initializable {
     }
 
     @FXML
-    private void resetZoom(){
+    private void resetZoom() {
         this.mapView.resetPosition();
     }
 
     /**
      * message when the route for multiple courtier are being calculated
+     *
      * @param taskCount the number of active calculations
      */
     @Override

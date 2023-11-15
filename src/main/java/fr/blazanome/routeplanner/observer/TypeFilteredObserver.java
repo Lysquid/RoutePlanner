@@ -2,7 +2,7 @@ package fr.blazanome.routeplanner.observer;
 
 /**
  * TypeFilteredObserver
- *
+ * <p>
  * Wrapper around a {@link TypedObserver} that filters the notification
  * it receives to match the type T
  */
@@ -18,7 +18,7 @@ public class TypeFilteredObserver<T extends Observable> implements Observer {
 
     @Override
     public void update(Observable observable, EventType eventType, Object message) {
-        if(this.type.isAssignableFrom(observable.getClass())) {
+        if (this.type.isAssignableFrom(observable.getClass())) {
             this.observer.update(type.cast(observable), eventType, message);
         }
     }

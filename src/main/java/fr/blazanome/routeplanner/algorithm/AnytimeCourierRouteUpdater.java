@@ -17,7 +17,7 @@ public class AnytimeCourierRouteUpdater extends ThreadPoolCourierRouteUpdater {
     private TourGenerationAlgorithm tourGenerationAlgorithm;
 
     public AnytimeCourierRouteUpdater(Consumer<Integer> onTaskCountChange,
-            TourGenerationAlgorithm tourGenerationAlgorithm) {
+                                      TourGenerationAlgorithm tourGenerationAlgorithm) {
         super(onTaskCountChange);
         this.tourGenerationAlgorithm = tourGenerationAlgorithm;
     }

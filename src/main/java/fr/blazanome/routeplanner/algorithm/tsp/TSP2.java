@@ -9,21 +9,21 @@ public class TSP2 extends TSP1 {
     /**
      * Bound method of the branch and bound algorithm for solving the TSP in
      * <code>graph</code>.
-     * 
+     *
      * @param currentVertex the last visited vertex
      * @param unvisited     the set of vertex that have not yet been visited
      * @return a lower bound of the cost of paths in <code>graph</code>, starting
      * from <code>currentVertex<code/>, visits all the unvisited nodes exactly once
      * and returns to 0 (initial node of the TSP).
      */
-	@Override
-	protected double bound(Integer currentVertex, Collection<Integer> unvisited) {
+    @Override
+    protected double bound(Integer currentVertex, Collection<Integer> unvisited) {
         double l = Double.MAX_VALUE;
 
         for (Integer unvisitedVertex : unvisited) {
             l = Math.min(l, graph.getCost(currentVertex, unvisitedVertex));
         }
-        
+
         double sum = l;
 
         for (Integer unvisitedDep : unvisited) {
@@ -38,8 +38,8 @@ public class TSP2 extends TSP1 {
             sum += lmin;
         }
 
-		return sum;
-	}
+        return sum;
+    }
 
     public static class Factory implements TSP.Factory {
 

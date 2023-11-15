@@ -53,6 +53,7 @@ public class MapHandler extends AbstractMapHandler {
 
     /**
      * Handle characters
+     *
      * @param ch
      * @param start
      * @param length
@@ -69,6 +70,7 @@ public class MapHandler extends AbstractMapHandler {
 
     /**
      * Initializes structures that will be used to gradually parse the map
+     *
      * @throws SAXException never throws, used to comply to SAX
      */
     @Override
@@ -79,10 +81,11 @@ public class MapHandler extends AbstractMapHandler {
 
     /**
      * Handles when an element start is detected in the document
-     * @param uri the identifier of the element (unused)
+     *
+     * @param uri   the identifier of the element (unused)
      * @param lName local (namespace) name
      * @param qName qualified name of the element
-     * @param attr attributes of the element
+     * @param attr  attributes of the element
      * @throws SAXException never throws, used to comply to SAX
      */
     @Override
@@ -109,6 +112,7 @@ public class MapHandler extends AbstractMapHandler {
 
     /**
      * Uses the mapBuilder to construct the map with the data parsed in the document
+     *
      * @param builder the MapBuilder used to build the map
      */
     @Override
@@ -116,16 +120,16 @@ public class MapHandler extends AbstractMapHandler {
         this.intersections.values().forEach(builder::addIntersection);
 
         this.segments.stream().map(parser_segment -> {
-            if (!this.intersections.containsKey(parser_segment.destination)
-                    || !this.intersections.containsKey(parser_segment.origin)) {
-                throw new RuntimeException("Invalid map");
-            }
-            return new Segment(
-                    this.intersections.get(parser_segment.destination),
-                    parser_segment.length,
-                    parser_segment.name,
-                    this.intersections.get(parser_segment.origin));
-        })
+                    if (!this.intersections.containsKey(parser_segment.destination)
+                            || !this.intersections.containsKey(parser_segment.origin)) {
+                        throw new RuntimeException("Invalid map");
+                    }
+                    return new Segment(
+                            this.intersections.get(parser_segment.destination),
+                            parser_segment.length,
+                            parser_segment.name,
+                            this.intersections.get(parser_segment.origin));
+                })
                 .forEach(builder::addSegment);
 
         builder.setWarehouse(this.intersections.get(this.warehouse));

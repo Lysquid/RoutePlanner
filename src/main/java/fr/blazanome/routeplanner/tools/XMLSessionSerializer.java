@@ -23,8 +23,8 @@ import java.util.List;
 public class XMLSessionSerializer {
 
     /**
-     * @param couriers  A list of couriers
-     * @param file      The file to save the serialized couriers to
+     * @param couriers A list of couriers
+     * @param file     The file to save the serialized couriers to
      */
     public void serialize(List<Courier> couriers, File file) {
 
@@ -79,8 +79,9 @@ public class XMLSessionSerializer {
 
     /**
      * Find an intersection in a map given its id
+     *
      * @param intersectionId The id of the intersection, found in an XML map
-     * @return  The intersection object
+     * @return The intersection object
      */
     private static Intersection getIntersection(IMap map, long intersectionId) {
         for (Intersection intersection : map.getIntersections()) {
@@ -92,9 +93,9 @@ public class XMLSessionSerializer {
     }
 
     /**
-     * @param file  The file containing the serialized session
-     * @param map   The map corresponding to the session to be parsed
-     * @return      The deserialized list of couriers
+     * @param file The file containing the serialized session
+     * @param map  The map corresponding to the session to be parsed
+     * @return The deserialized list of couriers
      */
     public List<Courier> parse(File file, IMap map) throws IOException {
         try {

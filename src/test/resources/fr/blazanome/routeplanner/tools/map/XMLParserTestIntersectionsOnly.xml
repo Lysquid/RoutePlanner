@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <map>
-<intersection id="0" latitude="45.74979" longitude="4.87572"/>
-<intersection id="1" latitude="45.754536" longitude="4.866525"/>
-<intersection id="2" latitude="45.751904" longitude="4.857877"/>
-<intersection id="3" latitude="45.75171" longitude="4.8718166"/>
+    <intersection id="0" latitude="45.74979" longitude="4.87572"/>
+    <intersection id="1" latitude="45.754536" longitude="4.866525"/>
+    <intersection id="2" latitude="45.751904" longitude="4.857877"/>
+    <intersection id="3" latitude="45.75171" longitude="4.8718166"/>
 </map>

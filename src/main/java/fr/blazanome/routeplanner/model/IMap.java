@@ -17,8 +17,8 @@ public interface IMap extends Graph {
      * @param start Start vertex number
      * @param end   End vertex number
      * @return the <code>Segment</code> between the two vertices if they are
-     *         neighbors and null
-     *         otherwise
+     * neighbors and null
+     * otherwise
      */
     Segment getSegment(int start, int end);
 
@@ -30,7 +30,7 @@ public interface IMap extends Graph {
     /**
      * @param vertexId Vertex number
      * @return the intersection with <code>vertexId</code> or null if it does not
-     *         exist
+     * exist
      */
     Intersection getIntersection(int vertexId);
 

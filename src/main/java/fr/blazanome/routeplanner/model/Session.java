@@ -30,6 +30,7 @@ public class Session extends Observable {
 
     /**
      * Sets the map in the session
+     *
      * @param map the map
      */
     public void setMap(IMap map) {
@@ -40,6 +41,7 @@ public class Session extends Observable {
     /**
      * Gets couriers in the session
      * Contract : don't modify directly the list, add or romove the via addCourier or removeCourier
+     *
      * @return the list of couriers
      */
     public List<Courier> getCouriers() {
@@ -48,6 +50,7 @@ public class Session extends Observable {
 
     /**
      * Given a courier, adds it to the Session
+     *
      * @param courier the courier to be added
      */
     public void addCourier(Courier courier) {
@@ -57,6 +60,7 @@ public class Session extends Observable {
 
     /**
      * Given a courier, removes it from the Session
+     *
      * @param courier the courier to be removed
      */
     public void removeCourier(Courier courier) {
@@ -66,6 +70,7 @@ public class Session extends Observable {
 
     /**
      * Replaces the courier list in the session with the couriers in parameters
+     *
      * @param couriers couriers to be contained in the session
      */
     public void setCouriers(List<Courier> couriers) {
@@ -74,7 +79,7 @@ public class Session extends Observable {
         }
 
         this.couriers.clear();
-        for (Courier courier: couriers) {
+        for (Courier courier : couriers) {
             this.addCourier(courier);
         }
     }

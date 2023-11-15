@@ -15,6 +15,7 @@ public class Observable {
 
     /**
      * Register on observer
+     *
      * @param o the observer
      */
     public void addObserver(Observer o) {
@@ -23,6 +24,7 @@ public class Observable {
 
     /**
      * Removes the observer
+     *
      * @param o the observer
      */
     public void removeObserver(Observer o) {
@@ -31,11 +33,12 @@ public class Observable {
 
     /**
      * Sends a notification to all the observers
+     *
      * @param eventType the type of event
-     * @param message a message to pass with the event
+     * @param message   a message to pass with the event
      */
     public void notifyObservers(EventType eventType, Object message) {
-        for(var observer: this.observers) {
+        for (var observer : this.observers) {
             observer.update(this, eventType, message);
         }
     }

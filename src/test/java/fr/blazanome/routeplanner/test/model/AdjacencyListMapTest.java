@@ -24,7 +24,7 @@ public class AdjacencyListMapTest {
                 new Intersection(1, 1, 0)
         );
 
-        for(var intersection: intersections) {
+        for (var intersection : intersections) {
             builder.addIntersection(intersection);
         }
 
@@ -47,6 +47,6 @@ public class AdjacencyListMapTest {
                 new Intersection(2, 1, 0)
         );
 
-        assertThrows(AssertionError.class, ()->builder.addSegment(new Segment(intersections.get(0), 5, "Rue des fleurs", intersections.get(1))));
+        assertThrows(AssertionError.class, () -> builder.addSegment(new Segment(intersections.get(0), 5, "Rue des fleurs", intersections.get(1))));
     }
 }

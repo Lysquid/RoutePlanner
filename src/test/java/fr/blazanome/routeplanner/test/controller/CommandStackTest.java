@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommandStackTest {
     int counter = 0;
+
     private class TestCommand implements Command {
 
 
@@ -116,7 +117,7 @@ public class CommandStackTest {
         var stack = new CommandStack();
 
         stack.add(command1);
-        assertEquals(1,this.counter);
+        assertEquals(1, this.counter);
         stack.reset();
         stack.undo();
         assertEquals(1, this.counter);

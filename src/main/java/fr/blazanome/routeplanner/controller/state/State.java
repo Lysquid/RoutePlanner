@@ -75,13 +75,17 @@ public interface State {
      * Add a delivery request to a courier
      */
     default void addRequest(Controller controller, Courier courier, Timeframe timeframe, CommandStack commandStack) {
-    };
+    }
+
+    ;
 
     /**
      * Remove a delivery request from a courier
      */
     default void removeRequest(Controller controller, CommandStack commandStack) {
-    };
+    }
+
+    ;
 
     /**
      * Compute a route for a courier
@@ -94,7 +98,7 @@ public interface State {
      * Add a new courier
      */
     default void addCourier(Session session, CommandStack commandStack) {
-        commandStack.add(new AddCourierCommand(new Courier(session.getCouriers().size()+1), session));
+        commandStack.add(new AddCourierCommand(new Courier(session.getCouriers().size() + 1), session));
     }
 
     /**
@@ -109,7 +113,7 @@ public interface State {
      * By default, set the state to MapLoadedState
      */
     default void selectCourier(Controller controller, Courier courier) {
-        if(!(controller.getCurrentState() instanceof IntersectionSelectedState)){
+        if (!(controller.getCurrentState() instanceof IntersectionSelectedState)) {
             controller.setCurrentState(new MapLoadedState());
         }
     }
@@ -120,7 +124,9 @@ public interface State {
     default void saveSession(File file, Session session) {
         XMLSessionSerializer serializer = new XMLSessionSerializer();
         serializer.serialize(session.getCouriers(), file);
-    };
+    }
+
+    ;
 
     /**
      * Load a session from a file, replacing the list of couriers in the session

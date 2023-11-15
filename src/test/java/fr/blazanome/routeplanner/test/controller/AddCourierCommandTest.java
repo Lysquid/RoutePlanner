@@ -8,38 +8,38 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AddCourierCommandTest{
+public class AddCourierCommandTest {
 
     @Test
-    public void testUndoApply(){
+    public void testUndoApply() {
         Courier courier = new Courier(1);
         Session session = new Session();
         AddCourierCommand command = new AddCourierCommand(courier, session);
 
         command.apply();
-        assertEquals(1,session.getCouriers().size());
+        assertEquals(1, session.getCouriers().size());
         command.undo();
-        assertEquals(0,session.getCouriers().size());
+        assertEquals(0, session.getCouriers().size());
         command.apply();
-        assertEquals(1,session.getCouriers().size());
+        assertEquals(1, session.getCouriers().size());
         command.apply();
-        assertEquals(2,session.getCouriers().size());
+        assertEquals(2, session.getCouriers().size());
         command.undo();
-        assertEquals(1,session.getCouriers().size());
+        assertEquals(1, session.getCouriers().size());
     }
 
     @Test
-    public void testReversedCommand(){
+    public void testReversedCommand() {
         Courier courier = new Courier(1);
         Session session = new Session();
         session.addCourier(courier);
         AddCourierCommand command = new AddCourierCommand(courier, session);
         ReverseCommand reverseCommand = new ReverseCommand(command);
 
-        assertEquals(1,session.getCouriers().size());
+        assertEquals(1, session.getCouriers().size());
         reverseCommand.apply();
-        assertEquals(0,session.getCouriers().size());
+        assertEquals(0, session.getCouriers().size());
         reverseCommand.undo();
-        assertEquals(1,session.getCouriers().size());
+        assertEquals(1, session.getCouriers().size());
     }
 }

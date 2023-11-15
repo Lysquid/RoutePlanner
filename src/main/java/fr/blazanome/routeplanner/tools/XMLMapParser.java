@@ -28,11 +28,12 @@ public class XMLMapParser {
 
     /**
      * Parses a file into an IMap (ignores implementation details(
+     *
      * @param file the path to the file
      * @return the map parsed from the file, the implementation is determined by the type of MapBuilderFactory given
      * @throws ParserConfigurationException if function was unable to build the parser
-     * @throws SAXException if file cannot be parsed correctly
-     * @throws IOException if something goes wrong with opening the file
+     * @throws SAXException                 if file cannot be parsed correctly
+     * @throws IOException                  if something goes wrong with opening the file
      */
     public IMap parse(File file) throws ParserConfigurationException, SAXException, IOException {
         SAXParser saxParser = this.parserFactory.newSAXParser();

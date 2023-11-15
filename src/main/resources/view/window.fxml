@@ -10,7 +10,7 @@
             fx:controller="fr.blazanome.routeplanner.view.GraphicalView">
 
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@style.css"/>
     </stylesheets>
 
 
@@ -29,7 +29,8 @@
                     <Text text="Session"/>
                     <HBox>
                         <Button text="Load a session" fx:id="loadSessionButton" onAction="#loadSession" disable="true"/>
-                        <Button text="Save the session" fx:id="saveSessionButton" onAction="#saveSession" disable="true"/>
+                        <Button text="Save the session" fx:id="saveSessionButton" onAction="#saveSession"
+                                disable="true"/>
                     </HBox>
                     <Text text="Controls"/>
                     <HBox>
@@ -73,7 +74,7 @@
                         </VBox>
                     </Tab>
                     <Tab closable="false" text="Planning">
-                        
+
                         <VBox styleClass="group">
                             <TableView fx:id="planningTable">
                                 <columns>
@@ -103,7 +104,8 @@
                     </Tab>
                 </TabPane>
                 <HBox>
-                    <Button fx:id="removeDeliveryButton" onAction="#removeRequest" text="Remove delivery" disable="true"/>
+                    <Button fx:id="removeDeliveryButton" onAction="#removeRequest" text="Remove delivery"
+                            disable="true"/>
                     <HBox style="-fx-padding: 4 0 0 10">
                         <Label text="Number of requests:"/>
                         <Text fx:id="numberRequests"/>
@@ -116,8 +118,9 @@
                 <Text text="New delivery request"/>
                 <GridPane hgap="10">
                     <Text text="At" GridPane.rowIndex="1"/>
-                    <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Button text="Add a request" fx:id="addDeliveryButton" onAction="#addRequest" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                    <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Button text="Add a request" fx:id="addDeliveryButton" onAction="#addRequest" disable="true"
+                            GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                 </GridPane>
             </VBox>
 

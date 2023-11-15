@@ -24,6 +24,7 @@ public class CommandStack extends Observable {
 
     /**
      * Applies command and registers in the history
+     *
      * @param command command to be applied
      */
     public void add(Command command) {

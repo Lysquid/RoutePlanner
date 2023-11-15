@@ -11,6 +11,7 @@ public abstract class AbstractMapHandler extends DefaultHandler {
 
     /**
      * Builds the map from the file handled
+     *
      * @param builder the MapBuilder used to build the map
      */
     public abstract void buildMap(MapBuilder builder);

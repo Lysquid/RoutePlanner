@@ -59,7 +59,8 @@ public class TwoStepTourGenerationAlogrithm implements TourGenerationAlgorithm {
                 }
             };
         } else {
-            onTspFind = (unused) -> {};
+            onTspFind = (unused) -> {
+            };
         }
 
         TSP tspAlgorithm = this.tspAlgorithmFactory.build();
@@ -75,7 +76,7 @@ public class TwoStepTourGenerationAlogrithm implements TourGenerationAlgorithm {
     }
 
     private Route buildRoute(IMap map, PathGraph completeGraph, List<DeliveryRequest> requests,
-            List<Integer> routeInCompleteGraph) {
+                             List<Integer> routeInCompleteGraph) {
         routeInCompleteGraph.add(0);
 
         List<Segment> path = new ArrayList<>();

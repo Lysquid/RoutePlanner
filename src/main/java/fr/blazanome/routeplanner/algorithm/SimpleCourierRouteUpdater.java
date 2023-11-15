@@ -9,7 +9,7 @@ import javafx.application.Platform;
 
 /**
  * SimpleCourierRouteUpdater
- *
+ * <p>
  * A CourierRouteUpdater which update the route only when the computation are
  * over
  */
@@ -18,7 +18,7 @@ public class SimpleCourierRouteUpdater extends ThreadPoolCourierRouteUpdater {
     private TourGenerationAlgorithm tourGenerationAlgorithm;
 
     public SimpleCourierRouteUpdater(Consumer<Integer> onTaskCountChange,
-            TourGenerationAlgorithm tourGenerationAlgorithm) {
+                                     TourGenerationAlgorithm tourGenerationAlgorithm) {
         super(onTaskCountChange);
         this.tourGenerationAlgorithm = tourGenerationAlgorithm;
     }
