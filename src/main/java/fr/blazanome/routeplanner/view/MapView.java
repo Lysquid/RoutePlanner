@@ -293,7 +293,7 @@ public class MapView extends Pane {
             double length=Math.sqrt(Math.pow(scaledX1-scaledX2,2)+Math.pow(scaledY1-scaledY2,2));
             double ratio=1.0/4.0;
             //This sets the size of the arrow and makes sure it resizes when we zoom in
-            double arrow = 6 * this.zoomTransform.getX();
+            double arrow = 6 * Math.sqrt(this.zoomTransform.getX());
             //In this function we draw an arrow at the end point by tracing two lines from the end point to two other points.
             //These two points are found by going 6 units down the line then 6 units following a vector perpendicular to the line this gives two lines at a 45° angle on either side
             //The if exists because depending the circumstance the vector could be going either direction
