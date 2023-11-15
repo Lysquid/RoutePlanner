@@ -6,6 +6,9 @@ import java.util.PriorityQueue;
 
 import fr.blazanome.routeplanner.graph.Neighbor;
 
+/**
+ * Provides the implementation of the bound of the TSP using Prim
+ */
 public class TSP3 extends TSP2 {
 
     private class Pair {
