@@ -109,7 +109,9 @@ public interface State {
      * By default, set the state to MapLoadedState
      */
     default void selectCourier(Controller controller, Courier courier) {
-        controller.setCurrentState(new MapLoadedState());
+        if(!(controller.getCurrentState() instanceof IntersectionSelectedState)){
+            controller.setCurrentState(new MapLoadedState());
+        }
     }
 
     /**

@@ -2,10 +2,7 @@ package fr.blazanome.routeplanner.view;
 
 import fr.blazanome.routeplanner.controller.CommandStack;
 import fr.blazanome.routeplanner.controller.Controller;
-import fr.blazanome.routeplanner.controller.state.RequestSelectedState;
-import fr.blazanome.routeplanner.controller.state.IntersectionSelectedState;
-import fr.blazanome.routeplanner.controller.state.NoMapState;
-import fr.blazanome.routeplanner.controller.state.State;
+import fr.blazanome.routeplanner.controller.state.*;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Delivery;
 import fr.blazanome.routeplanner.model.DeliveryRequest;
@@ -287,7 +284,9 @@ public class GraphicalView implements View, Initializable {
         if (!session.getCouriers().isEmpty())
             this.selectedCourier.setValue(session.getCouriers().get(session.getCouriers().size() - 1));
         this.removeCourierButton.setDisable(session.getCouriers().isEmpty());
-        this.addDeliveryButton.setDisable(this.addDeliveryButton.isDisabled() && this.selectedCourier.getValue() == null);
+        if(this.controller.getCurrentState() instanceof IntersectionSelectedState) {
+            this.addDeliveryButton.setDisable(this.selectedCourier.getValue() == null);
+        }
     }
 
     @FXML
