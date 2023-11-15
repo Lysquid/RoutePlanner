@@ -52,6 +52,8 @@ public class GraphicalView implements View, Initializable {
     @FXML
     private TableView<Delivery> planningTable;
     @FXML
+    private Text numberRequests;
+    @FXML
     private Button undoButton;
     @FXML
     private Button redoButton;
@@ -220,6 +222,7 @@ public class GraphicalView implements View, Initializable {
             } else {
                 this.planningTable.setItems(FXCollections.emptyObservableList());
             }
+            this.numberRequests.setText(String.valueOf(courier.getRequests().size()));
         } else {
             this.deliveriesTable.setItems(FXCollections.emptyObservableList());
             this.planningTable.setItems(FXCollections.emptyObservableList());
@@ -301,7 +304,7 @@ public class GraphicalView implements View, Initializable {
             this.taskStatus.setText("Computing route for " + taskCount + " couriers...");
             this.cancelTasksButton.setDisable(false);
         } else {
-            this.taskStatus.setText("No task running.");
+            this.taskStatus.setText("No task running");
             this.cancelTasksButton.setDisable(true);
         }
     }

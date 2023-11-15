@@ -102,23 +102,29 @@
                         </VBox>
                     </Tab>
                 </TabPane>
-                <Button fx:id="removeDeliveryButton" onAction="#removeRequest" text="Remove delivery" disable="true"/>
+                <HBox>
+                    <Button fx:id="removeDeliveryButton" onAction="#removeRequest" text="Remove delivery" disable="true"/>
+                    <HBox style="-fx-padding: 4 0 0 10">
+                        <Label text="Number of requests:"/>
+                        <Text fx:id="numberRequests"/>
+                    </HBox>
+                </HBox>
             </VBox>
 
-            <!-- New delivery -->
+            <!-- New request -->
             <VBox styleClass="group">
-                <Text text="New delivery"/>
+                <Text text="New delivery request"/>
                 <GridPane hgap="10">
                     <Text text="At" GridPane.rowIndex="1"/>
                     <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Button text="Add a request" fx:id="addDeliveryButton" onAction="#addRequest" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                 </GridPane>
-                <Button text="Add a delivery request" fx:id="addDeliveryButton" onAction="#addRequest" disable="true"/>
             </VBox>
 
             <!-- Load and controls -->
             <HBox styleClass="group">
                 <VBox>
-                    <Text text="No task running." fx:id="taskStatus"/>
+                    <Text text="No task running" fx:id="taskStatus"/>
                     <Button text="Cancel" onAction="#cancelTasks" fx:id="cancelTasksButton" disable="true"/>
                 </VBox>
             </HBox>
