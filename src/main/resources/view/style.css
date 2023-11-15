@@ -36,7 +36,8 @@ ButtonIntersection {
 }
 
 ButtonIntersection:hover {
-    -fx-opacity: 0.5;
+    -fx-background-color: white;
+    -fx-opacity: 0.8;
 }
 
 #selected {
