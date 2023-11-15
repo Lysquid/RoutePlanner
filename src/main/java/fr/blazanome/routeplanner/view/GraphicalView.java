@@ -74,6 +74,9 @@ public class GraphicalView implements View, Initializable {
     @FXML
     private Observer commandStackObserver;
 
+    /**
+     * constructor for GraphicalView that creates a controller and observer
+     */
     public GraphicalView() {
         this.commandStackObserver = Observers.typed(CommandStack.class, this::onCommandStackUpdate);
         this.controller = new Controller(this);
@@ -112,6 +115,10 @@ public class GraphicalView implements View, Initializable {
         this.onStateChange(this.controller, this.controller.getCurrentState());
     }
 
+    /**
+     * Loads the file and calls a map loader
+     * @param actionEvent the action linked to opening a file
+     */
     @FXML
     private void loadMap(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -124,36 +131,63 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
+    /**
+     * calls the undo function in the controller
+     * @param actionEvent unused
+     */
     @FXML
     private void undo(ActionEvent actionEvent) {
         this.controller.undo();
     }
 
+    /**
+     * calls the redo function in the controller
+     * @param actionEvent unused
+     */
     @FXML
     private void redo(ActionEvent actionEvent) {
         this.controller.redo();
     }
 
+    /**
+     * calls an add request function in the controller with the currently selected courier and timeframe
+     */
     @FXML
     private void addRequest(ActionEvent actionEvent) {
         this.controller.addRequest(this.selectedCourier.getValue(), this.timeframe.getValue());
     }
 
+    /**
+     * calls a remove request function in the controller
+     */
     @FXML
     private void removeRequest(ActionEvent event) {
         this.controller.removeRequest();
     }
 
+    /**
+     * finds the button that is clicked on then gets the intersection that's clicked on
+     * @param actionEvent click action
+     */
     @FXML
     private void selectIntersection(ActionEvent actionEvent) {
         ButtonIntersection button = (ButtonIntersection) actionEvent.getSource();
         this.controller.selectIntersection(button.getIntersection());
     }
 
+    /**
+     * Finds the current courier and then calls a selectRequest function in the controller
+     * @param request the request that has been created
+     */
     private void onDeliveryTableSelect(DeliveryRequest request) {
         this.controller.selectRequest(request, this.selectedCourier.getValue());
     }
 
+    /**
+     * Calls functions based upon the state
+     * @param controller the controller that we will need to call
+     * @param state the current state of the application
+     */
     @Override
     public void onStateChange(Controller controller, State state) {
         if (state instanceof NoMapState)
@@ -163,6 +197,12 @@ public class GraphicalView implements View, Initializable {
         this.mapView.onStateChange(controller, state);
     }
 
+    /**
+     * Calls the functions linked to the event such as loading a map or comuting a route
+     * @param observable session or courier
+     * @param eventType  the event that caused the action
+     * @param message the delivery request when not null
+     */
     @Override
     public void update(Observable observable, EventType eventType, Object message) {
         switch (eventType) {
@@ -201,11 +241,14 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
+    /**
+     * Shows and error message for a courier
+     * @param courier the courier where route can't be calculated
+     */
     private void showRouteComputeError(Courier courier) {
         Alert alert = new Alert(AlertType.ERROR, "No route can fulfill your requirements for " + courier.toString() + " or you have canceled the computations too early.");
         alert.showAndWait();
     }
-
     private void onCommandStackUpdate(CommandStack commandStack, EventType eventType, Object message) {
         if (Objects.requireNonNull(eventType) == EventType.COMMAND_STACK_UPDATE) {
             this.undoButton.setDisable(!commandStack.canUndo());
@@ -295,6 +338,10 @@ public class GraphicalView implements View, Initializable {
         this.mapView.resetPosition();
     }
 
+    /**
+     * message when the route for multiple courtier are being calculated
+     * @param taskCount the number of active calculations
+     */
     @Override
     public void onTaskCountChange(int taskCount) {
         if (taskCount == 1) {
@@ -314,6 +361,9 @@ public class GraphicalView implements View, Initializable {
         this.controller.cancelTasks();
     }
 
+    /**
+     * @return the controller
+     */
     public Controller getController() {
         return controller;
     }
