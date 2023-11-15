@@ -46,4 +46,12 @@ public class Delivery {
         return String.format("%02d:%02d", h, m);
     }
 
+    public double getLongitude() {
+        return this.request.getLongitude();
+    }
+
+    public double getLatitude() {
+        return this.request.getLatitude();
+    }
+
 }

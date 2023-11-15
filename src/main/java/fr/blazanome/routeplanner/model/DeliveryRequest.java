@@ -27,4 +27,8 @@ public class DeliveryRequest {
     public double getLongitude() {
         return this.intersection.getLongitude();
     }
+
+    public String getTimeframeLabel() {
+        return this.timeframe.getLabel();
+    }
 }
