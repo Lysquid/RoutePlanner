@@ -112,6 +112,7 @@ public class MapView extends Pane {
             ButtonIntersection button = new ButtonIntersection(this, intersection);
             if (intersection == session.getMap().getWarehouse()) {
                 button.setId("warehouse");
+                button.setDisable(true);
             }
             this.root.getChildren().add(button);
             this.buttonIntersectionList.add(button);
