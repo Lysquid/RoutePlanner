@@ -10,7 +10,11 @@ public class ButtonIntersection extends Button {
     private static final int RADIUS = 5;
     private static final Circle circle = new Circle(RADIUS);
     private final Intersection intersection;
-
+    /**
+     * Creates a button with a set size and that react to events
+     * @param mapView The map where the intersection has to be drawn
+     * @param intersection The information about the intersection used to create the button
+     */
     public ButtonIntersection(MapView mapView, Intersection intersection) {
         this.intersection = intersection;
 
@@ -23,10 +27,16 @@ public class ButtonIntersection extends Button {
         });
     }
 
-
+    /**
+     * @return the intersection linked to the button
+     */
     public Intersection getIntersection() {
         return intersection;
     }
+    /**
+     * updates the size of the button based on the zoom
+     * @param zoom Takes how much you're zoomed into the map
+     */
     public void updateRadius(double zoom) {
         double radius=this.calculateRadius(zoom);
         this.circle.setRadius(radius);
@@ -35,11 +45,17 @@ public class ButtonIntersection extends Button {
         this.setMinSize(2 * radius, 2 * radius);
 
     }
+    /**
+     * @param zoom Takes how much you're zoomed into the map
+     * @return the radius that the button should have
+     */
     public double calculateRadius(double zoom){
         double radius=Math.min(this.RADIUS,10.0/zoom);
         return Math.max(radius,1.0);
     }
-
+    /**
+     * @param color the color to set the button to
+     */
     public void setColor(Color color) {
         this.setStyle(String.format("-fx-background-color: #%02X%02X%02X",
                 (int) (color.getRed() * 255),
