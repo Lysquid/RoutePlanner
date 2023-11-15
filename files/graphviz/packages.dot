@@ -1,0 +1,16 @@
+digraph finite_state_machine {
+	rankdir=BT;
+    node [shape="box"]
+    g [label="graph"]
+    routeplanner [label="fr.blazanome.routeplanner"]
+	view->routeplanner
+    tools->routeplanner
+    observer->routeplanner
+    model->routeplanner
+    g->routeplanner
+    controller->routeplanner
+    algorithm->routeplanner
+    tsp->algorithm
+    state->controller
+    map->model
+}
