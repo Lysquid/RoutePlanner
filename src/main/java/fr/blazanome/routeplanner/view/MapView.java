@@ -212,12 +212,14 @@ public class MapView extends Pane {
                 continue;
             }
             b.setStyle(null);
+            b.setId(null);
             for (Courier courier : session.getCouriers()) {
                 if (this.currentCourier == null || this.currentCourier == courier) {
                     Color c = this.getCourierColor(courier);
                     for(var request: courier.getRequests()){
                         if(request.getIntersection().equals(b.getIntersection())) {
                             b.setColor(c);
+                            b.setId("request");
                         }
                     }
                 }

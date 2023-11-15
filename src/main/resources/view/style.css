@@ -27,14 +27,25 @@ MapView {
 ButtonIntersection {
     -fx-background-color: black;
     -fx-border-style: none;
+    -fx-opacity: 0;
 }
 
 #warehouse {
     -fx-background-color: blue;
+    -fx-opacity: 1;
+}
+
+ButtonIntersection:hover {
+    -fx-opacity: 0.5;
 }
 
 #selected {
     -fx-background-color: white;
+    -fx-opacity: 1;
+}
+
+#request {
+    -fx-opacity: 1;
 }
 
 TableView {
