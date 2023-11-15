@@ -6,8 +6,14 @@ import fr.blazanome.routeplanner.observer.Observer;
 
 public interface View extends Observer {
 
+    /**
+     * Called each time the controller changes state
+     */
     void onStateChange(Controller controller, State state);
 
+    /**
+     * Called each time the number of tasks changes
+     */
     void onTaskCountChange(int taskCount);
 
 }

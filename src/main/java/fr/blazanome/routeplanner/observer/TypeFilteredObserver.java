@@ -2,6 +2,9 @@ package fr.blazanome.routeplanner.observer;
 
 /**
  * TypeFilteredObserver
+ *
+ * Wrapper around a {@link TypedObserver} that filters the notification
+ * it receives to match the type T
  */
 public class TypeFilteredObserver<T extends Observable> implements Observer {
 
