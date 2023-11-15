@@ -26,6 +26,9 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.openjfx:javafx-fxml:17")
     testImplementation("org.assertj:assertj-core:3.11.1")
+    implementation("org.openjfx:javafx-graphics:17.0.8:win")
+    implementation("org.openjfx:javafx-graphics:17.0.8:linux")
+    implementation("org.openjfx:javafx-graphics:17.0.8:mac")
 }
 
 tasks.javadoc {
