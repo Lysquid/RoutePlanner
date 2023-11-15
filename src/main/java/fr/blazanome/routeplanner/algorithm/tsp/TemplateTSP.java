@@ -15,7 +15,6 @@ public abstract class TemplateTSP implements TSP {
     private int timeLimit;
     private long startTime;
     private boolean interrupted;
-    private long nbCalls = 0;
 
     public void searchSolution(int timeLimit, Graph g, Consumer<List<Integer>> onNewRoute) {
         if (timeLimit <= 0)
@@ -34,8 +33,6 @@ public abstract class TemplateTSP implements TSP {
         visited.add(0); // The first visited vertex is 0
         this.bestSolCost = Integer.MAX_VALUE;
         branchAndBound(0, unvisited, visited, 0, onNewRoute);
-        System.out.println("NBCALLS : " + nbCalls);
-        nbCalls = 0;
     }
 
     public List<Integer> getSolution() {
@@ -93,7 +90,6 @@ public abstract class TemplateTSP implements TSP {
                 return;
         }
 
-        nbCalls++;
         if (unvisited.size() == 0) {
             if (graph.isArc(currentVertex, 0)) {
                 if (currentCost + graph.getCost(currentVertex, 0) < bestSolCost) {
