@@ -249,6 +249,7 @@ public class GraphicalView implements View, Initializable {
         Alert alert = new Alert(AlertType.ERROR, "No route can fulfill your requirements for " + courier.toString() + " or you have canceled the computations too early.");
         alert.showAndWait();
     }
+
     private void onCommandStackUpdate(CommandStack commandStack, EventType eventType, Object message) {
         if (Objects.requireNonNull(eventType) == EventType.COMMAND_STACK_UPDATE) {
             this.undoButton.setDisable(!commandStack.canUndo());
