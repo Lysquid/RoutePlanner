@@ -26,8 +26,6 @@ graphviz: $(gv-imgs)
 
 pdf: uml $(dossier-pdfs)
 
-$(info $$var is [${gv-srcs}])
-
 $(uml-out-dir)/%.png: $(uml-src-dir)/%.puml
 	plantuml -o $(abspath $(@D)) $<
 
