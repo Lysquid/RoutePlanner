@@ -24,7 +24,6 @@ public class IntersectionSelectedState implements State {
     public void selectIntersection(Controller controller, View view, Courier courier, Timeframe timeframe, Intersection intersection) {
         if(this.selectedIntersection.equals(intersection)) {
             controller.addRequest(courier, timeframe);
-            controller.setCurrentState(new MapLoadedState());
         } else {
             controller.setCurrentState(new IntersectionSelectedState(intersection));
         }
