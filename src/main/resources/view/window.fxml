@@ -87,12 +87,12 @@
                                             <PropertyValueFactory property="latitude"/>
                                         </cellValueFactory>
                                     </TableColumn>
-                                    <TableColumn text="Arrival time">
+                                    <TableColumn text="Arrival">
                                         <cellValueFactory>
                                             <PropertyValueFactory property="deliveryTime"/>
                                         </cellValueFactory>
                                     </TableColumn>
-                                    <TableColumn text="Departure time">
+                                    <TableColumn text="Departure">
                                         <cellValueFactory>
                                             <PropertyValueFactory property="departureTime"/>
                                         </cellValueFactory>
