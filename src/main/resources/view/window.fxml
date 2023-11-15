@@ -102,7 +102,7 @@
                         </VBox>
                     </Tab>
                 </TabPane>
-                <Button fx:id="removeDeliveryButton" onAction="#removeDelivery" text="Remove delivery" disable="true"/>
+                <Button fx:id="removeDeliveryButton" onAction="#removeRequest" text="Remove delivery" disable="true"/>
             </VBox>
 
             <!-- New delivery -->
@@ -112,7 +112,7 @@
                     <Text text="At" GridPane.rowIndex="1"/>
                     <ComboBox fx:id="timeframe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 </GridPane>
-                <Button text="Add a delivery request" fx:id="addDeliveryButton" onAction="#addDelivery" disable="true"/>
+                <Button text="Add a delivery request" fx:id="addDeliveryButton" onAction="#addRequest" disable="true"/>
             </VBox>
 
             <!-- Load and controls -->

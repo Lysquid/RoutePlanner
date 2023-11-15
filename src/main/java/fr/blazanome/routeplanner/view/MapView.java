@@ -28,10 +28,10 @@ public class MapView extends Pane {
 
     private Session session; // reference kept to redraw on cursor drag, zoom, etc (no event from controller)
     private final Group root;
-    double minX;
-    double minY;
-    double maxY;
-    double maxX;
+    private double minX;
+    private double minY;
+    private double maxY;
+    private double maxX;
     private double initialX;
     private double initialY;
     private double offsetX = 0.0;
@@ -121,14 +121,14 @@ public class MapView extends Pane {
     /**
      * @param selectedCourier either the courier that is currently selected by the user or null depending on if all courier should be drawn
      */
-    void setSelectedCourier(Courier selectedCourier){
+    public void setSelectedCourier(Courier selectedCourier){
         this.currentCourier = selectedCourier;
         this.draw();
     }
     /**
      * on a clear canvas draws the segments, the routes taken for the couriers or the selected courier and updates the intersections
      */
-    void draw() {
+    public void draw() {
         this.canvas.setWidth(this.getWidth());
         this.canvas.setHeight(this.getHeight());
         // Re-draw everything on the canvas
@@ -245,7 +245,7 @@ public class MapView extends Pane {
      * Draws in black a line for each segment in the list
      * @param iterableSegment A list of segments, each have a start and end point for the line to use
      */
-    void drawPlainSegments(Iterable<Segment> iterableSegment) {
+    private void drawPlainSegments(Iterable<Segment> iterableSegment) {
         for (Segment segment : iterableSegment) {
             this.gc.setStroke(Color.BLACK);
             this.gc.setLineWidth(1.5*this.zoomTransform.getX());
@@ -268,7 +268,7 @@ public class MapView extends Pane {
      * @param iterableSegment A list of segments each have a start and end point
      * @param c the colour of the segment
      */
-    void drawRoute(Iterable<Segment> iterableSegment, Color c) {
+    private void drawRoute(Iterable<Segment> iterableSegment, Color c) {
         //the code should be very different from the other function once it's actually implemented.
         //double personeCount=1.0;
         for (Segment segment : iterableSegment) {
@@ -312,10 +312,11 @@ public class MapView extends Pane {
 
         }
     }
+
     /**
      * Calculates the size and location of the buttons
      */
-    void drawIntersections() {
+    private void drawIntersections() {
         double radius =this.buttonIntersectionList.get(1).calculateRadius(this.zoomTransform.getX());
         for (ButtonIntersection bt : this.buttonIntersectionList) {
             Intersection intersection = bt.getIntersection();
@@ -326,10 +327,11 @@ public class MapView extends Pane {
             bt.setVisible(true);
         }
     }
+
     /**
     * Resets the zoom and position
      */
-    void resetPosition(){
+    public void resetPosition(){
         this.offsetY=0;
         this.offsetX=0;
         this.zoomTransform.setX(1.0);
@@ -337,31 +339,33 @@ public class MapView extends Pane {
         this.resizeButton();
         this.draw();
     }
-    // turns latitude and longitude into x and y coordinates
+
     /**
      * For each intersection calls a function that takes into account the level of zoom when defining the size of the button
      */
-    void resizeButton(){
+    public void resizeButton(){
         if (buttonIntersectionList != null) {
             for (ButtonIntersection intersection : this.buttonIntersectionList) {
                 intersection.updateRadius(this.zoomTransform.getX());
             }
         }
     }
+
     /**
      * @param lat latitude of the point
      * @param lon longitude of a point
      * @return the coordinates following the x axis
      */
-    double ConvertToX(double lat, double lon) {
+    private double ConvertToX(double lat, double lon) {
         return Math.cos((Math.PI / 180.0) * lat) * 111.0 * lon;
     }
+
     /**
      * @param lat latitude of the point
      * @param lon longitude of a point
      * @return the coordinates following the y axis
      */
-    double ConvertToY(double lat, double lon) {
+    private double ConvertToY(double lat, double lon) {
         return 111.0 * lat;
     }
 
@@ -370,7 +374,7 @@ public class MapView extends Pane {
      * @param intersection location the includes a latitude and longitude
      * @return where to place it on the screen along the x axis
      */
-    double positionX(Intersection intersection) {
+    private double positionX(Intersection intersection) {
         return this.ratioWidth()
                 * (0.05 + 0.90 * ((this.ConvertToX(intersection.getLatitude(), intersection.getLongitude()) - this.minX)
                         / (this.maxX - this.minX)))
@@ -380,7 +384,7 @@ public class MapView extends Pane {
      * @param intersection location the includes a latitude and longitude
      * @return where to place it on the screen along the y axis
      */
-    double positionY(Intersection intersection) {
+    private double positionY(Intersection intersection) {
         return this.ratioHeight()-(this.ratioHeight()
                 * (0.05 + 0.90 * ((this.ConvertToY(intersection.getLatitude(), intersection.getLongitude()) - this.minY)
                         / (this.maxY - this.minY))))
@@ -390,13 +394,13 @@ public class MapView extends Pane {
     /**
      * @return the maximum height the map can fit in without stretching or cutting parts of the map off in width
      */
-    double ratioHeight() {
+    private double ratioHeight() {
         return Math.min(this.getHeight(), this.getWidth() * (this.maxY - this.minY) / (this.maxX - this.minX));
     }
     /**
      * @return the maximum width the map can fit in without stretching or cutting parts of the map off in height
      */
-    double ratioWidth() {
+    private double ratioWidth() {
         return Math.min(this.getWidth(), this.getHeight() * (this.maxX - this.minX) / (this.maxY - this.minY));
     }
     /**
@@ -425,7 +429,7 @@ public class MapView extends Pane {
 
     }
     /**
-     * Saves the location of a mousepress
+     * Saves the location of a mouse press
      * @param event information from when a mouse is pressed
      */
     // Action to make the dragging possible
@@ -433,6 +437,7 @@ public class MapView extends Pane {
         this.initialX = event.getSceneX();
         this.initialY = event.getSceneY();
     }
+
     /**
      * Shifts the screen to follow the dragging
      * @param event information includinglocation of the mouse at the point in the drag
@@ -451,7 +456,7 @@ public class MapView extends Pane {
         }
     }
 
-    // boilerplate stuff to be able to fire a custom onAction
+    // boilerplate code to be able to fire a custom onAction
     private final ObjectProperty<EventHandler<ActionEvent>> propertyOnAction = new SimpleObjectProperty<>();
 
     public final ObjectProperty<EventHandler<ActionEvent>> onActionProperty() {

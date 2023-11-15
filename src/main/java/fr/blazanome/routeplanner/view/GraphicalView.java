@@ -17,6 +17,7 @@ import fr.blazanome.routeplanner.observer.Observer;
 import fr.blazanome.routeplanner.observer.Observers;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -32,26 +33,43 @@ import java.util.ResourceBundle;
 
 public class GraphicalView implements View, Initializable {
 
-    protected final Controller controller;
+    private final Controller controller;
 
-    public MapView mapView;
-    public ComboBox<Courier> selectedCourier;
-    public CheckBox oneCourier;
-    public ComboBox<Timeframe> timeframe;
-    public Button addDeliveryButton;
-    public Button removeDeliveryButton;
-    public TableView<DeliveryRequest> deliveriesTable;
-    public TableView<Delivery> planningTable;
-    public Button undoButton;
-    public Button redoButton;
-    public Text taskStatus;
-
-    public Button removeCourierButton;
-    public Button loadSessionButton;
-    public Button saveSessionButton;
-    public Button addCourierButton;
-    public Button resetZoomButton;
-    public Button cancelTasksButton;
+    @FXML
+    private MapView mapView;
+    @FXML
+    private ComboBox<Courier> selectedCourier;
+    @FXML
+    private CheckBox oneCourier;
+    @FXML
+    private ComboBox<Timeframe> timeframe;
+    @FXML
+    private Button addDeliveryButton;
+    @FXML
+    private Button removeDeliveryButton;
+    @FXML
+    private TableView<DeliveryRequest> deliveriesTable;
+    @FXML
+    private TableView<Delivery> planningTable;
+    @FXML
+    private Button undoButton;
+    @FXML
+    private Button redoButton;
+    @FXML
+    private Text taskStatus;
+    @FXML
+    private Button removeCourierButton;
+    @FXML
+    private Button loadSessionButton;
+    @FXML
+    private Button saveSessionButton;
+    @FXML
+    private Button addCourierButton;
+    @FXML
+    private Button resetZoomButton;
+    @FXML
+    private Button cancelTasksButton;
+    @FXML
     private Observer commandStackObserver;
 
     public GraphicalView() {
@@ -92,7 +110,8 @@ public class GraphicalView implements View, Initializable {
         this.onStateChange(this.controller, this.controller.getCurrentState());
     }
 
-    public void loadMap(ActionEvent actionEvent) {
+    @FXML
+    private void loadMap(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
@@ -103,28 +122,33 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void undo(ActionEvent actionEvent) {
+    @FXML
+    private void undo(ActionEvent actionEvent) {
         this.controller.undo();
     }
 
-    public void redo(ActionEvent actionEvent) {
+    @FXML
+    private void redo(ActionEvent actionEvent) {
         this.controller.redo();
     }
 
-    public void addDelivery(ActionEvent actionEvent) {
+    @FXML
+    private void addRequest(ActionEvent actionEvent) {
         this.controller.addRequest(this.selectedCourier.getValue(), this.timeframe.getValue());
     }
 
-    public void removeDelivery(ActionEvent event) {
+    @FXML
+    private void removeRequest(ActionEvent event) {
         this.controller.removeRequest();
     }
 
-    public void selectIntersection(ActionEvent actionEvent) {
+    @FXML
+    private void selectIntersection(ActionEvent actionEvent) {
         ButtonIntersection button = (ButtonIntersection) actionEvent.getSource();
         this.controller.selectIntersection(button.getIntersection());
     }
 
-    public void onDeliveryTableSelect(DeliveryRequest request) {
+    private void onDeliveryTableSelect(DeliveryRequest request) {
         this.controller.selectRequest(request, this.selectedCourier.getValue());
     }
 
@@ -202,7 +226,8 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void setOnlyOneCourier(){
+    @FXML
+    private void setOnlyOneCourier(){
         if (this.oneCourier.isSelected()) {
             this.mapView.setSelectedCourier(this.selectedCourier.getValue());
         } else{
@@ -218,7 +243,8 @@ public class GraphicalView implements View, Initializable {
         this.addDeliveryButton.setDisable(this.addDeliveryButton.isDisabled() && this.selectedCourier.getValue() == null);
     }
 
-    public void selectCourier(ActionEvent actionEvent) {
+    @FXML
+    private void selectCourier(ActionEvent actionEvent) {
         this.updateRequests();
         if (this.oneCourier.isSelected()) {
             this.mapView.setSelectedCourier(this.selectedCourier.getValue());
@@ -227,15 +253,18 @@ public class GraphicalView implements View, Initializable {
         this.controller.selectCourier(this.selectedCourier.getValue());
     }
 
-    public void addCourier(ActionEvent actionEvent) {
+    @FXML
+    private void addCourier(ActionEvent actionEvent) {
         this.controller.addCourier();
     }
 
-    public void removeCourier(ActionEvent actionEvent) {
+    @FXML
+    private void removeCourier(ActionEvent actionEvent) {
         this.controller.removeCourier(this.selectedCourier.getValue());
     }
 
-    public void loadSession(ActionEvent actionEvent) {
+    @FXML
+    private void loadSession(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load a session");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
@@ -246,7 +275,8 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void saveSession(ActionEvent actionEvent) {
+    @FXML
+    private void saveSession(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save the session");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XML file", "*.xml"));
@@ -257,7 +287,8 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void resetZoom(){
+    @FXML
+    private void resetZoom(){
         this.mapView.resetPosition();
     }
 
@@ -275,7 +306,8 @@ public class GraphicalView implements View, Initializable {
         }
     }
 
-    public void cancelTasks() {
+    @FXML
+    private void cancelTasks() {
         this.controller.cancelTasks();
     }
 
