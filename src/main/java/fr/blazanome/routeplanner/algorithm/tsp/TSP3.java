@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import fr.blazanome.routeplanner.graph.Neighbor;
+
 public class TSP3 extends TSP2 {
 
     private class Pair {
@@ -18,8 +20,8 @@ public class TSP3 extends TSP2 {
         }
     }
 
-    protected double prim(Collection<Integer> edges) {
-        Integer s0 = edges.iterator().next();
+    protected double prim(Collection<Integer> vertices) {
+        Integer s0 = vertices.iterator().next();
         PriorityQueue<Pair> pq = new PriorityQueue<>(graph.getVerticesCount(), new Comparator<Pair>() {
             public int compare(Pair a, Pair b) {
                 return Double.compare(a.weight, b.weight);
@@ -27,39 +29,38 @@ public class TSP3 extends TSP2 {
         });
 
         pq.add(new Pair(s0, 0));
-        ArrayList<Boolean> visited = new ArrayList<>(Collections.nCopies(graph.getVerticesCount(), false));
-        ArrayList<Double> weights = new ArrayList<>(Collections.nCopies(graph.getVerticesCount(), Double.MAX_VALUE));
-        weights.set(s0, 0.0);
+        boolean[] visited = new boolean[graph.getVerticesCount()];
+        double[] weights = new double[graph.getVerticesCount()];
+        for (int i = 0; i < weights.length; i++) {
+            weights[i] = Double.POSITIVE_INFINITY;
+        }
+
+        weights[s0] = 0.0;
         double cost = 0;
 
         while (!pq.isEmpty()) {
             Pair minCostNode = pq.poll();
 
-            if (visited.get(minCostNode.vertex)) {
+            if (visited[minCostNode.vertex]) {
                 continue;
             }
 
-            visited.set(minCostNode.vertex, true);
-            //cost += minCostNode.weight;
+            visited[minCostNode.vertex] = true;
+            // cost += minCostNode.weight;
 
-            for (Integer j : edges) {
-                double costToJ = graph.getCost(minCostNode.vertex, j);
-
-                if (costToJ > 0 && !visited.get(j) && costToJ < weights.get(j)) {
-                    pq.add(new Pair(j, costToJ));
-                    weights.set(j, costToJ);
+            for (Neighbor neighbor : graph.getNeighbors(minCostNode.vertex)) {
+                if (!visited[neighbor.getVertex()] && weights[neighbor.getVertex()] > neighbor.getCost()) {
+                    pq.add(new Pair(neighbor.getVertex(), neighbor.getCost()));
+                    weights[neighbor.getVertex()] = neighbor.getCost();
                 }
             }
         }
 
-        double maxCost = 0;
         for (Double d : weights) {
             if (d != Double.MAX_VALUE) {
                 cost += d;
-                maxCost = Math.max(maxCost, d);
             }
         }
-        cost -= maxCost;
         return cost;
     }
 
@@ -75,6 +76,7 @@ public class TSP3 extends TSP2 {
 
         l += prim(unvisited);
         l += m;
+        System.out.println(l);
         return l;
     }
 
