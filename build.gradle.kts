@@ -3,10 +3,11 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("jacoco")
     id("java")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 application {
-    mainClass.set("fr.blazanome.routeplanner.view.RoutePlannerApplication")
+    mainClass.set("fr.blazanome.routeplanner.Launcher")
 }
 javafx {
     version = "17.0.8"
