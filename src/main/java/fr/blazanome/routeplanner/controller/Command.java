@@ -1,11 +1,17 @@
 package fr.blazanome.routeplanner.controller;
 
 /**
- * Command
+ * Command to implement command design pattern
  */
 public interface Command {
 
-    public void apply();
+    /**
+     * Apply the command
+     */
+    void apply();
 
-    public void undo();
+    /**
+     * Undo the command
+     */
+    void undo();
 }
