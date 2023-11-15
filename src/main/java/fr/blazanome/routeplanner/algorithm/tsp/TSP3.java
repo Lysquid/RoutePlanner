@@ -76,7 +76,6 @@ public class TSP3 extends TSP2 {
 
         l += prim(unvisited);
         l += m;
-        System.out.println(l);
         return l;
     }
 

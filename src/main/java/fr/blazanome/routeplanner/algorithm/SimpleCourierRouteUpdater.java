@@ -28,8 +28,6 @@ public class SimpleCourierRouteUpdater extends ThreadPoolCourierRouteUpdater {
         this.spawnTask(courier, () -> {
             Route route = this.tourGenerationAlgorithm.computeTour(map, courier.getRequests(), null);
 
-
-            System.out.println("End");
             Platform.runLater(() -> courier.setRoute(route));
         });
     }
