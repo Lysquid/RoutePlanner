@@ -59,7 +59,7 @@ public interface State {
      * Called when an intersection was clicked on the view
      * By default, changes the state to IntersectionSelectedState
      */
-    default void selectIntersection(Controller controller, View view, Intersection intersection) {
+    default void selectIntersection(Controller controller, View view, Courier courier, Timeframe timeframe, Intersection intersection) {
         controller.setCurrentState(new IntersectionSelectedState(intersection));
     }
 

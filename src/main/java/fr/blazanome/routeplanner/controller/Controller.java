@@ -5,8 +5,6 @@ import fr.blazanome.routeplanner.algorithm.AnytimeCourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.CourierRouteUpdater;
 import fr.blazanome.routeplanner.algorithm.DjikstraCompleteGraphAlgorithm;
 import fr.blazanome.routeplanner.algorithm.TwoStepTourGenerationAlogrithm;
-import fr.blazanome.routeplanner.algorithm.tsp.TSP1;
-import fr.blazanome.routeplanner.algorithm.tsp.TSP2;
 import fr.blazanome.routeplanner.algorithm.tsp.TSP3;
 import fr.blazanome.routeplanner.controller.state.NoMapState;
 import fr.blazanome.routeplanner.controller.state.State;
@@ -87,8 +85,8 @@ public class Controller {
     /**
      * Called when an intersection was clicked on the view
      */
-    public void selectIntersection(Intersection intersection) {
-        this.currentState.selectIntersection(this, this.view, intersection);
+    public void selectIntersection(Courier courier, Timeframe timeframe, Intersection intersection) {
+        this.currentState.selectIntersection(this, this.view, courier, timeframe, intersection);
     }
 
     /**

@@ -21,8 +21,9 @@ public class IntersectionSelectedState implements State {
      * else it changes the state to the new selected intersection
      */
     @Override
-    public void selectIntersection(Controller controller, View view, Intersection intersection) {
+    public void selectIntersection(Controller controller, View view, Courier courier, Timeframe timeframe, Intersection intersection) {
         if(this.selectedIntersection.equals(intersection)) {
+            controller.addRequest(courier, timeframe);
             controller.setCurrentState(new MapLoadedState());
         } else {
             controller.setCurrentState(new IntersectionSelectedState(intersection));

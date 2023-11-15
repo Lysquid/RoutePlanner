@@ -6,6 +6,7 @@ import fr.blazanome.routeplanner.controller.Controller;
 import fr.blazanome.routeplanner.model.Courier;
 import fr.blazanome.routeplanner.model.Intersection;
 import fr.blazanome.routeplanner.model.Session;
+import fr.blazanome.routeplanner.model.Timeframe;
 import fr.blazanome.routeplanner.view.View;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class NoMapState implements State {
     }
 
     @Override
-    public void selectIntersection(Controller controller, View view, Intersection intersection) {
+    public void selectIntersection(Controller controller, View view, Courier courier, Timeframe timeframe, Intersection intersection) {
     }
 
     @Override

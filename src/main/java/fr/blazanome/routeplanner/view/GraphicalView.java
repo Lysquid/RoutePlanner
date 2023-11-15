@@ -172,7 +172,7 @@ public class GraphicalView implements View, Initializable {
     @FXML
     private void selectIntersection(ActionEvent actionEvent) {
         ButtonIntersection button = (ButtonIntersection) actionEvent.getSource();
-        this.controller.selectIntersection(button.getIntersection());
+        this.controller.selectIntersection(this.selectedCourier.getValue(), this.timeframe.getValue(), button.getIntersection());
     }
 
     /**
