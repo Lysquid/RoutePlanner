@@ -22,7 +22,7 @@ One of the goals of the project was to learn about object-oriented software desi
 
 ### From .jar file
 
-`javac -jar RoutePlanner.jar`
+`java -jar RoutePlanner.jar`
 
 Or simply double-click on Windows.
 
